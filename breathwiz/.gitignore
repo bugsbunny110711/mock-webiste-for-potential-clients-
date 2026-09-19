@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# next.js build output
+.next/
+out/
+
+# local database (regenerate with: npm run db:reset)
+*.db
+*.db-journal
+data/
+
+# test artifacts
+test-results/
+playwright-report/
+screenshots/
+
+# env
+.env
+.env.local
+
+# os
+.DS_Store
