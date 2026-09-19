@@ -13,7 +13,7 @@ data/
 # test artifacts
 test-results/
 playwright-report/
-screenshots/
+shots/
 
 # env
 .env
@@ -21,3 +21,4 @@ screenshots/
 
 # os
 .DS_Store
+shots/
