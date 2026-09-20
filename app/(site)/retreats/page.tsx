@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { InView } from '@/components/core/in-view';
 import { Photo } from '@/components/site/photo';
 import { Tag } from '@/components/ui/field';
+import { SubscribeForm } from '@/components/site/subscribe-form';
 import { retreats } from '@/lib/data';
 import { gbp } from '@/lib/format';
 
@@ -65,14 +66,11 @@ export default function RetreatsPage() {
 
       <InView className='mt-16 rounded-card border border-ink/15 p-8'>
         <h2 className='text-3xl'>Hear about the next one first</h2>
-        <p className='mt-3 max-w-xl opacity-85'>
+        <p className='mt-3 mb-6 max-w-xl opacity-85'>
           Retreats go to the mailing list a month before they go anywhere else,
-          and they usually fill from it.{' '}
-          <Link href='/contact' className='underline underline-offset-4'>
-            Send me a message
-          </Link>{' '}
-          and I will add you.
+          and they usually fill from it.
         </p>
+        <SubscribeForm source='Retreat page' className='max-w-lg' />
       </InView>
     </div>
   );

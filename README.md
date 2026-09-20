@@ -60,7 +60,8 @@ Plus `not-found.tsx`, `sitemap.xml` and `robots.txt` (which keeps `/admin` and
 | `/admin/enquiries` | Contact form messages, unanswered first |
 | `/admin/students` | Everyone who has bought, with health-form status and notes |
 | `/admin/courses` | Course performance by volume and by revenue |
-| `/admin/audience` | Where people come from, and what they say brought them |
+| `/admin/retreats` | Who is booked on each retreat, and whose balance is outstanding |
+| `/admin/audience` | Traffic sources, stated reasons, and the mailing list |
 | `/admin/availability` | Working hours, blocked dates, and the booking rules |
 | `/admin/photos` | The photo shot list — what is still needed and where it goes |
 
@@ -74,8 +75,11 @@ data underneath it is seeded, not stored.
 
 - **`lib/data.ts`** and **`lib/admin-data.ts`** are hand-written fixtures.
   Nothing persists; a refresh resets everything.
-- **The contact form** (`lib/actions.ts`) validates properly and returns a real
-  acknowledgement, but the enquiry is discarded rather than stored or emailed.
+- **The contact form and mailing list sign-up** (`lib/actions.ts`) validate
+  properly and return real acknowledgements, but nothing is stored or emailed.
+  A real mailing list also needs double opt-in — a confirmation email that
+  subscribes only on the click — which UK PECR expects and which keeps the list
+  clean.
 - **`lib/payments.ts`** is a stub. No card details are collected and nothing is
   charged. In production this becomes a Stripe Checkout Session created on the
   server.

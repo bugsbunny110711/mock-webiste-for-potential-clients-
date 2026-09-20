@@ -1,6 +1,13 @@
 import { Card, CardTitle, PageHeader, StatTile } from '@/components/admin/ui';
 import { BarList } from '@/components/admin/charts';
-import { trafficSources, reasonsForComing, kpis } from '@/lib/admin-data';
+import {
+  trafficSources,
+  reasonsForComing,
+  kpis,
+  subscribers,
+  subscriberGrowth,
+} from '@/lib/admin-data';
+import { shortDate } from '@/lib/format';
 
 export default function AudiencePage() {
   const totalVisitors = trafficSources.reduce((sum, s) => sum + s.visitors, 0);
@@ -67,6 +74,82 @@ export default function AudiencePage() {
           </p>
         </Card>
       </div>
+
+      <Card className='mt-4'>
+        <CardTitle hint={`${subscriberGrowth.at(-1)?.total.toLocaleString('en-GB')} on the list`}>
+          Mailing list
+        </CardTitle>
+
+        <div className='grid gap-6 lg:grid-cols-[260px_1fr] lg:items-start'>
+          <div>
+            <p className='text-3xl font-semibold tabular-nums'>
+              {subscriberGrowth.at(-1)?.total.toLocaleString('en-GB')}
+            </p>
+            <p className='mt-1 text-sm opacity-65'>
+              up{' '}
+              {(
+                ((subscriberGrowth.at(-1)!.total - subscriberGrowth[0].total) /
+                  subscriberGrowth[0].total) *
+                100
+              ).toFixed(0)}
+              % since April
+            </p>
+
+            {/* One series over time: a single hue, no legend needed. */}
+            <div className='mt-5 flex h-20 items-end gap-1.5'>
+              {subscriberGrowth.map((point) => (
+                <div key={point.month} className='flex flex-1 flex-col items-center gap-1.5'>
+                  <div
+                    className='w-full rounded-t-[4px]'
+                    style={{
+                      height: `${(point.total / subscriberGrowth.at(-1)!.total) * 64}px`,
+                      backgroundColor: 'var(--color-chart-1)',
+                    }}
+                    role='img'
+                    aria-label={`${point.month}: ${point.total} subscribers`}
+                  />
+                  <span className='text-[10px] opacity-55'>{point.month}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className='mb-3 text-xs font-medium opacity-65'>
+              Most recent sign-ups
+            </p>
+            <ul className='divide-y divide-admin-border text-sm'>
+              {[...subscribers]
+                .sort((a, b) => b.joined.localeCompare(a.joined))
+                .slice(0, 6)
+                .map((subscriber) => (
+                  <li
+                    key={subscriber.email}
+                    className='flex flex-wrap items-baseline gap-x-3 py-2'
+                  >
+                    <span className='truncate'>{subscriber.email}</span>
+                    <span className='text-xs opacity-55'>
+                      via {subscriber.source}
+                    </span>
+                    {subscriber.isCustomer && (
+                      <span className='rounded-full bg-success/12 px-2 py-0.5 text-[10px] font-medium text-success'>
+                        Customer
+                      </span>
+                    )}
+                    <span className='ml-auto text-xs tabular-nums opacity-55'>
+                      {shortDate(subscriber.joined)}
+                    </span>
+                  </li>
+                ))}
+            </ul>
+            <p className='mt-4 text-xs leading-relaxed opacity-60'>
+              Sign-up forms sit on the retreats page, the journal and in the
+              footer. The source is recorded so it is clear which of them is
+              actually working.
+            </p>
+          </div>
+        </div>
+      </Card>
 
       <Card className='mt-4'>
         <CardTitle hint='Visitors vs customers'>Source quality</CardTitle>

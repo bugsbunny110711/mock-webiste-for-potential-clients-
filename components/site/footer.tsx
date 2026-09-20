@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { SubscribeForm } from './subscribe-form';
 import { coach } from '@/lib/data';
 
 const columns = [
@@ -62,7 +63,22 @@ export function Footer() {
           ))}
         </div>
 
-        <div className='mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 pt-6 text-xs opacity-60'>
+        <div className='mt-12 border-t border-ink/10 pt-10'>
+          <div className='grid gap-6 md:grid-cols-[1fr_auto] md:items-start'>
+            <div>
+              <p className='font-display text-2xl font-light'>
+                Retreat dates before anyone else
+              </p>
+              <p className='mt-2 max-w-md text-sm opacity-80'>
+                Both retreats usually fill from this list before they are
+                advertised.
+              </p>
+            </div>
+            <SubscribeForm source='Footer' className='md:w-[26rem]' />
+          </div>
+        </div>
+
+        <div className='mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 pt-6 text-xs opacity-60'>
           <p>© 2026 {coach.brand}. Demonstration site — not a real business.</p>
           <Link href='/admin' className='hover:opacity-100'>
             Coach sign in →

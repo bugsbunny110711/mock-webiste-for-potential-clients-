@@ -52,3 +52,30 @@ export async function submitEnquiry(
     message: `Thank you, ${name.split(' ')[0]}. I read everything myself and usually reply within two working days${subject ? ` — I have noted this is about ${subject.toLowerCase()}` : ''}.`,
   };
 }
+
+export type SubscribeState = {
+  status: 'idle' | 'error' | 'subscribed';
+  message: string;
+};
+
+export async function subscribe(
+  _previousState: SubscribeState,
+  formData: FormData,
+): Promise<SubscribeState> {
+  const email = String(formData.get('email') ?? '').trim();
+  const source = String(formData.get('source') ?? 'Site');
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { status: 'error', message: 'That email address does not look right.' };
+  }
+
+  // Stands in for writing to the mailing list provider. A real implementation
+  // sends a confirmation email and only subscribes on the click, both because
+  // UK PECR expects it and because it keeps the list clean.
+  await new Promise((resolve) => setTimeout(resolve, 700));
+
+  return {
+    status: 'subscribed',
+    message: `Added. You will hear about the next retreat before it is advertised${source === 'Journal' ? ', and when there is something new to read' : ''}.`,
+  };
+}

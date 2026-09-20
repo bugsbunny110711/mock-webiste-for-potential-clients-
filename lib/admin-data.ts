@@ -209,3 +209,62 @@ export const availability = {
     { date: '2026-11-15', reason: 'Devon retreat', allDay: true, from: '', to: '' },
   ],
 };
+
+export type RetreatBooking = {
+  id: string;
+  retreatSlug: string;
+  name: string;
+  email: string;
+  booked: string;
+  room: 'Shared' | 'Private';
+  paid: 'deposit' | 'balance' | 'full';
+  amountPaidGBP: number;
+  totalGBP: number;
+  note?: string;
+};
+
+export const retreatBookings: RetreatBooking[] = [
+  { id: 'rb-01', retreatSlug: 'alentejo-spring', name: 'Dev Patel', email: 'dev.patel@example.com', booked: '2026-08-02', room: 'Private', paid: 'deposit', amountPaidGBP: 300, totalGBP: 1450, note: 'Asked about a late flight on the Saturday' },
+  { id: 'rb-02', retreatSlug: 'alentejo-spring', name: 'Anneke Visser', email: 'a.visser@example.com', booked: '2026-08-09', room: 'Shared', paid: 'full', amountPaidGBP: 1450, totalGBP: 1450 },
+  { id: 'rb-03', retreatSlug: 'alentejo-spring', name: 'Marta Ruiz', email: 'marta.ruiz@example.com', booked: '2026-08-21', room: 'Shared', paid: 'deposit', amountPaidGBP: 300, totalGBP: 1450 },
+  { id: 'rb-04', retreatSlug: 'alentejo-spring', name: 'Tom Achebe', email: 't.achebe@example.com', booked: '2026-09-01', room: 'Private', paid: 'deposit', amountPaidGBP: 300, totalGBP: 1450 },
+  { id: 'rb-05', retreatSlug: 'alentejo-spring', name: 'Grace Okafor', email: 'grace.okafor@example.com', booked: '2026-09-05', room: 'Shared', paid: 'balance', amountPaidGBP: 1450, totalGBP: 1450 },
+  { id: 'rb-06', retreatSlug: 'alentejo-spring', name: 'Aditi Raman', email: 'aditi.raman@example.com', booked: '2026-09-11', room: 'Shared', paid: 'deposit', amountPaidGBP: 300, totalGBP: 1450 },
+  { id: 'rb-07', retreatSlug: 'alentejo-spring', name: 'Helena Brooks', email: 'helena.brooks@example.com', booked: '2026-09-15', room: 'Shared', paid: 'deposit', amountPaidGBP: 300, totalGBP: 1450, note: 'Vegetarian, no dairy' },
+  { id: 'rb-08', retreatSlug: 'alentejo-spring', name: 'Owen Price', email: 'owen.price@example.com', booked: '2026-09-18', room: 'Shared', paid: 'deposit', amountPaidGBP: 300, totalGBP: 1450 },
+  { id: 'rb-09', retreatSlug: 'devon-winter', name: 'Sarah Lindqvist', email: 'sarah.l@example.com', booked: '2026-07-14', room: 'Shared', paid: 'full', amountPaidGBP: 420, totalGBP: 420 },
+  { id: 'rb-10', retreatSlug: 'devon-winter', name: 'James Whitfield', email: 'j.whitfield@example.com', booked: '2026-08-03', room: 'Shared', paid: 'full', amountPaidGBP: 420, totalGBP: 420 },
+  { id: 'rb-11', retreatSlug: 'devon-winter', name: 'Marta Ruiz', email: 'marta.ruiz@example.com', booked: '2026-08-28', room: 'Shared', paid: 'deposit', amountPaidGBP: 100, totalGBP: 420 },
+  { id: 'rb-12', retreatSlug: 'devon-winter', name: 'Priya Raghavan', email: 'priya.r@example.com', booked: '2026-09-02', room: 'Shared', paid: 'deposit', amountPaidGBP: 100, totalGBP: 420, note: 'Pregnant — discussed suitability, happy to sit practices out' },
+  { id: 'rb-13', retreatSlug: 'devon-winter', name: 'Callum Reid', email: 'c.reid@example.com', booked: '2026-09-09', room: 'Shared', paid: 'deposit', amountPaidGBP: 100, totalGBP: 420 },
+];
+
+export type Subscriber = {
+  email: string;
+  joined: string;
+  source: string;
+  isCustomer: boolean;
+};
+
+export const subscribers: Subscriber[] = [
+  { email: 'dev.patel@example.com', joined: '2025-11-04', source: 'Checkout', isCustomer: true },
+  { email: 'a.visser@example.com', joined: '2025-09-15', source: 'Checkout', isCustomer: true },
+  { email: 'marta.ruiz@example.com', joined: '2026-01-20', source: 'Checkout', isCustomer: true },
+  { email: 'n.hassan@example.com', joined: '2026-09-19', source: 'Retreat page', isCustomer: false },
+  { email: 'r.innes@example.com', joined: '2026-09-18', source: 'Journal', isCustomer: false },
+  { email: 'yuki.t@example.com', joined: '2026-09-17', source: 'Footer', isCustomer: true },
+  { email: 'freya.lam@example.com', joined: '2026-09-16', source: 'Retreat page', isCustomer: false },
+  { email: 'c.reid@example.com', joined: '2026-09-12', source: 'Footer', isCustomer: true },
+  { email: 'helena.brooks@example.com', joined: '2026-09-19', source: 'Checkout', isCustomer: true },
+  { email: 'priya.r@example.com', joined: '2026-09-15', source: 'Retreat page', isCustomer: true },
+];
+
+/** Roughly how the list has grown, for the audience view. */
+export const subscriberGrowth = [
+  { month: 'Apr', total: 412 },
+  { month: 'May', total: 448 },
+  { month: 'Jun', total: 495 },
+  { month: 'Jul', total: 531 },
+  { month: 'Aug', total: 604 },
+  { month: 'Sep', total: 687 },
+];

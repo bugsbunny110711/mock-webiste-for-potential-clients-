@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { InView } from '@/components/core/in-view';
 import { Photo } from '@/components/site/photo';
 import { Tag } from '@/components/ui/field';
+import { SubscribeForm } from '@/components/site/subscribe-form';
 import { journal } from '@/lib/data';
 import { longDate } from '@/lib/format';
 
@@ -84,6 +85,14 @@ export default function JournalPage() {
             </div>
           </Link>
         ))}
+      </InView>
+
+      <InView className='mt-16 rounded-card bg-surface p-8'>
+        <h2 className='text-3xl'>New writing, now and then</h2>
+        <p className='mt-3 mb-6 max-w-xl opacity-85'>
+          Roughly monthly. Retreat dates go out here first as well.
+        </p>
+        <SubscribeForm source='Journal' className='max-w-lg' />
       </InView>
     </div>
   );

@@ -19,6 +19,7 @@ const groups = [
     heading: 'The business',
     items: [
       { href: '/admin/courses', label: 'Courses' },
+      { href: '/admin/retreats', label: 'Retreats' },
       { href: '/admin/audience', label: 'Audience' },
       { href: '/admin/availability', label: 'Availability' },
       { href: '/admin/photos', label: 'Photo shot list' },
