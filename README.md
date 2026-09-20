@@ -28,7 +28,12 @@ openssl rand -base64 32
 ```bash
 npm run build && npm start   # production build
 npm run lint
+npx tsc --noEmit
 ```
+
+Those three checks also run automatically on every push and pull request — see
+`.github/workflows/ci.yml`. They need no secrets: the build does not read
+`ADMIN_PASSWORD` or `AUTH_SECRET`.
 
 ## What is here
 
