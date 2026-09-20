@@ -11,7 +11,18 @@ Built with Next.js 16 (App Router), React 19, Tailwind v4 and Motion.
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
+cp .env.example .env.local   # optional in development, required in production
+npm run dev                  # http://localhost:3000
+```
+
+The coach's panel at `/admin` is password protected. In development, with no
+`ADMIN_PASSWORD` set, the password is `breathe` and the sign-in page says so.
+In production there is no fallback: without `ADMIN_PASSWORD` and `AUTH_SECRET`
+sign-in fails closed and nobody can reach the panel.
+
+```bash
+# Generating a secret for .env.local
+openssl rand -base64 32
 ```
 
 ```bash
@@ -68,9 +79,11 @@ data underneath it is seeded, not stored.
 - **`lib/payments.ts`** is a stub. No card details are collected and nothing is
   charged. In production this becomes a Stripe Checkout Session created on the
   server.
-- **The admin panel has no authentication.** It is deliberately reachable so it
-  can be demonstrated. It must be put behind a login before this is deployed
-  anywhere public.
+- **The admin panel is password protected**, with a signed HTTP-only session
+  cookie, a constant-time password comparison, and basic attempt throttling.
+  It is genuine, but it is single-user and deliberately simple: one shared
+  password, no reset flow, no second factor, and the attempt counter lives in
+  memory so it resets on restart and does not span instances.
 - **Every image is a labelled photo slot.** All seventeen live in
   `lib/photos.ts`, and each renders a placeholder carrying its shot brief until a
   real photograph exists. The coach's shot list is at `/admin/photos`.
@@ -83,7 +96,8 @@ data underneath it is seeded, not stored.
 
 ## Before this goes live
 
-1. Put `/admin` behind authentication.
+1. Set `ADMIN_PASSWORD` and `AUTH_SECRET` in the deployment environment, and
+   move attempt throttling out of memory if more than one instance runs.
 2. Replace the two data modules with a real database.
 3. Wire Stripe properly — Checkout Sessions server-side, webhooks for
    fulfilment, and never a secret key in client code.

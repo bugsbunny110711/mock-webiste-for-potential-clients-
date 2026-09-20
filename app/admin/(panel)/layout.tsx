@@ -1,18 +1,26 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { coach } from '@/lib/data';
 import { AdminNav } from '@/components/admin/admin-nav';
+import { SignOutButton } from '@/components/admin/sign-out-button';
+import { verifySession } from '@/lib/session';
 
 export const metadata: Metadata = {
   title: 'Admin — Still Point',
   robots: { index: false, follow: false },
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // The authoritative check. proxy.ts only looks for a cookie; this verifies
+  // the signature and the expiry, and everything below it is gated on it.
+  const session = await verifySession();
+  if (!session) redirect('/admin/login');
+
   return (
     <div className='min-h-screen bg-admin-canvas font-sans'>
       <div className='mx-auto flex max-w-[1400px]'>
@@ -32,12 +40,13 @@ export default function AdminLayout({
               >
                 {coach.name.charAt(0)}
               </span>
-              <span className='text-sm leading-tight'>
-                <span className='block font-medium'>{coach.name}</span>
+              <span className='min-w-0 text-sm leading-tight'>
+                <span className='block truncate font-medium'>{coach.name}</span>
                 <Link href='/' className='block text-xs opacity-60 hover:opacity-100'>
                   View site →
                 </Link>
               </span>
+              <SignOutButton />
             </div>
           </div>
         </aside>

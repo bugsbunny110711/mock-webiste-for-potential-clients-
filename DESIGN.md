@@ -119,6 +119,12 @@ when demonstrating the site to someone.
 
 ## 9. Scope of this build
 
-A demonstration build with seeded mock data in `lib/data.ts`. No database, no real auth,
-no live payment processing. The admin panel is reachable without credentials so it can be
-shown to clients — see README for what to replace before this goes live.
+A demonstration build with seeded mock data in `lib/data.ts`. No database and no live
+payment processing.
+
+The coach's panel is password protected for real: `proxy.ts` performs an optimistic
+cookie check so the panel never renders for a signed-out visitor, and
+`app/admin/(panel)/layout.tsx` performs the authoritative check with `verifySession()`,
+which validates an HMAC-SHA256 signature and the expiry. A forged or expired cookie is
+rejected there, not merely at the proxy. See README for what else to replace before this
+goes live.
