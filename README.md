@@ -104,6 +104,12 @@ data underneath it is seeded, not stored.
   It is genuine, but it is single-user and deliberately simple: one shared
   password, no reset flow, no second factor, and the attempt counter lives in
   memory so it resets on restart and does not span instances.
+- **Photographs can be uploaded from the panel**, by dropping a file onto any
+  slot at `/admin/photos`. This works when the site is run locally: the file is
+  written to `public/photos/` and `lib/photo-overlay.ts` is regenerated to point
+  at it. On a hosted deployment the filesystem is read-only, so the upload fails
+  with an explanation — making it work live needs object storage (Vercel Blob)
+  plus a database row for the mapping.
 - **Every image is a labelled photo slot.** All seventeen live in
   `lib/photos.ts`, and each renders a placeholder carrying its shot brief until a
   real photograph exists. The coach's shot list is at `/admin/photos`.
