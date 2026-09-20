@@ -30,12 +30,15 @@ export function Photo({
   className,
   sizes = '(max-width: 768px) 100vw, 50vw',
   priority = false,
+  hideBrief = false,
 }: {
   id: PhotoId;
   ratio?: string;
   className?: string;
   sizes?: string;
   priority?: boolean;
+  /** For decorative uses where something is layered on top of the image. */
+  hideBrief?: boolean;
 }) {
   const slot = getPhoto(id);
 
@@ -92,7 +95,7 @@ export function Photo({
         <circle cx={cx} cy={cy} r='38' fill={`url(#photo-glow-${seed})`} />
       </svg>
 
-      {SHOW_BRIEFS && (
+      {SHOW_BRIEFS && !hideBrief && (
         <div className='absolute inset-0 flex flex-col justify-end p-4'>
           <div className='rounded-xl bg-canvas/80 p-3 backdrop-blur-sm'>
             <p className='flex items-center gap-1.5 text-[10px] font-medium tracking-widest uppercase opacity-70'>

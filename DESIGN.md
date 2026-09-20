@@ -75,6 +75,13 @@ One library (Motion Primitives), one component per job, no overlaps.
 | `Spotlight` | Hero ambient light, once | Everywhere else |
 | `MorphingDialog` | 1-1 booking step 1 | Payment (own route) |
 | `TextShimmer` | Loading states only | Decoration |
+| Sliding auth card | The coach's sign-in card only | Anywhere else |
+
+The sign-in card is the one motion in the build that is not Motion Primitives.
+Its four panels slide past a fixed photograph using compound state selectors
+(`.flipped .form.signIn`), which CSS expresses directly and a JS animation
+library does not. It lives in `components/admin/auth-card.module.css`, and the
+global reduced-motion rule below flattens it to an instant swap for free.
 
 **Global rules**
 - Every component checks `prefers-reduced-motion` and falls back to a static state.

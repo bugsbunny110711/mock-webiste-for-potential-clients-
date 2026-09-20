@@ -16,7 +16,9 @@ import { cookies } from 'next/headers';
  */
 
 export const SESSION_COOKIE = 'stillpoint_coach';
+/** A normal sign-in lasts a week; "remember me" lasts a month. */
 const SESSION_DAYS = 7;
+const REMEMBERED_DAYS = 30;
 
 type SessionPayload = {
   /** Who the session is for. One value today; a user ID later. */
@@ -69,7 +71,9 @@ export function safeEqual(a: string, b: string): boolean {
   return diff === 0;
 }
 
-export async function createSessionToken(): Promise<string | null> {
+export async function createSessionToken(
+  days = SESSION_DAYS,
+): Promise<string | null> {
   const key = secret();
   if (!key) return null;
 
@@ -77,7 +81,7 @@ export async function createSessionToken(): Promise<string | null> {
   const payload: SessionPayload = {
     sub: 'coach',
     iat: now,
-    exp: now + SESSION_DAYS * 24 * 60 * 60,
+    exp: now + days * 24 * 60 * 60,
   };
 
   const body = base64url(new TextEncoder().encode(JSON.stringify(payload)));
@@ -121,8 +125,11 @@ export const verifySession = cache(async (): Promise<SessionPayload | null> => {
   return readToken(token);
 });
 
-export async function startSession(): Promise<boolean> {
-  const token = await createSessionToken();
+export async function startSession(remember = false): Promise<boolean> {
+  const days = remember ? REMEMBERED_DAYS : SESSION_DAYS;
+  // The expiry is signed into the token, so trimming the cookie's own maxAge
+  // cannot extend a session — both have to agree.
+  const token = await createSessionToken(days);
   if (!token) return false;
 
   const store = await cookies();
@@ -131,7 +138,7 @@ export async function startSession(): Promise<boolean> {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
-    maxAge: SESSION_DAYS * 24 * 60 * 60,
+    maxAge: days * 24 * 60 * 60,
   });
   return true;
 }

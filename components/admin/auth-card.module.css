@@ -1,0 +1,227 @@
+/*
+ * Sliding auth card.
+ *
+ * Four panels are absolutely positioned at 50% width: a hero and a form for
+ * each side. Toggling `.flipped` on the card translates all four, plus the
+ * background image, so the photograph appears to carry its text across while
+ * the forms slide out beneath it.
+ *
+ * The transitions are plain CSS, which means the global
+ * prefers-reduced-motion rule in app/globals.css already flattens them to an
+ * instant swap without any JavaScript involvement.
+ */
+
+.card {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 24px;
+  background: var(--color-admin-surface);
+  /* The border is what insets the photograph from the card edge. */
+  border: 8px solid var(--color-admin-surface);
+  box-shadow:
+    0 1px 2px rgb(87 64 30 / 5%),
+    0 12px 60px rgb(87 64 30 / 12%);
+}
+
+.cardBg {
+  position: absolute;
+  z-index: 2;
+  inset: 0 auto 0 0;
+  width: 50%;
+  overflow: hidden;
+  border-radius: 18px;
+  translate: 100% 0;
+  transition: translate 0.65s ease-in-out;
+}
+
+.flipped .cardBg {
+  translate: 0 0;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-ink) 32%, transparent),
+    color-mix(in srgb, var(--color-ink) 62%, transparent) 55%,
+    color-mix(in srgb, var(--color-ink) 72%, transparent)
+  );
+}
+
+.hero,
+.form {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    translate 0.65s ease-in-out,
+    opacity 0.65s ease-in-out,
+    visibility 0.65s ease-in-out;
+}
+
+.hero {
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 0 32px;
+  color: var(--color-canvas);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px 36px;
+}
+
+/* Default state: the sign-in side is showing. */
+.hero.signIn,
+.form.signIn {
+  opacity: 1;
+  visibility: visible;
+}
+
+.flipped :is(.hero, .form).signIn {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.flipped :is(.hero, .form).recover {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Hero sits opposite its own form, so the two never cover each other. */
+.hero.signIn {
+  left: 50%;
+  translate: 0;
+}
+
+.flipped .hero.signIn {
+  translate: 100% 0;
+}
+
+.hero.recover {
+  translate: -100% 0;
+}
+
+.flipped .hero.recover {
+  translate: 0;
+}
+
+.form.signIn {
+  translate: 0;
+}
+
+.flipped .form.signIn {
+  translate: 100% 0;
+}
+
+.form.recover {
+  left: 50%;
+  translate: -100% 0;
+}
+
+.flipped .form.recover {
+  translate: 0;
+}
+
+.switch {
+  padding: 11px 34px;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 12%);
+  backdrop-filter: blur(4px);
+  color: inherit;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.switch:hover {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+}
+
+/*
+ * Below the md breakpoint there is no room for two columns, so the card stops
+ * being a slider: panels return to normal flow and only the active one shows.
+ */
+@media (max-width: 767px) {
+  .card {
+    border-width: 6px;
+  }
+
+  /* The photograph becomes a banner in normal flow, and the hero is laid over
+     it rather than sliding past it. */
+  .cardBg {
+    position: relative;
+    width: 100%;
+    height: 190px;
+    translate: none !important;
+  }
+
+  .hero,
+  .form {
+    display: none;
+    translate: none !important;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .hero {
+    position: absolute;
+    inset: 0 0 auto 0;
+    width: 100%;
+    height: 190px;
+    gap: 10px;
+    padding: 18px 24px;
+  }
+
+  .hero p:first-child {
+    font-size: 1.5rem;
+  }
+
+  .hero p:nth-child(2) {
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .switch {
+    padding: 9px 26px;
+    font-size: 13px;
+  }
+
+  .form {
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 28px 22px;
+  }
+
+  /* The desktop rules set `left: 50%` at two-class specificity, which a plain
+     `.hero` rule inside a media query cannot override — match it. */
+  .hero.signIn,
+  .hero.recover,
+  .form.signIn,
+  .form.recover {
+    left: 0;
+  }
+
+  .card:not(.flipped) .signIn,
+  .card.flipped .recover {
+    display: flex;
+  }
+}

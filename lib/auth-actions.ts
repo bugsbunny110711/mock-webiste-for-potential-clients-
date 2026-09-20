@@ -97,7 +97,7 @@ export async function login(
     return { error: 'That password is not right.' };
   }
 
-  const started = await startSession();
+  const started = await startSession(formData.get('remember') === 'on');
   if (!started) {
     return {
       error: 'Could not start a session — AUTH_SECRET is missing or too short.',
