@@ -12,6 +12,10 @@ type TextShimmerProps = {
 /**
  * Loading state only — never decoration (DESIGN.md §4). It loops, so it must
  * stop when the thing it describes finishes.
+ *
+ * Originally a gradient sweep across the text. This design system has no
+ * gradients, so it pulses opacity instead: same "something is happening"
+ * signal, one flat colour.
  */
 export function TextShimmer({
   children,
@@ -30,17 +34,9 @@ export function TextShimmer({
 
   return (
     <motion.span
-      className={cn(
-        'inline-block bg-clip-text text-transparent',
-        className,
-      )}
-      style={{
-        backgroundImage:
-          'linear-gradient(90deg, var(--color-muted) 0%, var(--color-muted) 35%, var(--color-ink) 50%, var(--color-muted) 65%, var(--color-muted) 100%)',
-        backgroundSize: '250% 100%',
-      }}
-      animate={{ backgroundPosition: ['150% 0%', '-50% 0%'] }}
-      transition={{ duration, repeat: Infinity, ease: 'linear' }}
+      className={cn('inline-block text-ink', className)}
+      animate={{ opacity: [1, 0.45, 1] }}
+      transition={{ duration, repeat: Infinity, ease: 'easeInOut' }}
       aria-live='polite'
       aria-busy='true'
     >

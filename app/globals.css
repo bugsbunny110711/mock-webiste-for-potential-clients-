@@ -1,27 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  /* Public palette — client supplied */
-  --color-canvas: #e9e4d9;
-  --color-surface: #e1d0bc;
-  --color-band: #c8c2a9;
-  --color-muted: #b9a287;
-  --color-ink: #57401e;
-  --color-ink-hover: #3e2e15;
+  /* Public palette — client supplied.
+     NAVY #083A4F · GOLD #A58D66 · AQUA #C0D5D6 · TEAL #407E8C · SAND #E5E1DD */
+  --color-canvas: #e5e1dd;
+  --color-surface: #c0d5d6;
+  --color-band: #d3dbda;
+  --color-muted: #a58d66;
+  --color-accent: #407e8c;
+  --color-ink: #083a4f;
+  --color-ink-hover: #062c3b;
 
-  /* Admin surfaces — Amie */
-  --color-admin-canvas: #f7f4ee;
+  /* Admin surfaces — cool near-white so the data stays the loudest thing */
+  --color-admin-canvas: #f1f3f3;
   --color-admin-surface: #ffffff;
-  --color-admin-border: #e7e1d6;
+  --color-admin-border: #e3eced;
 
   /* Semantic — admin only */
-  --color-success: #5c6b4a;
-  --color-danger: #8c4a32;
-  --color-warning: #a9761f;
+  --color-success: #1f6b4a;
+  --color-danger: #a33529;
+  --color-warning: #8a6417;
 
-  /* Charts — validated, max two per chart */
-  --color-chart-1: #c05a26;
-  --color-chart-2: #0087a3;
+  /* Charts — revalidated against the new admin surface, max two per chart */
+  --color-chart-1: #0087a3;
+  --color-chart-2: #a8781e;
 
   --font-display: var(--font-newsreader), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;

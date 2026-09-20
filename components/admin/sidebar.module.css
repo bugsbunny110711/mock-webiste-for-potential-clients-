@@ -32,8 +32,8 @@
   border-radius: 22px;
   background: var(--color-admin-surface);
   box-shadow:
-    0 0 0 1px rgb(87 64 30 / 6%),
-    0 10px 34px rgb(87 64 30 / 8%);
+    0 0 0 1px rgb(8 58 79 / 7%),
+    0 10px 34px rgb(8 58 79 / 9%);
   transition: width 0.35s ease;
 }
 
@@ -133,7 +133,7 @@
   color: var(--color-ink);
   font-size: 15px;
   font-weight: 600;
-  box-shadow: 0 5px 14px rgb(87 64 30 / 14%);
+  box-shadow: 0 5px 14px rgb(8 58 79 / 16%);
 }
 
 .profileText {

@@ -13,54 +13,75 @@ This file is the single source of truth. When code and this file disagree, this 
 
 ## 2. Colour
 
-Five client-supplied tones. Only `ink` is legible as text — the rest are surfaces.
+Five client-supplied tones. Unlike the previous palette, this one has two
+text-safe pairings and a genuine dark surface.
 
-| Token | Hex | Role | Contrast on canvas |
-|---|---|---|---|
-| `canvas` | `#E9E4D9` | Page background | — |
-| `surface` | `#E1D0BC` | Raised: course cards, testimonials, dialogs | — |
-| `band` | `#C8C2A9` | Section bands, borders, unavailable states | 1.4:1 ❌ never text |
-| `muted` | `#B9A287` | Dividers, icon fills, decoration | 1.9:1 ❌ never text |
-| `ink` | `#57401E` | All text, all primary button fills | **7.7:1** (AAA) |
-| `ink-hover` | `#3E2E15` | Button hover / pressed | — |
+| Token | Hex | Name | Role | Contrast on canvas |
+|---|---|---|---|---|
+| `canvas` | `#E5E1DD` | SAND | Page background | — |
+| `surface` | `#C0D5D6` | AQUA | Raised: cards, dialogs, panels | — |
+| `band` | `#D3DBDA` | — | Section bands (sand/aqua midpoint) | — |
+| `muted` | `#A58D66` | GOLD | Dividers, decoration | 2.4:1 ❌ never text |
+| `accent` | `#407E8C` | TEAL | UI accents, large text only | 3.5:1 ⚠ |
+| `ink` | `#083A4F` | NAVY | All body text, primary buttons | **9.3:1** (AAA) |
+| `ink-hover` | `#062C3B` | — | Button hover / pressed | — |
 
-Ink on `surface` is **6.5:1**; cream on ink is **7.7:1**, so brown buttons with cream
-labels are safe.
+Measured pairings:
 
-**There is no secondary text colour.** De-emphasis is done with size and weight, never
-by lightening toward `muted`. This is a hard rule — `muted` on `canvas` is 1.9:1.
+- Navy on sand — **9.3:1**, clears AAA
+- Navy on aqua — **7.9:1**, clears AAA
+- Navy on band — **8.6:1**
+- Sand on navy — **9.3:1**, so inverted panels and dark buttons are safe
+- Teal on sand — **3.5:1**, large text (24px+) or UI only, never body copy
+- Gold on sand — **2.4:1**, decorative only
+
+**Navy is the only body-text colour.** Teal is legal for headings and UI borders
+but never for paragraphs; gold is never text at all. De-emphasis is done with
+size, weight and opacity — navy at 70% still clears 4.5:1 on sand, which the
+previous palette's ink could not manage.
+
+**No gradients anywhere.** No linear, radial or conic gradients, and no colour
+fades. Every surface is a flat fill. Depth comes from the difference between
+sand, band, aqua and navy, not from a blend. This removed the hero's ambient
+light entirely, flattened the dialog scrim to one wash, turned the photo
+placeholders into solid blocks, and replaced the loading shimmer — which was a
+moving gradient — with an opacity pulse.
 
 ### Semantic — admin panel only
-| Token | Hex | Meaning | Contrast |
+| Token | Hex | Meaning | Contrast on admin canvas |
 |---|---|---|---|
-| `success` | `#5C6B4A` | Paid, confirmed, completed | 4.5:1 |
-| `danger` | `#8C4A32` | Failed payment, cancellation, refund | 5.3:1 |
-| `warning` | `#A9761F` | Pending, awaiting, expiring hold | 4.0:1 |
+| `success` | `#1F6B4A` | Paid, confirmed, completed | 5.8:1 |
+| `danger` | `#A33529` | Failed payment, cancellation, refund | 6.1:1 |
+| `warning` | `#8A6417` | Pending, awaiting, expiring hold | 4.8:1 |
 
-Never on the public site. Always paired with an icon or text label — never colour alone.
+Never on the public site. Always paired with an icon or text label.
 
-### Admin surfaces (Amie)
-`admin-canvas #F7F4EE` · `admin-surface #FFFFFF` · `admin-border #E7E1D6`
+### Admin surfaces
+`admin-canvas #F1F3F3` · `admin-surface #FFFFFF` · `admin-border #E3ECED`
 
-Warm enough to belong to the same brand, light enough for dense data.
+Cool near-white, so the data is the loudest thing on the page. Navy on it is
+10.9:1.
 
 ## 3. Charts
 
-Validated with the dataviz palette validator against surface `#F7F4EE`.
+Revalidated with the dataviz palette validator against surface `#F1F3F3` after
+the palette change — the previous pair was checked against a warm surface and
+does not carry over.
 
 | Series | Colours | Status |
 |---|---|---|
-| 1 series | `#C05A26` | — |
-| 2 series | `#C05A26` + `#0087A3` | all checks PASS, all-pairs (ΔE 17.3 protan, 25.0 normal) |
-| 3+ series | **not allowed** | 3-colour sets fail deutan separation (ΔE 4.9) |
+| 1 series | `#0087A3` | — |
+| 2 series | `#0087A3` + `#A8781E` | all checks PASS, all-pairs (ΔE 17.3 protan, 22.6 tritan, 21.0 normal) |
+| 3+ series | **not allowed** | 3-colour sets in this family fail deutan separation |
 
-**A chart never carries more than two colours.** Anything with more categories becomes a
-sorted horizontal bar chart in a single hue, where position and a direct label carry
-identity and colour carries nothing. This is why there is no pie or donut anywhere in
-the admin panel: a 5-slice donut in this palette is unreadable to a deuteranope.
+**A chart never carries more than two colours.** Anything with more categories
+becomes a sorted horizontal bar chart in a single hue, where position and a
+direct label carry identity and colour carries nothing. This is why there is no
+pie or donut in the admin panel.
 
 Marks: 2px lines, 4px rounded bar ends, 2px surface gap between bars, recessive
-`band`-coloured gridlines, tooltips on every plotted chart.
+`band`-coloured gridlines, tooltips on every plotted chart, and a table view
+behind every one.
 
 ## 4. Motion
 
