@@ -109,6 +109,8 @@ export const photos = {
   },
 } as const satisfies Record<string, PhotoSlot>;
 
+import { uploadedPhotos } from './photo-overlay';
+
 export type PhotoId = keyof typeof photos;
 
 /**
@@ -117,12 +119,15 @@ export type PhotoId = keyof typeof photos;
  * can check whether a real photograph has landed yet.
  */
 export function getPhoto(id: PhotoId): PhotoSlot {
-  return photos[id];
+  const slot: PhotoSlot = photos[id];
+  // An uploaded photograph wins over whatever the slot was defined with.
+  const uploaded = uploadedPhotos[id];
+  return uploaded ? { ...slot, src: uploaded } : slot;
 }
 
 /** Slots still waiting on a real photograph — surfaced in the admin panel. */
 export function missingPhotos(): { id: PhotoId; slot: PhotoSlot }[] {
   return (Object.keys(photos) as PhotoId[])
-    .map((id) => ({ id, slot: photos[id] as PhotoSlot }))
+    .map((id) => ({ id, slot: getPhoto(id) }))
     .filter(({ slot }) => !slot.src);
 }

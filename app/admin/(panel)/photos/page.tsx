@@ -1,5 +1,6 @@
 import { Card, CardTitle, PageHeader, StatTile } from '@/components/admin/ui';
 import { photos, getPhoto, missingPhotos, type PhotoId } from '@/lib/photos';
+import { PhotoUploader } from '@/components/admin/photo-uploader';
 
 const GROUPS: { heading: string; note: string; ids: PhotoId[] }[] = [
   {
@@ -89,30 +90,35 @@ export default function PhotosPage() {
                   const slot = getPhoto(id);
                   const hasPhoto = Boolean(slot.src);
                   return (
-                    <li key={id} className='flex gap-4 py-3'>
-                      <span
-                        aria-hidden
-                        className={
-                          hasPhoto
-                            ? 'mt-0.5 text-success'
-                            : 'mt-0.5 text-warning'
-                        }
-                      >
-                        {hasPhoto ? '✓' : '○'}
-                      </span>
-                      <span className='min-w-0 flex-1'>
-                        <span className='block text-sm font-medium'>
-                          {slot.brief}
+                    <li key={id} className='flex flex-wrap gap-5 py-4'>
+                      <PhotoUploader
+                        slotId={id}
+                        label={slot.alt}
+                        currentSrc={slot.src}
+                      />
+
+                      <span className='min-w-56 flex-1'>
+                        <span className='flex items-start gap-3'>
+                          <span
+                            aria-hidden
+                            className={hasPhoto ? 'text-success' : 'text-warning'}
+                          >
+                            {hasPhoto ? '✓' : '○'}
+                          </span>
+                          <span>
+                            <span className='block text-sm font-medium'>
+                              {slot.brief}
+                            </span>
+                            <span className='mt-1 block text-xs opacity-60'>
+                              Minimum {slot.size} · JPEG, PNG or WebP · 8MB max
+                            </span>
+                            <span className='mt-1 block text-xs opacity-55'>
+                              {hasPhoto
+                                ? 'In place — drop a new file to replace it'
+                                : 'Still needed'}
+                            </span>
+                          </span>
                         </span>
-                        <span className='mt-0.5 block text-xs opacity-60'>
-                          Minimum {slot.size} · saves to{' '}
-                          <code className='rounded bg-admin-canvas px-1 py-0.5'>
-                            public/photos/{id}.jpg
-                          </code>
-                        </span>
-                      </span>
-                      <span className='shrink-0 text-xs opacity-55'>
-                        {hasPhoto ? 'In place' : 'Needed'}
                       </span>
                     </li>
                   );
@@ -124,35 +130,26 @@ export default function PhotosPage() {
       </div>
 
       <Card className='mt-4'>
-        <CardTitle>How to add them</CardTitle>
-        <ol className='space-y-2 text-sm leading-relaxed opacity-85'>
-          <li>
-            1. Save the file into{' '}
-            <code className='rounded bg-admin-canvas px-1 py-0.5'>
-              public/photos/
-            </code>{' '}
-            using the filename listed above.
-          </li>
-          <li>
-            2. In{' '}
-            <code className='rounded bg-admin-canvas px-1 py-0.5'>
-              lib/photos.ts
-            </code>
-            , add{' '}
-            <code className='rounded bg-admin-canvas px-1 py-0.5'>
-              src: &apos;/photos/&lt;name&gt;.jpg&apos;
-            </code>{' '}
-            to that slot.
-          </li>
-          <li>
-            3. That is all. The placeholder disappears and the real photograph is
-            served in modern formats at the right size for each device.
-          </li>
-        </ol>
-        <p className='mt-4 border-t border-admin-border pt-4 text-xs leading-relaxed opacity-60'>
+        <CardTitle>About uploading</CardTitle>
+        <p className='text-sm leading-relaxed opacity-85'>
+          Drop a photograph onto any slot above, or click it to choose a file.
+          It is saved, the placeholder disappears, and the image is served in
+          modern formats at the right size for each device.
+        </p>
+        <p className='mt-3 text-sm leading-relaxed opacity-85'>
           Get written consent from anyone recognisable in a class or adjustment
-          photo, and keep it on file. A student in savasana cannot consent in the
-          moment.
+          photograph, and keep it on file. A student in savasana cannot consent
+          in the moment.
+        </p>
+        <p className='mt-4 border-t border-admin-border pt-4 text-xs leading-relaxed opacity-60'>
+          <strong className='font-medium opacity-100'>
+            Uploading works when the site is run locally.
+          </strong>{' '}
+          On a hosted deployment the filesystem is read-only, so saving fails and
+          the slot will say so. Making it work live needs object storage — Vercel
+          Blob is the natural choice here — plus somewhere to keep the slot-to-file
+          mapping, which is the same database this build is missing for orders and
+          enquiries.
         </p>
       </Card>
     </div>
