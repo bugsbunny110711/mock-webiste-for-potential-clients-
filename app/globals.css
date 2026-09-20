@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* Public palette — client supplied */
+  --color-canvas: #e9e4d9;
+  --color-surface: #e1d0bc;
+  --color-band: #c8c2a9;
+  --color-muted: #b9a287;
+  --color-ink: #57401e;
+  --color-ink-hover: #3e2e15;
+
+  /* Admin surfaces — Amie */
+  --color-admin-canvas: #f7f4ee;
+  --color-admin-surface: #ffffff;
+  --color-admin-border: #e7e1d6;
+
+  /* Semantic — admin only */
+  --color-success: #5c6b4a;
+  --color-danger: #8c4a32;
+  --color-warning: #a9761f;
+
+  /* Charts — validated, max two per chart */
+  --color-chart-1: #c05a26;
+  --color-chart-2: #0087a3;
+
+  --font-display: var(--font-newsreader), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  --radius-card: 14px;
+
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    letter-spacing: -0.015em;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-canvas);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+/* The global motion policy from DESIGN.md §4. Every Motion Primitives component
+   also checks this in JS; this is the belt-and-braces CSS half. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

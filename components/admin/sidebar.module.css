@@ -1,0 +1,310 @@
+/*
+ * Collapsing sidebar with a sliding active indicator.
+ *
+ * Follows the reference implementation: one indicator element positioned
+ * absolutely inside the nav, moved by a CSS custom property, with the labels
+ * hidden and the rail narrowed when collapsed.
+ *
+ * One deliberate departure. The reference computes the indicator position as
+ * `--active-row * --row`, which assumes every row is the same height. This nav
+ * is grouped under headings, so uniform arithmetic would land the indicator in
+ * the wrong place. The component measures the active row instead and writes
+ * `--indicator-y` and `--indicator-h` — same mechanism, no assumption about
+ * what sits between the rows.
+ */
+
+.sidebar {
+  --pad: 18px;
+  --icon: 19px;
+  --row: 46px;
+  --avatar: 42px;
+  --rail: 268px;
+  --rail-collapsed: 76px;
+
+  position: sticky;
+  top: 20px;
+  align-self: start;
+  flex: 0 0 auto;
+  width: var(--rail);
+  max-height: calc(100vh - 40px);
+  margin: 20px 0 20px 20px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: var(--color-admin-surface);
+  box-shadow:
+    0 0 0 1px rgb(87 64 30 / 6%),
+    0 10px 34px rgb(87 64 30 / 8%);
+  transition: width 0.35s ease;
+}
+
+.collapsed {
+  width: var(--rail-collapsed);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 18px 0 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 var(--pad);
+  margin-bottom: 16px;
+  min-height: 42px;
+  color: var(--color-ink);
+}
+
+.collapsed .brand {
+  visibility: hidden;
+}
+
+.brandMark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: var(--color-ink);
+  color: var(--color-canvas);
+  font-size: 15px;
+}
+
+.collapseBtn {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-admin-canvas);
+  color: var(--color-ink);
+  opacity: 0.6;
+  cursor: pointer;
+  transition:
+    opacity 0.25s,
+    background-color 0.25s,
+    translate 0.35s ease;
+}
+
+.collapseBtn:hover {
+  opacity: 1;
+  background: var(--color-band);
+}
+
+.collapsed .collapseBtn {
+  /* Centres it in the narrow rail rather than leaving it hard against the edge. */
+  translate: 2px 0;
+}
+
+.divider {
+  height: 1px;
+  margin: 0 var(--pad) 16px;
+  border: 0;
+  background: var(--color-admin-border);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  margin-bottom: 18px;
+  min-height: var(--avatar);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: var(--avatar);
+  height: var(--avatar);
+  overflow: hidden;
+  border-radius: 50%;
+  border: 3px solid var(--color-admin-surface);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 5px 14px rgb(87 64 30 / 14%);
+}
+
+.profileText {
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.profileName {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.profileRole {
+  display: block;
+  font-size: 12px;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+.nav {
+  position: relative;
+  flex: 0 1 auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.groupHeading {
+  padding: 14px var(--pad) 6px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  white-space: nowrap;
+}
+
+.collapsed .groupHeading {
+  /* A rule reads better than a cropped word in a 76px rail. */
+  height: 1px;
+  padding: 14px 20px 0;
+  overflow: hidden;
+  text-indent: -999px;
+  border-top: 1px solid var(--color-admin-border);
+  margin-top: 10px;
+}
+
+.row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  height: var(--row);
+  padding: 0 var(--pad);
+  color: var(--color-ink);
+  opacity: 0.62;
+  font-size: 14px;
+  text-align: left;
+  white-space: nowrap;
+  transition:
+    opacity 0.25s,
+    color 0.25s;
+}
+
+.row:hover {
+  opacity: 1;
+}
+
+.row svg {
+  flex: 0 0 auto;
+  width: var(--icon);
+  height: var(--icon);
+  stroke-width: 1.8;
+}
+
+.label {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collapsed .label,
+.collapsed .profileText {
+  display: none;
+}
+
+.collapsed .row,
+.collapsed .profile {
+  justify-content: center;
+  gap: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.active {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* The sliding indicator. */
+.indicator {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 0;
+  height: var(--indicator-h, var(--row));
+  border-radius: 12px;
+  background: var(--color-admin-canvas);
+  translate: 0 var(--indicator-y, 0px);
+  opacity: 0;
+}
+
+.nav[data-ready='true'] .indicator {
+  opacity: 1;
+  transition:
+    translate 0.38s cubic-bezier(0.34, 1.16, 0.42, 1),
+    height 0.38s cubic-bezier(0.34, 1.16, 0.42, 1),
+    opacity 0.2s;
+}
+
+.indicator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  translate: 0 -50%;
+  width: 4px;
+  height: 18px;
+  border-radius: 12px 0 0 12px;
+  background: var(--color-ink);
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.footerDivider {
+  height: 1px;
+  margin: 0 var(--pad) 10px;
+  background: var(--color-admin-border);
+}
+
+/*
+ * Collapsed labels are carried by the `title` attribute rather than a styled
+ * ::after. .nav has to scroll on short viewports, which makes it a clipping
+ * container — a prettier tooltip positioned outside it is simply invisible.
+ */
+
+/* The rail is a desktop affordance; narrow screens get the horizontal nav. */
+@media (max-width: 1023px) {
+  .sidebar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .collapseBtn,
+  .nav[data-ready='true'] .indicator {
+    transition: none;
+  }
+}
