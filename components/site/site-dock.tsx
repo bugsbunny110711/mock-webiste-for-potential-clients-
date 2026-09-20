@@ -84,7 +84,6 @@ export function SiteDock() {
           className={cn('mx-auto', showLabels ? 'gap-2' : 'gap-1 sm:gap-2')}
           magnification={magnification}
           distance={showLabels ? 150 : 110}
-          labelHideDistance={showLabels ? 78 : 60}
           panelSize={showLabels ? 58 : magnification + 6}
         >
           {items.map((item) => {
