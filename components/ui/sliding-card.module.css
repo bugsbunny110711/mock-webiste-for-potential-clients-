@@ -20,8 +20,8 @@
   /* The border is what insets the photograph from the card edge. */
   border: 8px solid var(--color-admin-surface);
   box-shadow:
-    0 1px 2px rgb(87 64 30 / 5%),
-    0 12px 60px rgb(87 64 30 / 12%);
+    0 1px 2px rgb(55 41 55 / 6%),
+    0 12px 60px rgb(55 41 55 / 14%);
 }
 
 .cardBg {
@@ -42,12 +42,8 @@
 .scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--color-ink) 32%, transparent),
-    color-mix(in srgb, var(--color-ink) 62%, transparent) 55%,
-    color-mix(in srgb, var(--color-ink) 72%, transparent)
-  );
+  /* Flat wash, not a gradient — see DESIGN.md §2. */
+  background: color-mix(in srgb, var(--color-ink) 62%, transparent);
 }
 
 .hero,

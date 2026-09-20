@@ -139,7 +139,7 @@ function SignInForm({
       <button
         type='submit'
         disabled={isPending}
-        className='inline-flex h-11 w-full items-center justify-center rounded-full bg-ink text-sm font-medium text-canvas transition-colors hover:bg-ink-hover disabled:opacity-50'
+        className='inline-flex h-11 w-full items-center justify-center rounded-full bg-accent text-sm font-medium text-canvas transition-colors hover:bg-accent-hover disabled:opacity-50'
       >
         {isPending ? <TextShimmer>Signing in…</TextShimmer> : 'Sign in'}
       </button>
@@ -224,7 +224,7 @@ function RegisterForm({ disabled }: { disabled: boolean }) {
       <button
         type='submit'
         disabled={isPending}
-        className='inline-flex h-11 w-full items-center justify-center rounded-full bg-ink text-sm font-medium text-canvas transition-colors hover:bg-ink-hover disabled:opacity-50'
+        className='inline-flex h-11 w-full items-center justify-center rounded-full bg-accent text-sm font-medium text-canvas transition-colors hover:bg-accent-hover disabled:opacity-50'
       >
         {isPending ? <TextShimmer>Creating…</TextShimmer> : 'Create account'}
       </button>

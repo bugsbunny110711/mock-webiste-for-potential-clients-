@@ -5,8 +5,9 @@ type Variant = 'primary' | 'secondary' | 'ghost';
 type Size = 'sm' | 'md' | 'lg';
 
 const variants: Record<Variant, string> = {
-  // Cream on ink is 7.7:1 — the only high-contrast pairing the palette allows.
-  primary: 'bg-ink text-canvas hover:bg-ink-hover',
+  // Canvas on Lotus is 6.1:1. Lotus is the palette's statement colour, so the
+  // primary action carries it rather than the near-black ink.
+  primary: 'bg-accent text-canvas hover:bg-accent-hover',
   secondary: 'bg-transparent text-ink border border-ink/30 hover:bg-surface',
   ghost: 'bg-transparent text-ink hover:bg-surface/70',
 };

@@ -68,7 +68,10 @@ Plus `not-found.tsx`, `sitemap.xml` and `robots.txt` (which keeps `/admin` and
 | `/admin/availability` | Working hours, blocked dates, and the booking rules |
 | `/admin/photos` | The photo shot list — what is still needed and where it goes |
 
-The design system — palette, motion rules, chart rules — is documented in
+The palette is White Rock `#F1E4DB`, Grey Goose `#D2CADF`, Pink Daisy `#E1A49A`,
+Lotus `#92333C` and Thunder `#372937`, with no gradients anywhere. The design
+system — palette,
+motion rules, chart rules — is documented in
 [`DESIGN.md`](./DESIGN.md), which is the source of truth for the build.
 
 ## What is real and what is not

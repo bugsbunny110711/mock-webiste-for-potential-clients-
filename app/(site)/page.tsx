@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { TextEffect } from '@/components/core/text-effect';
 import { InView } from '@/components/core/in-view';
-import { Spotlight } from '@/components/core/spotlight';
 import { ButtonLink } from '@/components/ui/button';
 import { CourseCard } from '@/components/site/course-card';
 import { TestimonialCard } from '@/components/site/testimonial-card';
@@ -16,10 +15,9 @@ export default function HomePage() {
 
   return (
     <>
-      {/* Hero — the only place the spotlight appears, and the only text that
-          animates on mount rather than on scroll (DESIGN.md §4). */}
+      {/* Hero — the only text that animates on mount rather than on scroll
+          (DESIGN.md §4). The canvas is flat: this system has no gradients. */}
       <section className='relative overflow-hidden'>
-        <Spotlight size={560} />
         <div className='relative mx-auto max-w-6xl px-6 pt-20 pb-24 sm:pt-28 sm:pb-32'>
           <p className='mb-6 text-xs tracking-[0.2em] uppercase opacity-70'>
             {coach.role} · {coach.location}
