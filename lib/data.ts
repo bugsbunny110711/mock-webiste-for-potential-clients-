@@ -15,9 +15,12 @@ export const coach = {
   studentsTaught: 1400,
 };
 
+import type { PhotoId } from './photos';
+
 export type Course = {
   id: string;
   slug: string;
+  photoId: PhotoId;
   title: string;
   tagline: string;
   description: string;
@@ -36,6 +39,7 @@ export const courses: Course[] = [
   {
     id: 'c-breath-foundations',
     slug: 'breath-foundations',
+    photoId: 'course-breath-foundations',
     title: 'Breath Foundations',
     tagline: 'Six weeks to a nervous system you can steer.',
     description:
@@ -66,6 +70,7 @@ export const courses: Course[] = [
   {
     id: 'c-yoga-slow',
     slug: 'slow-yoga',
+    photoId: 'course-slow-yoga',
     title: 'Slow Yoga',
     tagline: 'Eight weeks of moving at the pace of your breath.',
     description:
@@ -98,6 +103,7 @@ export const courses: Course[] = [
   {
     id: 'c-deep-rest',
     slug: 'deep-rest',
+    photoId: 'course-deep-rest',
     title: 'Deep Rest',
     tagline: 'Four weeks on sleep, stillness and doing less.',
     description:
@@ -124,6 +130,7 @@ export const courses: Course[] = [
   {
     id: 'c-teacher-breath',
     slug: 'breathwork-for-teachers',
+    photoId: 'course-breathwork-for-teachers',
     title: 'Breathwork for Teachers',
     tagline: 'Twelve weeks. For yoga teachers adding breath to their work.',
     description:
@@ -244,5 +251,152 @@ export const faqs = [
   {
     q: 'Do you teach in person?',
     a: 'One-to-ones only, in Bristol. Courses are online so people are not excluded by geography.',
+  },
+];
+
+export type Retreat = {
+  id: string;
+  slug: string;
+  photoId: PhotoId;
+  title: string;
+  location: string;
+  dates: string;
+  nights: number;
+  priceGBP: number;
+  spaces: number;
+  spacesLeft: number;
+  summary: string;
+  description: string;
+  includes: string[];
+  day: { time: string; what: string }[];
+};
+
+export const retreats: Retreat[] = [
+  {
+    id: 'r-alentejo',
+    slug: 'alentejo-spring',
+    photoId: 'retreat-portugal',
+    title: 'Slow week in the Alentejo',
+    location: 'Alentejo, Portugal',
+    dates: '18–24 April 2027',
+    nights: 6,
+    priceGBP: 1450,
+    spaces: 12,
+    spacesLeft: 4,
+    summary:
+      'Six nights of slow mornings, long practices and nothing much else. Cork oaks, a very quiet valley, and no wifi in the practice barn.',
+    description:
+      'This is not a bootcamp and it is not a holiday with yoga bolted on. Two practices a day, good food, long afternoons with nothing scheduled, and space to let a week actually do something. Most people arrive tired and leave slower.',
+    includes: [
+      'Six nights, private or shared room',
+      'All meals, cooked on site',
+      'Two practices daily — breath in the morning, movement or rest late afternoon',
+      'One 1-1 session with Maya during the week',
+      'Airport transfer from Lisbon',
+    ],
+    day: [
+      { time: '07.30', what: 'Tea, then breath practice in the barn' },
+      { time: '09.00', what: 'Breakfast, slowly' },
+      { time: '10.30', what: 'Long movement practice' },
+      { time: '12.30', what: 'Lunch, then the afternoon is yours' },
+      { time: '17.30', what: 'Restorative practice or nidra' },
+      { time: '19.30', what: 'Dinner together' },
+    ],
+  },
+  {
+    id: 'r-devon',
+    slug: 'devon-winter',
+    photoId: 'retreat-devon',
+    title: 'Winter weekend in Devon',
+    location: 'Dartmoor, Devon',
+    dates: '13–15 November 2026',
+    nights: 2,
+    priceGBP: 420,
+    spaces: 14,
+    spacesLeft: 9,
+    summary:
+      'A short, warm, deliberately unambitious weekend. A farmhouse, a wood burner, and three long practices with walks in between.',
+    description:
+      'For people who cannot take a week off but badly need two days. We practise, we walk on the moor, we eat too much, and we sleep. Bring boots and something waterproof — this is Dartmoor in November and it will rain.',
+    includes: [
+      'Two nights in a Dartmoor farmhouse',
+      'All meals from Friday dinner to Sunday lunch',
+      'Three long practices',
+      'A guided walk on the moor',
+      'Shared rooms, two or three to a room',
+    ],
+    day: [
+      { time: 'Friday 18.00', what: 'Arrive, settle, dinner' },
+      { time: 'Friday 20.30', what: 'Opening practice — breath and long rest' },
+      { time: 'Saturday 08.00', what: 'Morning practice, then breakfast' },
+      { time: 'Saturday 11.00', what: 'Walk on the moor' },
+      { time: 'Saturday 16.30', what: 'Restorative practice and nidra' },
+      { time: 'Sunday 09.00', what: 'Closing practice, lunch, home' },
+    ],
+  },
+];
+
+export type JournalPost = {
+  slug: string;
+  photoId: PhotoId;
+  title: string;
+  standfirst: string;
+  date: string;
+  readingMinutes: number;
+  tag: string;
+  body: string[];
+};
+
+export const journal: JournalPost[] = [
+  {
+    slug: 'what-your-breath-is-doing',
+    photoId: 'journal-nervous-system',
+    title: 'What your breath is actually doing',
+    standfirst:
+      'Why a long exhale calms you down, explained without any mysticism at all.',
+    date: '2026-09-02',
+    readingMinutes: 6,
+    tag: 'Physiology',
+    body: [
+      'There is a nerve that runs from your brainstem down through your neck and chest and into most of your internal organs. It is called the vagus nerve, and a large majority of its fibres carry information upward — from your body to your brain, rather than the other way round.',
+      'This matters more than it sounds. It means your brain is constantly reading the state of your body and drawing conclusions from it. A fast, shallow, high-chest breathing pattern is one of the signals it reads. And what it concludes from that signal is, roughly: something is wrong.',
+      'The useful consequence is that the reverse also works. Slow the breath down, lengthen the exhale relative to the inhale, and you are feeding the system a different signal. Heart rate drops slightly on each exhale — this is a real, measurable effect called respiratory sinus arrhythmia, and it is not a metaphor.',
+      'This is why I am slightly allergic to being told to "just breathe". The instruction is not wrong, it is just useless without the mechanism. Knowing why a long exhale works makes you about ten times more likely to actually do it at the moment you need it.',
+      'Where people go wrong is trying to breathe deeply. Deep is not the goal — slow is the goal, and low is the goal. A large gulping breath into the upper chest does close to nothing useful. A small, quiet breath that moves your lower ribs, with an exhale twice as long as the inhale, does a great deal.',
+    ],
+  },
+  {
+    slug: 'the-three-am-problem',
+    photoId: 'journal-sleep',
+    title: 'The 3am problem',
+    standfirst:
+      'You wake, you are wide awake, and the harder you try the worse it gets. What to actually do.',
+    date: '2026-08-14',
+    readingMinutes: 5,
+    tag: 'Sleep',
+    body: [
+      'Waking in the night is normal. Everyone surfaces several times a night between sleep cycles, and most of the time you do not notice because you go straight back down. The problem is not the waking. The problem is what happens in the ninety seconds afterwards.',
+      'What usually happens is that you check the time. This is the single worst thing you can do, because now you are doing arithmetic — four hours and twenty minutes until the alarm — and arithmetic requires the part of your brain you were trying to switch off.',
+      'So: do not look at the clock. Turn it away from the bed before you go to sleep so the decision is already made.',
+      'Then give your attention something to do that is boring but not effortful. I teach a very slow count — in for four, out for six, and count the exhales backwards from thirty. When you lose the count, which you will, start again from thirty. Losing the count is not failure. Losing the count is the mechanism working.',
+      'If you are still awake after twenty minutes or so, get up. Go somewhere dim, do something undemanding, and go back when you feel heavy. Lying in bed getting increasingly cross teaches your brain that bed is a place where you lie awake being cross, and that lesson is surprisingly durable.',
+    ],
+  },
+  {
+    slug: 'teaching-breath-without-doing-harm',
+    photoId: 'journal-teaching',
+    title: 'Teaching breath without doing harm',
+    standfirst:
+      'For yoga teachers adding breathwork: the contraindications nobody mentions in training.',
+    date: '2026-07-22',
+    readingMinutes: 8,
+    tag: 'For teachers',
+    body: [
+      'Breathwork is having a moment, and a lot of teachers are adding it to classes having done a weekend course. Most of the time this is fine. Occasionally it is not, and the occasions when it is not are predictable enough that you should know them.',
+      'Start with the straightforward physical contraindications. Strong breath retention and rapid breathing techniques are not appropriate during pregnancy, with uncontrolled hypertension, with glaucoma, with epilepsy, or following a recent cardiac event. Detached retina is on that list too. None of this is obscure, and yet I meet teachers who have never been told any of it.',
+      'Then there is the part that training courses handle badly, which is what happens when a breath practice brings something up. Fast breathing with retentions can produce genuine emotional release, and sometimes it produces something closer to a flashback. If you have twenty people in a room and you run an intense practice, this will eventually happen to one of them.',
+      'The question is not whether you can prevent it. You cannot entirely. The question is whether you know what to do, which is: stop the practice, get them breathing normally and slowly, get them oriented to the room — name five things they can see — and do not, under any circumstances, encourage them to stay in it because it is "coming up for a reason".',
+      'Above all, ask before you cue. A health form at the start of a course takes four minutes to write and tells you who should be sitting out which practice. Teachers who skip it are not being relaxed; they are transferring risk onto students who do not know enough to refuse.',
+    ],
   },
 ];

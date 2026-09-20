@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { InView } from '@/components/core/in-view';
 import { Gallery } from '@/components/site/gallery';
-import { PlaceholderImage } from '@/components/site/placeholder-image';
+import { Photo } from '@/components/site/photo';
 import { ButtonLink } from '@/components/ui/button';
 import { coach } from '@/lib/data';
 
@@ -48,11 +48,12 @@ export default function AboutPage() {
             </p>
           </div>
         </div>
-        <PlaceholderImage
-          seed={7}
+        <Photo
+          id='coach-portrait'
           ratio='aspect-[4/5]'
           className='rounded-card'
-          label={`Portrait of ${coach.name}`}
+          sizes='(max-width: 768px) 100vw, 50vw'
+          priority
         />
       </section>
 

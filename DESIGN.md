@@ -105,7 +105,19 @@ ring rather than a border (Amie's rule).
   people cannot buy the same time.
 - Stripe is stubbed in this build (`lib/payments.ts`); no live keys.
 
-## 8. Scope of this build
+## 8. Photography
+
+Every image on the site is a named slot in `lib/photos.ts`, rendered by
+`components/site/photo.tsx`. A slot with no `src` renders a labelled placeholder
+carrying the shot brief and the minimum size; a slot with a `src` renders a real
+photograph through `next/image`. Nothing else in the codebase references an
+image path, so adding a photograph is a one-line change in one file.
+
+The coach's own shot list lives at `/admin/photos`, grouped by shoot and ordered
+by priority. Set `SHOW_BRIEFS` to `false` in `lib/photos.ts` to hide the briefs
+when demonstrating the site to someone.
+
+## 9. Scope of this build
 
 A demonstration build with seeded mock data in `lib/data.ts`. No database, no real auth,
 no live payment processing. The admin panel is reachable without credentials so it can be

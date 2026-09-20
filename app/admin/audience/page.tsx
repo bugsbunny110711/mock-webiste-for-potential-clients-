@@ -22,19 +22,18 @@ export default function AudiencePage() {
           label='Visitors, 90 days'
           value={totalVisitors.toLocaleString('en-GB')}
           change={`${totalCustomers} became customers`}
-          direction='up'
         />
         <StatTile
           label='Visitor to customer'
           value={`${kpis.visitorToCustomer}%`}
           change={`from ${kpis.visitorToCustomerLast}%`}
           direction='up'
+          compare
         />
         <StatTile
           label='Best converting source'
           value={bestConverting.source}
           change={`${((bestConverting.customers / bestConverting.visitors) * 100).toFixed(1)}% convert`}
-          direction='up'
         />
       </div>
 
@@ -72,7 +71,7 @@ export default function AudiencePage() {
       <Card className='mt-4'>
         <CardTitle hint='Visitors vs customers'>Source quality</CardTitle>
         <div className='-mx-5 overflow-x-auto px-5'>
-          <table className='w-full min-w-[560px] text-left text-sm'>
+          <table className='w-full min-w-[620px] text-left text-sm [&_td]:pr-5 [&_th]:pr-5 [&_td:last-child]:pr-0 [&_th:last-child]:pr-0'>
             <thead>
               <tr className='border-b border-admin-border text-xs'>
                 <th className='py-2 font-medium opacity-65'>Source</th>

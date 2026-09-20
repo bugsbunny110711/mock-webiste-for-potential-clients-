@@ -9,9 +9,10 @@ import { cn } from '@/lib/utils';
 
 const links = [
   { href: '/courses', label: 'Courses' },
+  { href: '/retreats', label: 'Retreats' },
+  { href: '/journal', label: 'Journal' },
   { href: '/about', label: 'About' },
-  { href: '/#testimonials', label: 'Stories' },
-  { href: '/#faq', label: 'Questions' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 export function Nav() {
@@ -30,7 +31,7 @@ export function Nav() {
           </span>
         </Link>
 
-        <div className='hidden items-center gap-8 md:flex'>
+        <div className='hidden items-center gap-7 lg:flex'>
           {links.map((link) => (
             <Link
               key={link.href}
@@ -53,7 +54,7 @@ export function Nav() {
           onClick={() => setIsOpen((v) => !v)}
           aria-expanded={isOpen}
           aria-label='Menu'
-          className='md:hidden'
+          className='lg:hidden'
         >
           <svg viewBox='0 0 24 24' className='size-6' aria-hidden>
             <path
@@ -67,7 +68,7 @@ export function Nav() {
       </nav>
 
       {isOpen && (
-        <div className='border-t border-ink/10 px-6 pb-6 pt-2 md:hidden'>
+        <div className='border-t border-ink/10 px-6 pb-6 pt-2 lg:hidden'>
           {links.map((link) => (
             <Link
               key={link.href}

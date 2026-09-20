@@ -40,12 +40,28 @@ export function StatTile({
   value,
   change,
   direction,
+  compare = false,
 }: {
   label: string;
   value: string;
   change: string;
-  direction: 'up' | 'down';
+  /** Omit for a plain footnote. Supplying it adds an arrow and a semantic tone. */
+  direction?: 'up' | 'down';
+  /** True only when `change` really is a movement against the previous period. */
+  compare?: boolean;
 }) {
+  if (!direction) {
+    return (
+      <Card>
+        <p className='text-xs tracking-wide opacity-65'>{label}</p>
+        <p className='mt-2 text-3xl font-semibold tracking-tight tabular-nums'>
+          {value}
+        </p>
+        <p className='mt-1.5 text-xs opacity-60'>{change}</p>
+      </Card>
+    );
+  }
+
   const isGood = direction === 'up';
   return (
     <Card>
@@ -61,7 +77,8 @@ export function StatTile({
           isGood ? 'text-success' : 'text-danger',
         )}
       >
-        <span aria-hidden>{isGood ? '↑' : '↓'}</span> {change} on last period
+        <span aria-hidden>{isGood ? '↑' : '↓'}</span> {change}
+        {compare ? ' on last period' : ''}
       </p>
     </Card>
   );

@@ -134,3 +134,78 @@ export const eventKindStyles: Record<
   admin: { label: 'Admin', dot: 'bg-muted', chip: 'bg-muted/25 text-ink' },
   personal: { label: 'Personal', dot: 'bg-band', chip: 'bg-band/40 text-ink' },
 };
+
+export type Student = {
+  id: string;
+  name: string;
+  email: string;
+  joined: string;
+  courses: string[];
+  sessions: number;
+  lifetimeGBP: number;
+  status: 'active' | 'completed' | 'lapsed';
+  healthFormOnFile: boolean;
+  note?: string;
+};
+
+export const students: Student[] = [
+  { id: 'st-01', name: 'Helena Brooks', email: 'helena.brooks@example.com', joined: '2026-09-19', courses: ['Breath Foundations'], sessions: 1, lifetimeGBP: 260, status: 'active', healthFormOnFile: true },
+  { id: 'st-02', name: 'Tom Achebe', email: 't.achebe@example.com', joined: '2026-06-02', courses: ['Deep Rest', 'Slow Yoga'], sessions: 4, lifetimeGBP: 720, status: 'active', healthFormOnFile: true, note: 'Shoulder injury — no weight bearing on left arm' },
+  { id: 'st-03', name: 'Sarah Lindqvist', email: 'sarah.l@example.com', joined: '2026-09-18', courses: ['Deep Rest'], sessions: 1, lifetimeGBP: 195, status: 'active', healthFormOnFile: false },
+  { id: 'st-04', name: 'James Whitfield', email: 'j.whitfield@example.com', joined: '2026-09-17', courses: ['Breathwork for Teachers'], sessions: 0, lifetimeGBP: 690, status: 'active', healthFormOnFile: true, note: 'Teaches in Bath — supervising from January' },
+  { id: 'st-05', name: 'Aditi Raman', email: 'aditi.raman@example.com', joined: '2026-03-11', courses: ['Breath Foundations', 'Deep Rest'], sessions: 6, lifetimeGBP: 755, status: 'active', healthFormOnFile: true },
+  { id: 'st-06', name: 'Peter Nowak', email: 'p.nowak@example.com', joined: '2026-09-16', courses: [], sessions: 0, lifetimeGBP: 0, status: 'lapsed', healthFormOnFile: false, note: 'Payment failed — card declined twice' },
+  { id: 'st-07', name: 'Grace Okafor', email: 'grace.okafor@example.com', joined: '2026-09-16', courses: ['Breath Foundations'], sessions: 2, lifetimeGBP: 335, status: 'active', healthFormOnFile: true },
+  { id: 'st-08', name: 'Liam Doherty', email: 'liam.d@example.com', joined: '2026-08-30', courses: [], sessions: 0, lifetimeGBP: 0, status: 'lapsed', healthFormOnFile: false, note: 'Refunded Deep Rest — timing did not work' },
+  { id: 'st-09', name: 'Marta Ruiz', email: 'marta.ruiz@example.com', joined: '2026-01-20', courses: ['Slow Yoga'], sessions: 11, lifetimeGBP: 1065, status: 'active', healthFormOnFile: true, note: 'Longest running 1-1 client' },
+  { id: 'st-10', name: 'Owen Price', email: 'owen.price@example.com', joined: '2026-09-14', courses: ['Slow Yoga'], sessions: 1, lifetimeGBP: 315, status: 'active', healthFormOnFile: true },
+  { id: 'st-11', name: 'Dev Patel', email: 'dev.patel@example.com', joined: '2025-11-04', courses: ['Slow Yoga', 'Deep Rest', 'Breath Foundations'], sessions: 8, lifetimeGBP: 1430, status: 'completed', healthFormOnFile: true, note: 'Asked about the Alentejo retreat' },
+  { id: 'st-12', name: 'Anneke Visser', email: 'a.visser@example.com', joined: '2025-09-15', courses: ['Breathwork for Teachers'], sessions: 3, lifetimeGBP: 915, status: 'completed', healthFormOnFile: true },
+];
+
+export type Enquiry = {
+  id: string;
+  date: string;
+  name: string;
+  email: string;
+  subject: string;
+  excerpt: string;
+  status: 'new' | 'replied';
+  source: string;
+};
+
+export const enquiries: Enquiry[] = [
+  { id: 'en-09', date: '2026-09-19', name: 'Freya Lam', email: 'freya.lam@example.com', subject: 'One-to-one sessions', excerpt: 'I had a discovery call booked but wanted to ask beforehand whether breathwork is safe with a history of panic attacks…', status: 'new', source: 'Instagram' },
+  { id: 'en-08', date: '2026-09-19', name: 'Nadia Hassan', email: 'n.hassan@example.com', subject: 'A retreat', excerpt: 'Is there a single room option for the Alentejo week, and is the walking optional? I have a knee that objects to hills…', status: 'new', source: 'Newsletter' },
+  { id: 'en-07', date: '2026-09-18', name: 'Robert Innes', email: 'r.innes@example.com', subject: 'Teacher training', excerpt: 'I teach vinyasa and have done a weekend breathwork course that I now suspect was not very good. Where should I start…', status: 'new', source: 'Podcast mentions' },
+  { id: 'en-06', date: '2026-09-17', name: 'Yuki Tanaka', email: 'yuki.t@example.com', subject: 'A course', excerpt: 'Are the Tuesday sessions recorded? I am in Tokyo and 7pm UK is the middle of the night here…', status: 'replied', source: 'Google search' },
+  { id: 'en-05', date: '2026-09-16', name: 'Callum Reid', email: 'c.reid@example.com', subject: 'Something else', excerpt: 'Do you do corporate sessions? We are a team of about thirty and everyone is fairly close to the edge…', status: 'replied', source: 'Word of mouth' },
+  { id: 'en-04', date: '2026-09-15', name: 'Priya Raghavan', email: 'priya.r@example.com', subject: 'A course', excerpt: 'I am 22 weeks pregnant and would like to do Deep Rest. Is that sensible or should I wait…', status: 'replied', source: 'Instagram' },
+];
+
+/** Working hours the booking page generates slots from. */
+export const availability = {
+  timezone: 'Europe/London',
+  workingDays: [
+    { day: 'Monday', from: '09:00', to: '16:30', teaching: true },
+    { day: 'Tuesday', from: '09:00', to: '16:30', teaching: true },
+    { day: 'Wednesday', from: '09:00', to: '16:30', teaching: true },
+    { day: 'Thursday', from: '09:00', to: '16:30', teaching: true },
+    { day: 'Friday', from: '09:00', to: '13:00', teaching: true },
+    { day: 'Saturday', from: '—', to: '—', teaching: false },
+    { day: 'Sunday', from: '—', to: '—', teaching: false },
+  ],
+  lunchFrom: '12:00',
+  lunchTo: '13:00',
+  bufferMinutes: 15,
+  noticeHours: 24,
+  holdMinutes: 10,
+  blocked: [
+    { date: '2026-09-23', reason: 'Own practice — do not book', allDay: false, from: '08:00', to: '09:00' },
+    { date: '2026-10-12', reason: 'Away — Devon recce', allDay: true, from: '', to: '' },
+    { date: '2026-10-13', reason: 'Away — Devon recce', allDay: true, from: '', to: '' },
+    { date: '2026-11-13', reason: 'Devon retreat', allDay: true, from: '', to: '' },
+    { date: '2026-11-14', reason: 'Devon retreat', allDay: true, from: '', to: '' },
+    { date: '2026-11-15', reason: 'Devon retreat', allDay: true, from: '', to: '' },
+  ],
+};

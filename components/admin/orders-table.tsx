@@ -57,7 +57,7 @@ export function OrdersTable() {
       </div>
 
       <div className='-mx-5 overflow-x-auto px-5'>
-        <table className='w-full min-w-[700px] text-left text-sm'>
+        <table className='w-full min-w-[760px] text-left text-sm [&_td]:pr-5 [&_th]:pr-5 [&_td:last-child]:pr-0 [&_th:last-child]:pr-0'>
           <thead>
             <tr className='border-b border-admin-border text-xs'>
               <th className='py-2 font-medium opacity-65'>Date</th>

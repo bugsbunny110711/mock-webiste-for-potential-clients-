@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Card, CardTitle, PageHeader, StatTile, StatusChip } from '@/components/admin/ui';
 import { RevenueChart, BarList } from '@/components/admin/charts';
 import {
+  enquiries,
   kpis,
   revenueByWeek,
   salesByCourse,
@@ -17,6 +18,8 @@ export default function AdminOverview() {
   const todaysEvents = calendarEvents
     .filter((event) => event.date === TODAY)
     .sort((a, b) => a.start.localeCompare(b.start));
+
+  const unanswered = enquiries.filter((enquiry) => enquiry.status === 'new');
 
   const upcoming = calendarEvents
     .filter((event) => event.date > TODAY)
@@ -44,26 +47,43 @@ export default function AdminOverview() {
           value={gbp(kpis.revenueThisMonth)}
           change={percentChange(kpis.revenueThisMonth, kpis.revenueLastMonth)}
           direction='up'
+          compare
         />
         <StatTile
           label='Active students'
           value={String(kpis.activeStudents)}
           change={percentChange(kpis.activeStudents, kpis.activeStudentsLastMonth)}
           direction='up'
+          compare
         />
         <StatTile
           label='Sessions this week'
           value={String(kpis.sessionsThisWeek)}
           change={percentChange(kpis.sessionsThisWeek, kpis.sessionsLastWeek)}
           direction='down'
+          compare
         />
         <StatTile
           label='Visitor to customer'
           value={`${kpis.visitorToCustomer}%`}
           change={percentChange(kpis.visitorToCustomer, kpis.visitorToCustomerLast)}
           direction='up'
+          compare
         />
       </div>
+
+      {unanswered.length > 0 && (
+        <Link
+          href='/admin/enquiries'
+          className='mt-4 flex items-center gap-3 rounded-2xl bg-warning/12 px-5 py-4 text-sm text-warning transition-opacity hover:opacity-80'
+        >
+          <span aria-hidden>•</span>
+          <span className='font-medium'>
+            {unanswered.length} enquiries waiting on a reply
+          </span>
+          <span className='ml-auto'>Open the inbox →</span>
+        </Link>
+      )}
 
       <div className='mt-4 grid gap-4 lg:grid-cols-3'>
         <Card className='lg:col-span-2'>
@@ -156,7 +176,7 @@ export default function AdminOverview() {
           Recent orders
         </CardTitle>
         <div className='-mx-5 overflow-x-auto px-5'>
-          <table className='w-full min-w-[640px] text-left text-sm'>
+          <table className='w-full min-w-[700px] text-left text-sm [&_td]:pr-5 [&_th]:pr-5 [&_td:last-child]:pr-0 [&_th:last-child]:pr-0'>
             <thead>
               <tr className='border-b border-admin-border text-xs'>
                 <th className='py-2 font-medium opacity-65'>Reference</th>

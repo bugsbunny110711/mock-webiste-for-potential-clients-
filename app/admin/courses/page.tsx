@@ -21,19 +21,16 @@ export default function AdminCoursesPage() {
           label='Course revenue'
           value={gbp(totalRevenue)}
           change={`${totalSales} enrolments`}
-          direction='up'
         />
         <StatTile
           label='Highest earning'
           value={topByRevenue.name}
           change={gbp(topByRevenue.revenue)}
-          direction='up'
         />
         <StatTile
           label='Average order'
           value={gbp(Math.round(totalRevenue / totalSales))}
           change='across all courses'
-          direction='up'
         />
       </div>
 
@@ -71,7 +68,7 @@ export default function AdminCoursesPage() {
       <Card className='mt-4'>
         <CardTitle hint='Live on the site'>Course catalogue</CardTitle>
         <div className='-mx-5 overflow-x-auto px-5'>
-          <table className='w-full min-w-[640px] text-left text-sm'>
+          <table className='w-full min-w-[680px] text-left text-sm [&_td]:pr-5 [&_th]:pr-5 [&_td:last-child]:pr-0 [&_th:last-child]:pr-0'>
             <thead>
               <tr className='border-b border-admin-border text-xs'>
                 <th className='py-2 font-medium opacity-65'>Course</th>

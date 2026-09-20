@@ -22,7 +22,6 @@ export default function BookingsPage() {
           label='Settled'
           value={gbp(paid.reduce((sum, order) => sum + order.amountGBP, 0))}
           change={`${paid.length} orders`}
-          direction='up'
         />
         <StatTile
           label='Needs attention'
@@ -34,7 +33,6 @@ export default function BookingsPage() {
           label='Refunded'
           value={gbp(refunded.reduce((sum, order) => sum + order.amountGBP, 0))}
           change={`${refunded.length} this period`}
-          direction='down'
         />
       </div>
 

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ButtonLink } from '@/components/ui/button';
 import { Tag } from '@/components/ui/field';
-import { PlaceholderImage } from '@/components/site/placeholder-image';
+import { Photo } from '@/components/site/photo';
 import { InView } from '@/components/core/in-view';
 import { courses } from '@/lib/data';
 import { gbp } from '@/lib/format';
@@ -34,8 +34,6 @@ export default async function CoursePage({
   const course = courses.find((c) => c.slug === slug);
   if (!course) notFound();
 
-  const index = courses.findIndex((c) => c.slug === slug);
-
   return (
     <article>
       <div className='mx-auto grid max-w-6xl gap-12 px-6 py-16 md:grid-cols-[1.2fr_1fr] md:items-start'>
@@ -66,11 +64,11 @@ export default async function CoursePage({
 
         {/* Pricing panel — no scroll animation; this is what people came for. */}
         <aside className='rounded-card bg-surface p-7 md:sticky md:top-24'>
-          <PlaceholderImage
-            seed={index + 1}
+          <Photo
+            id={course.photoId}
             ratio='aspect-[3/2]'
             className='mb-6 rounded-xl'
-            label={`${course.title} course`}
+            sizes='(max-width: 768px) 100vw, 380px'
           />
           <p className='font-display text-4xl font-light'>{gbp(course.priceGBP)}</p>
           <p className='mt-1 text-sm opacity-75'>{course.format}</p>

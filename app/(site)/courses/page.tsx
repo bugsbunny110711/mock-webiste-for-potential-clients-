@@ -22,8 +22,8 @@ export default function CoursesPage() {
       </p>
 
       <InView className='mt-16 grid gap-6 sm:grid-cols-2'>
-        {courses.map((course, index) => (
-          <CourseCard key={course.id} course={course} index={index} />
+        {courses.map((course) => (
+          <CourseCard key={course.id} course={course} />
         ))}
       </InView>
     </div>

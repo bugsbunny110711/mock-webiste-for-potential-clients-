@@ -2,18 +2,18 @@ import Link from 'next/link';
 import { type Course } from '@/lib/data';
 import { gbp } from '@/lib/format';
 import { Tag } from '@/components/ui/field';
-import { PlaceholderImage } from './placeholder-image';
+import { Photo } from './photo';
 
-export function CourseCard({ course, index }: { course: Course; index: number }) {
+export function CourseCard({ course }: { course: Course }) {
   return (
     <Link
       href={`/courses/${course.slug}`}
       className='group flex flex-col overflow-hidden rounded-card bg-surface transition-colors hover:bg-surface/70'
     >
-      <PlaceholderImage
-        seed={index + 1}
+      <Photo
+        id={course.photoId}
         ratio='aspect-[3/2]'
-        label={`${course.title} course`}
+        sizes='(max-width: 640px) 100vw, 50vw'
       />
       <div className='flex flex-1 flex-col p-6'>
         <div className='flex flex-wrap items-center gap-2'>

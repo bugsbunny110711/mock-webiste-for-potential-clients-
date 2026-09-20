@@ -7,8 +7,8 @@ import { CourseCard } from '@/components/site/course-card';
 import { TestimonialCard } from '@/components/site/testimonial-card';
 import { Gallery } from '@/components/site/gallery';
 import { Faq } from '@/components/site/faq';
-import { PlaceholderImage } from '@/components/site/placeholder-image';
-import { coach, courses, testimonials, sessionTypes } from '@/lib/data';
+import { Photo } from '@/components/site/photo';
+import { coach, courses, testimonials, sessionTypes, retreats, journal } from '@/lib/data';
 import { gbp } from '@/lib/format';
 
 export default function HomePage() {
@@ -77,8 +77,8 @@ export default function HomePage() {
           </InView>
 
           <InView className='mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-2'>
-            {featured.map((course, index) => (
-              <CourseCard key={course.id} course={course} index={index} />
+            {featured.map((course) => (
+              <CourseCard key={course.id} course={course} />
             ))}
           </InView>
 
@@ -94,11 +94,11 @@ export default function HomePage() {
       <section className='py-24'>
         <div className='mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-2 md:items-center'>
           <InView>
-            <PlaceholderImage
-              seed={7}
+            <Photo
+              id='coach-portrait'
               ratio='aspect-[4/5]'
               className='rounded-card'
-              label={`Portrait of ${coach.name}`}
+              sizes='(max-width: 768px) 100vw, 50vw'
             />
           </InView>
           <InView>
@@ -176,6 +176,91 @@ export default function HomePage() {
               <TestimonialCard key={testimonial.id} testimonial={testimonial} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Retreats */}
+      <section className='border-t border-ink/10 bg-surface/50 py-24'>
+        <div className='mx-auto max-w-6xl px-6'>
+          <InView>
+            <h2 className='max-w-2xl text-4xl sm:text-5xl'>
+              Twice a year, somewhere quieter.
+            </h2>
+            <p className='mt-4 max-w-xl opacity-85'>
+              Small retreats, run rarely on purpose. Both usually fill from the
+              mailing list before they are advertised anywhere.
+            </p>
+          </InView>
+
+          <InView className='mt-12 grid gap-6 sm:grid-cols-2'>
+            {retreats.map((retreat) => (
+              <Link
+                key={retreat.id}
+                href={`/retreats/${retreat.slug}`}
+                className='group flex flex-col overflow-hidden rounded-card bg-canvas transition-colors hover:bg-canvas/60'
+              >
+                <Photo
+                  id={retreat.photoId}
+                  ratio='aspect-[3/2]'
+                  sizes='(max-width: 640px) 100vw, 50vw'
+                />
+                <div className='flex flex-1 flex-col p-6'>
+                  <p className='text-xs tracking-widest uppercase opacity-70'>
+                    {retreat.location}
+                  </p>
+                  <h3 className='mt-3 font-display text-2xl font-light'>
+                    {retreat.title}
+                  </h3>
+                  <p className='mt-2 flex-1 text-sm leading-relaxed opacity-85'>
+                    {retreat.dates} · {retreat.nights} nights
+                  </p>
+                  <div className='mt-6 flex items-baseline justify-between border-t border-ink/10 pt-4'>
+                    <span className='text-lg'>{gbp(retreat.priceGBP)}</span>
+                    <span className='text-sm underline-offset-4 group-hover:underline'>
+                      {retreat.spacesLeft} places left →
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </InView>
+        </div>
+      </section>
+
+      {/* Journal */}
+      <section className='py-24'>
+        <div className='mx-auto max-w-6xl px-6'>
+          <InView>
+            <h2 className='max-w-2xl text-4xl sm:text-5xl'>
+              Writing, if you want the reasoning.
+            </h2>
+          </InView>
+
+          <InView className='mt-12 grid gap-6 sm:grid-cols-3'>
+            {journal.map((post) => (
+              <Link
+                key={post.slug}
+                href={`/journal/${post.slug}`}
+                className='group border-t border-ink/15 pt-5'
+              >
+                <p className='text-xs tracking-widest uppercase opacity-70'>
+                  {post.tag} · {post.readingMinutes} min
+                </p>
+                <h3 className='mt-3 font-display text-xl leading-snug font-light group-hover:underline'>
+                  {post.title}
+                </h3>
+                <p className='mt-2 text-sm leading-relaxed opacity-85'>
+                  {post.standfirst}
+                </p>
+              </Link>
+            ))}
+          </InView>
+
+          <InView className='mt-10'>
+            <Link href='/journal' className='text-sm underline underline-offset-4'>
+              Everything I have written →
+            </Link>
+          </InView>
         </div>
       </section>
 
