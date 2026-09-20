@@ -24,9 +24,11 @@
   position: sticky;
   top: 20px;
   align-self: start;
+  display: flex;
+  flex-direction: column;
   flex: 0 0 auto;
   width: var(--rail);
-  max-height: calc(100vh - 40px);
+  height: calc(100vh - 40px);
   margin: 20px 0 20px 20px;
   overflow: hidden;
   border-radius: 22px;
@@ -44,7 +46,11 @@
 .inner {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex: 1 1 auto;
+  /* Without this an overflowing child stretches the flex item instead of
+     scrolling inside it — the default min-height of a flex item is its
+     content, not zero. */
+  min-height: 0;
   padding: 18px 0 14px;
 }
 
@@ -157,18 +163,33 @@
 
 .nav {
   position: relative;
-  flex: 0 1 auto;
+  /* Takes the space left after the brand, profile and footer, and scrolls
+     inside it when there are more rows than fit. */
+  flex: 1 1 auto;
   min-height: 0;
   margin: 0;
   padding: 0;
   list-style: none;
   overflow-y: auto;
   overflow-x: hidden;
-  scrollbar-width: none;
+  /* A thin scrollbar rather than none: hiding it left no way to tell there
+     were more rows below the fold. */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-ink) 22%, transparent)
+    transparent;
 }
 
 .nav::-webkit-scrollbar {
-  display: none;
+  width: 6px;
+}
+
+.nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nav::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--color-ink) 22%, transparent);
 }
 
 .groupHeading {
