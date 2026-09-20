@@ -153,9 +153,12 @@ Rules carried over from the handoff:
   same as, this site's. A second near-identical red would read as a mistake
   rather than a brand, so the mark is drawn in `accent` / `ink` / `canvas` and
   the handoff's colours are not introduced.
-- **Lockups**: horizontal (mark + optional rule + wordmark + tagline) in the
-  dock and footer; stacked and centred on the admin sign-in; reversed out of a
-  filled badge in the admin rail and the app icon.
+- **Lockups**: the mark alone in the dock, at every width — beside eight nav
+  words the wordmark read as a ninth, and the page already states the name.
+  The horizontal lockup (mark + optional rule + wordmark + tagline) is the
+  footer's; stacked and centred on the admin sign-in; reversed out of a filled
+  badge in the admin rail and the app icon. Where the mark stands alone its
+  link carries the name as an `aria-label`, since nothing else there does.
 - **The wordmark is the existing display face**, Newsreader 300 at .1em
   tracking. The handoff specifies Cormorant Garamond; Newsreader is a close
   stand-in and already loaded, and two more families for the logo alone is not

@@ -13,7 +13,7 @@ import {
   UserCircle2,
 } from 'lucide-react';
 import { Dock, DockIcon, DockItem, DockText } from '@/components/core/dock';
-import { BrandMark, BrandWordmark } from '@/components/site/logo';
+import { BrandMark } from '@/components/site/logo';
 import { useMediaQuery } from '@/lib/hooks';
 import { coach } from '@/lib/data';
 import { cn } from '@/lib/utils';
@@ -39,11 +39,12 @@ const items = [
 export function SiteDock() {
   const pathname = usePathname();
   // The words are the resting state wherever the eight of them fit. Measured,
-  // the labelled bar is 1155px wide with the lockup, so this threshold leaves
-  // real slack either side rather than clearing the viewport by a hair. Under
-  // it the dock falls back to symbols with the tooltip, and the footer carries
-  // the full text nav.
-  const showLabels = useMediaQuery('(min-width: 1280px)');
+  // the labelled bar is 1030px wide now the brand is the mark alone, so it
+  // needs a 1070px viewport and this threshold leaves 90px of slack — room for
+  // a font that renders wider elsewhere, rather than clearing it by a hair.
+  // Under it the dock falls back to symbols with the tooltip, and the footer
+  // carries the full text nav.
+  const showLabels = useMediaQuery('(min-width: 1120px)');
   const isWide = useMediaQuery('(min-width: 640px)');
 
   // baseSize drives the symbol too (DockIcon takes 42% of it), so it sets the
@@ -67,16 +68,16 @@ export function SiteDock() {
           'bg-canvas/65 shadow-[0_8px_36px_rgb(55_41_55/14%)] backdrop-blur-xl backdrop-saturate-150',
         )}
       >
-        {/* The wordmark is dropped on a phone, where the dock alone fills the
-            bar, but the mark stays — it is the one thing identifying the site
-            once the words are gone. */}
+        {/* The mark alone, at every width. The wordmark repeated the brand the
+            page already states, and next to eight nav words it read as a ninth;
+            the monogram reads as the identity instead. The link keeps its
+            aria-label, which is now the only place the name is given here. */}
         <Link
           href='/'
           aria-label={`${coach.brand} — home`}
-          className='flex shrink-0 items-center gap-2.5 pr-1 pl-2 text-accent'
+          className='flex shrink-0 items-center px-1.5 text-accent'
         >
-          <BrandMark size={26} />
-          <BrandWordmark className='hidden text-lg sm:inline' />
+          <BrandMark size={30} />
         </Link>
 
         <Dock
