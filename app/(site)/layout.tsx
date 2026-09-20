@@ -1,4 +1,3 @@
-import { BrandMark } from '@/components/site/brand-mark';
 import { SiteDock } from '@/components/site/site-dock';
 import { Footer } from '@/components/site/footer';
 
@@ -9,13 +8,10 @@ export default function SiteLayout({
 }) {
   return (
     <div className='flex min-h-screen flex-col'>
-      <BrandMark />
-      {/* Top padding clears the floating brand mark; bottom padding keeps the
-          dock from covering the last of the footer. */}
-      <main className='flex-1 pt-20'>{children}</main>
-      <Footer />
-      <div aria-hidden className='h-24 sm:h-28' />
       <SiteDock />
+      {/* Clears the bar, which is fixed and so outside the flow. */}
+      <main className='flex-1 pt-24 sm:pt-28'>{children}</main>
+      <Footer />
     </div>
   );
 }

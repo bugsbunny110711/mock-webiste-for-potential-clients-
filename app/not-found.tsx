@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { BrandMark } from '@/components/site/brand-mark';
 import { SiteDock } from '@/components/site/site-dock';
 import { Footer } from '@/components/site/footer';
 import { ButtonLink } from '@/components/ui/button';
@@ -7,8 +6,8 @@ import { ButtonLink } from '@/components/ui/button';
 export default function NotFound() {
   return (
     <div className='flex min-h-screen flex-col'>
-      <BrandMark />
-      <main className='flex flex-1 items-center pt-20'>
+      <SiteDock />
+      <main className='flex flex-1 items-center pt-24 sm:pt-28'>
         <div className='mx-auto w-full max-w-3xl px-6 py-24'>
           <p className='text-xs tracking-[0.2em] uppercase opacity-70'>
             Page not found
@@ -50,8 +49,6 @@ export default function NotFound() {
         </div>
       </main>
       <Footer />
-      <div aria-hidden className='h-24 sm:h-28' />
-      <SiteDock />
     </div>
   );
 }
