@@ -76,6 +76,14 @@ One library (Motion Primitives), one component per job, no overlaps.
 | `MorphingDialog` | 1-1 booking step 1 | Payment (own route) |
 | `TextShimmer` | Loading states only | Decoration |
 | Sliding auth card | The coach's sign-in card only | Anywhere else |
+| Sidebar indicator | The admin rail's active row | The public site |
+
+The admin sidebar's active indicator is a single element moved by a CSS custom
+property, following the same idea as its reference implementation. The reference
+computes the position as `--active-row * --row`, which assumes every row is the
+same height; this nav is grouped under headings, so the component measures the
+active row and writes `--indicator-y` and `--indicator-h` instead. It is also
+set optimistically on click, so the indicator leaves before the route resolves.
 
 The sign-in card is the one motion in the build that is not Motion Primitives.
 Its four panels slide past a fixed photograph using compound state selectors
