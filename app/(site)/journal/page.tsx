@@ -8,7 +8,7 @@ import { journal } from '@/lib/data';
 import { longDate } from '@/lib/format';
 
 export const metadata: Metadata = {
-  title: 'Journal — Still Point',
+  title: 'Journal — Maya Ellison',
   description:
     'Writing on breath physiology, sleep, and teaching breathwork safely. Plainly written, no mysticism.',
 };

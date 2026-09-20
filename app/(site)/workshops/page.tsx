@@ -8,7 +8,7 @@ import { coach, workshops } from '@/lib/data';
 import { gbp } from '@/lib/format';
 
 export const metadata: Metadata = {
-  title: 'Workshops for teams — Still Point',
+  title: 'Workshops for teams — Maya Ellison',
   description:
     'Breathwork sessions for workplaces in Bristol and online. Lunchtime sessions, short series, and away-day slots.',
 };

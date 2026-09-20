@@ -1,4 +1,4 @@
-# DESIGN.md — Still Point
+# DESIGN.md — Maya Ellison
 
 Design system for a breathwork & yoga coaching site with a private coach admin panel.
 This file is the single source of truth. When code and this file disagree, this file wins.
@@ -136,21 +136,48 @@ global reduced-motion rule below flattens it to an instant swap for free.
 - Nothing above the fold waits on a scroll trigger.
 - Hero animation resolves in under 600ms (LCP budget).
 
-## 5. Typography
+## 5. Identity
+
+The mark is direction **1A** from the Maya Ellison handoff: an ME ligature
+monogram, the M and E sharing a stem, drawn as one continuous breath stroke.
+The handoff also offered 1B (an enclosed breath circle); everything draws from
+`markPaths` in `components/site/logo.tsx`, so changing direction is a change to
+that one constant.
+
+Rules carried over from the handoff:
+
+- **Stroke weight is optically compensated** — 5.5 at large sizes, 6.5 below
+  40px. A hairline that reads as elegant at 100px reads as broken at 24px.
+- **The mark takes `currentColor`.** The handoff ships its own palette
+  (`#6B1F2A` / `#F5EFE6` / `#9A4A46` / `#E4C9BE`) which is close to, but not the
+  same as, this site's. A second near-identical red would read as a mistake
+  rather than a brand, so the mark is drawn in `accent` / `ink` / `canvas` and
+  the handoff's colours are not introduced.
+- **Lockups**: horizontal (mark + optional rule + wordmark + tagline) in the
+  dock and footer; stacked and centred on the admin sign-in; reversed out of a
+  filled badge in the admin rail and the app icon.
+- **The wordmark is the existing display face**, Newsreader 300 at .1em
+  tracking. The handoff specifies Cormorant Garamond; Newsreader is a close
+  stand-in and already loaded, and two more families for the logo alone is not
+  a trade worth making.
+- **The tagline binds its separators.** The space before each `·` is
+  non-breaking, so a line can never start with a dangling `· mindfulness`.
+
+## 6. Typography
 
 - **Display** — Newsreader, weight 300, for `h1`/`h2`. Editorial, unhurried.
 - **Body** — Inter, 400–600.
 - No mono anywhere on the public site.
 - Admin uses Inter only, 400–700 (Amie's range), no display serif.
 
-## 6. Surfaces
+## 7. Surfaces
 
 Flat and shadowless on the public site — depth comes from layered tints and padding,
 never drop shadows. Radius 14px on cards, 999px on tags and slot pills.
 Admin inverts this: white cards on warm off-white, separated by a 0.06-opacity shadow
 ring rather than a border (Amie's rule).
 
-## 7. Payments & booking
+## 8. Payments & booking
 
 - Booking step 1 (date/time) is a morphing dialog. Step 2 (payment) is a real route
   at `/checkout` — payment never lives in a dismissible overlay.
@@ -158,7 +185,7 @@ ring rather than a border (Amie's rule).
   people cannot buy the same time.
 - Stripe is stubbed in this build (`lib/payments.ts`); no live keys.
 
-## 8. Photography
+## 9. Photography
 
 Every image on the site is a named slot in `lib/photos.ts`, rendered by
 `components/site/photo.tsx`. A slot with no `src` renders a labelled placeholder
@@ -170,7 +197,7 @@ The coach's own shot list lives at `/admin/photos`, grouped by shoot and ordered
 by priority. Set `SHOW_BRIEFS` to `false` in `lib/photos.ts` to hide the briefs
 when demonstrating the site to someone.
 
-## 9. Scope of this build
+## 10. Scope of this build
 
 A demonstration build with seeded mock data in `lib/data.ts`. No database and no live
 payment processing.

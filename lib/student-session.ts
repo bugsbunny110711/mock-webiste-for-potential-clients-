@@ -14,7 +14,7 @@ import { findStudentById, type PublicStudent } from './students';
  * ever reads its own cookie.
  */
 
-export const STUDENT_COOKIE = 'stillpoint_student';
+export const STUDENT_COOKIE = 'maya_student';
 const SESSION_DAYS = 30;
 
 type StudentPayload = {

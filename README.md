@@ -1,4 +1,4 @@
-# Still Point — breathwork & yoga coaching site
+# Maya Ellison — breathwork & yoga coaching site
 
 A demonstration site for a life coach who teaches breathwork and yoga: a public
 site that sells courses and one-to-one sessions, and a private admin panel where

@@ -19,9 +19,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const retreat = retreats.find((r) => r.slug === slug);
-  if (!retreat) return { title: 'Retreat not found — Still Point' };
+  if (!retreat) return { title: 'Retreat not found — Maya Ellison' };
   return {
-    title: `${retreat.title} — Still Point`,
+    title: `${retreat.title} — Maya Ellison`,
     description: retreat.summary,
   };
 }

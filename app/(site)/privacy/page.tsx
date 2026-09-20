@@ -3,9 +3,9 @@ import { LegalPage } from '@/components/site/legal-page';
 import { coach } from '@/lib/data';
 
 export const metadata: Metadata = {
-  title: 'Privacy — Still Point',
+  title: 'Privacy — Maya Ellison',
   description:
-    'What Still Point collects, why, how long it is kept, and how to have it deleted.',
+    'What this site collects, why, how long it is kept, and how to have it deleted.',
 };
 
 export default function PrivacyPage() {

@@ -6,10 +6,12 @@
 
 export const coach = {
   name: 'Maya Ellison',
-  brand: 'Still Point',
+  /** The practice trades under the coach's own name. */
+  brand: 'Maya Ellison',
+  tagline: 'breathwork · yoga · movement · mindfulness',
   role: 'Breathwork facilitator & yoga teacher',
   location: 'Bristol, UK',
-  email: 'hello@stillpoint.example',
+  email: 'hello@mayaellison.example',
   yearsTeaching: 11,
   trainedHours: 800,
   studentsTaught: 1400,

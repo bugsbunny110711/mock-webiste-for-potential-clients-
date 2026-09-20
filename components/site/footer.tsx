@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { SubscribeForm } from './subscribe-form';
 import { coach } from '@/lib/data';
+import { BrandLockup, BrandTagline } from './logo';
 
 const columns = [
   {
@@ -38,8 +39,9 @@ export function Footer() {
       <div className='mx-auto max-w-6xl px-6 py-14'>
         <div className='grid gap-10 sm:grid-cols-2 lg:grid-cols-4'>
           <div>
-            <p className='font-display text-2xl font-light'>{coach.brand}</p>
-            <p className='mt-2 max-w-xs text-sm opacity-80'>
+            <BrandLockup size={38} className='text-accent' wordmarkClassName='text-2xl' />
+            <BrandTagline className='mt-3 block max-w-xs opacity-70' />
+            <p className='mt-3 max-w-xs text-sm opacity-80'>
               Breathwork and yoga with {coach.name}. {coach.location}, and
               online.
             </p>

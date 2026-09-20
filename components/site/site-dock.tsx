@@ -13,6 +13,7 @@ import {
   UserCircle2,
 } from 'lucide-react';
 import { Dock, DockIcon, DockItem, DockText } from '@/components/core/dock';
+import { BrandMark, BrandWordmark } from '@/components/site/logo';
 import { useMediaQuery } from '@/lib/hooks';
 import { coach } from '@/lib/data';
 import { cn } from '@/lib/utils';
@@ -37,11 +38,12 @@ const items = [
  */
 export function SiteDock() {
   const pathname = usePathname();
-  // The words are the resting state wherever the eight of them fit. Laid out
-  // at the sizes below they come to roughly 1100px with the brand, so this is
-  // the width at which they stop being cramped; under it the dock falls back
-  // to symbols with the tooltip, and the footer carries the full text nav.
-  const showLabels = useMediaQuery('(min-width: 1200px)');
+  // The words are the resting state wherever the eight of them fit. Measured,
+  // the labelled bar is 1155px wide with the lockup, so this threshold leaves
+  // real slack either side rather than clearing the viewport by a hair. Under
+  // it the dock falls back to symbols with the tooltip, and the footer carries
+  // the full text nav.
+  const showLabels = useMediaQuery('(min-width: 1280px)');
   const isWide = useMediaQuery('(min-width: 640px)');
 
   // baseSize drives the symbol too (DockIcon takes 42% of it), so it sets the
@@ -65,12 +67,16 @@ export function SiteDock() {
           'bg-canvas/65 shadow-[0_8px_36px_rgb(55_41_55/14%)] backdrop-blur-xl backdrop-saturate-150',
         )}
       >
-        {/* Hidden on a phone, where the dock alone fills the bar. */}
+        {/* The wordmark is dropped on a phone, where the dock alone fills the
+            bar, but the mark stays — it is the one thing identifying the site
+            once the words are gone. */}
         <Link
           href='/'
-          className='hidden shrink-0 pr-1 pl-2 font-display text-lg leading-none font-light sm:block'
+          aria-label={`${coach.brand} — home`}
+          className='flex shrink-0 items-center gap-2.5 pr-1 pl-2 text-accent'
         >
-          {coach.brand}
+          <BrandMark size={26} />
+          <BrandWordmark className='hidden text-lg sm:inline' />
         </Link>
 
         <Dock

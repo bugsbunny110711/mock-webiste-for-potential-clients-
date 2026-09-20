@@ -16,7 +16,7 @@ import { authSecret, readToken, signToken } from './crypto';
  * and look it up in the database — the rest of the shape stays the same.
  */
 
-export const SESSION_COOKIE = 'stillpoint_coach';
+export const SESSION_COOKIE = 'maya_coach';
 /** A normal sign-in lasts a week; "remember me" lasts a month. */
 const SESSION_DAYS = 7;
 const REMEMBERED_DAYS = 30;

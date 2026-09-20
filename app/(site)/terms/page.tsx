@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { LegalPage } from '@/components/site/legal-page';
 
 export const metadata: Metadata = {
-  title: 'Terms & refunds — Still Point',
+  title: 'Terms & refunds — Maya Ellison',
   description:
     'Booking terms, the refund policy, cancellation windows, and what this teaching is and is not.',
 };

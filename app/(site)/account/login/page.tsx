@@ -3,7 +3,7 @@ import { AccountAuthCard } from '@/components/account/account-auth-card';
 import { DEMO_PASSWORD } from '@/lib/students';
 
 export const metadata: Metadata = {
-  title: 'Your account — Still Point',
+  title: 'Your account — Maya Ellison',
   robots: { index: false, follow: false },
 };
 

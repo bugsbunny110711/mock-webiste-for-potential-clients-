@@ -8,7 +8,7 @@ import { retreats } from '@/lib/data';
 import { gbp } from '@/lib/format';
 
 export const metadata: Metadata = {
-  title: 'Retreats — Still Point',
+  title: 'Retreats — Maya Ellison',
   description:
     'Two retreats a year: a slow week in the Alentejo and a short winter weekend on Dartmoor. Small groups, good food, nothing much scheduled.',
 };

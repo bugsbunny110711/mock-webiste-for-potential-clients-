@@ -16,7 +16,7 @@ const newsreader = Newsreader({
 });
 
 export const metadata: Metadata = {
-  title: 'Still Point — Breathwork & Yoga with Maya Ellison',
+  title: 'Maya Ellison — Breathwork & Yoga',
   description:
     'Breathwork and yoga courses, and one-to-one sessions, for people who want to put their nervous system back in their own hands.',
 };

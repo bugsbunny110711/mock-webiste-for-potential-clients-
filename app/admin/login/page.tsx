@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { AuthCard } from '@/components/admin/auth-card';
-import { coach } from '@/lib/data';
+import { BrandMark, BrandWordmark } from '@/components/site/logo';
 
 export const metadata: Metadata = {
-  title: 'Coach sign in — Still Point',
+  title: 'Coach sign in — Maya Ellison',
   robots: { index: false, follow: false },
 };
 
@@ -22,11 +22,14 @@ export default async function LoginPage({
   return (
     <main className='flex min-h-screen items-center justify-center bg-admin-canvas px-4 py-10 sm:px-6'>
       <div className='w-full max-w-4xl'>
-        <div className='mb-7 text-center'>
-          <p className='font-display text-2xl font-light'>{coach.brand}</p>
-          <p className='mt-1 text-xs tracking-widest uppercase opacity-55'>
-            Coach panel
-          </p>
+        <div className='mb-7 flex flex-col items-center gap-4 text-center text-accent'>
+          <BrandMark size={44} />
+          <div>
+            <BrandWordmark className='text-2xl' />
+            <p className='mt-1.5 text-xs tracking-widest uppercase opacity-55'>
+              Coach panel
+            </p>
+          </div>
         </div>
 
         <AuthCard isDev={isDev} next={next} />

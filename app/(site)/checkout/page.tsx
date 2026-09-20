@@ -7,7 +7,7 @@ import { gbp, longDate } from '@/lib/format';
 import { SLOT_HOLD_MINUTES } from '@/lib/booking';
 
 export const metadata: Metadata = {
-  title: 'Checkout — Still Point',
+  title: 'Checkout — Maya Ellison',
   robots: { index: false },
 };
 

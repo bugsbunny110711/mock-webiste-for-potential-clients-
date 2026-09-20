@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LogOut, PanelLeft } from 'lucide-react';
 import { logout } from '@/lib/auth-actions';
+import { BrandMark, BrandWordmark } from '@/components/site/logo';
 import { navGroups } from './nav-items';
 import styles from './sidebar.module.css';
 
@@ -52,9 +53,9 @@ export function Sidebar({ name }: { name: string }) {
       <div className={styles.inner}>
         <Link href='/admin' className={styles.brand}>
           <span className={styles.brandMark} aria-hidden>
-            ◎
+            <BrandMark size={21} />
           </span>
-          <span className='font-display text-lg font-light'>Still Point</span>
+          <BrandWordmark className='text-lg' />
         </Link>
 
         <button
