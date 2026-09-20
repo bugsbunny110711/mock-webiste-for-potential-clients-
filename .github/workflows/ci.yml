@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A new push supersedes the run already in flight for the same branch, so a
+# quick succession of pushes does not queue up several redundant builds.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Typecheck, lint and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `npm ci` installs exactly what package-lock.json pins, and fails if the
+      # lockfile and package.json disagree — which `npm install` would quietly
+      # paper over.
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      # No secrets are needed here. Authentication fails closed at runtime when
+      # ADMIN_PASSWORD and AUTH_SECRET are absent, but the build itself does not
+      # read them, so CI never needs a copy of them.
+      - name: Build
+        run: npm run build
