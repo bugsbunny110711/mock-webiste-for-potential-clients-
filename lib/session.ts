@@ -2,6 +2,7 @@ import 'server-only';
 
 import { cache } from 'react';
 import { cookies } from 'next/headers';
+import { authSecret, readToken, signToken } from './crypto';
 
 /**
  * Single-user session handling for the coach's panel.
@@ -29,52 +30,10 @@ type SessionPayload = {
   exp: number;
 };
 
-function base64url(bytes: ArrayBuffer | Uint8Array): string {
-  const view = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
-  return Buffer.from(view).toString('base64url');
-}
-
-function secret(): string | null {
-  const value = process.env.AUTH_SECRET;
-  if (value && value.length >= 32) return value;
-
-  if (process.env.NODE_ENV !== 'production') {
-    // Development only. Production has no fallback and fails closed below.
-    return 'dev-only-insecure-secret-not-for-production-use';
-  }
-  return null;
-}
-
-async function sign(data: string, key: string): Promise<string> {
-  const cryptoKey = await crypto.subtle.importKey(
-    'raw',
-    new TextEncoder().encode(key),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign'],
-  );
-  const signature = await crypto.subtle.sign(
-    'HMAC',
-    cryptoKey,
-    new TextEncoder().encode(data),
-  );
-  return base64url(signature);
-}
-
-/** Constant-time comparison, so a wrong signature cannot be found byte by byte. */
-export function safeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i += 1) {
-    diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return diff === 0;
-}
-
 export async function createSessionToken(
   days = SESSION_DAYS,
 ): Promise<string | null> {
-  const key = secret();
+  const key = authSecret();
   if (!key) return null;
 
   const now = Math.floor(Date.now() / 1000);
@@ -84,34 +43,23 @@ export async function createSessionToken(
     exp: now + days * 24 * 60 * 60,
   };
 
-  const body = base64url(new TextEncoder().encode(JSON.stringify(payload)));
-  const signature = await sign(body, key);
-  return `${body}.${signature}`;
+  return signToken(payload, key);
 }
 
-async function readToken(token: string): Promise<SessionPayload | null> {
-  const key = secret();
+async function readCoachToken(token: string): Promise<SessionPayload | null> {
+  const key = authSecret();
   if (!key) return null;
 
-  const [body, signature] = token.split('.');
-  if (!body || !signature) return null;
+  const payload = await readToken<SessionPayload>(token, key);
+  if (!payload) return null;
 
-  const expected = await sign(body, key);
-  if (!safeEqual(signature, expected)) return null;
+  // A student token is signed with the same secret, so the subject check is
+  // what stops one being accepted here.
+  if (payload.sub !== 'coach') return null;
+  if (typeof payload.exp !== 'number') return null;
+  if (payload.exp < Math.floor(Date.now() / 1000)) return null;
 
-  try {
-    const payload = JSON.parse(
-      Buffer.from(body, 'base64url').toString('utf8'),
-    ) as SessionPayload;
-
-    if (payload.sub !== 'coach') return null;
-    if (typeof payload.exp !== 'number') return null;
-    if (payload.exp < Math.floor(Date.now() / 1000)) return null;
-
-    return payload;
-  } catch {
-    return null;
-  }
+  return payload;
 }
 
 /**
@@ -122,7 +70,7 @@ export const verifySession = cache(async (): Promise<SessionPayload | null> => {
   const store = await cookies();
   const token = store.get(SESSION_COOKIE)?.value;
   if (!token) return null;
-  return readToken(token);
+  return readCoachToken(token);
 });
 
 export async function startSession(remember = false): Promise<boolean> {
@@ -151,5 +99,5 @@ export async function endSession(): Promise<void> {
 /** False when the deployment has no password set — login then fails closed. */
 export function isAuthConfigured(): boolean {
   if (process.env.NODE_ENV !== 'production') return true;
-  return Boolean(process.env.ADMIN_PASSWORD && secret());
+  return Boolean(process.env.ADMIN_PASSWORD && authSecret());
 }

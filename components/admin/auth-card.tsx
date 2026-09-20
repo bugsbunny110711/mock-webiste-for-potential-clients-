@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { login, type LoginState } from '@/lib/auth-actions';
 import { TextShimmer } from '@/components/core/text-shimmer';
 import { Photo } from '@/components/site/photo';
-import styles from './auth-card.module.css';
+import styles from '@/components/ui/sliding-card.module.css';
 
 const initialState: LoginState = { error: null };
 

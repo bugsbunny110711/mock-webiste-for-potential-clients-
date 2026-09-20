@@ -2,12 +2,8 @@
 
 import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
-import {
-  endSession,
-  isAuthConfigured,
-  safeEqual,
-  startSession,
-} from './session';
+import { safeEqual } from './crypto';
+import { endSession, isAuthConfigured, startSession } from './session';
 
 export type LoginState = { error: string | null };
 

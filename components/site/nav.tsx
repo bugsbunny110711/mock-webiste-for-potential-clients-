@@ -44,6 +44,12 @@ export function Nav() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href='/account'
+            className='text-sm opacity-75 transition-opacity hover:opacity-100'
+          >
+            Account
+          </Link>
           <ButtonLink href='/book' size='sm'>
             Book a session
           </ButtonLink>
@@ -79,6 +85,13 @@ export function Nav() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href='/account'
+            onClick={() => setIsOpen(false)}
+            className='block border-b border-ink/10 py-3 text-sm'
+          >
+            Account
+          </Link>
           <ButtonLink href='/book' className='mt-4 w-full' onClick={() => setIsOpen(false)}>
             Book a session
           </ButtonLink>

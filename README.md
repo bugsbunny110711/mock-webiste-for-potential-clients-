@@ -45,6 +45,8 @@ npm run lint
 | `/book` | Three session types, each opening a booking dialog |
 | `/checkout` | Order summary and payment form (stubbed) |
 | `/contact` | Enquiry form, handled by a Server Function |
+| `/account` | Student area — courses bought, progress, recordings |
+| `/account/login` | Sign in and registration, on a sliding card |
 | `/terms`, `/privacy` | Refund policy, health disclaimer, UK GDPR wording |
 
 Plus `not-found.tsx`, `sitemap.xml` and `robots.txt` (which keeps `/admin` and
@@ -83,6 +85,11 @@ data underneath it is seeded, not stored.
 - **`lib/payments.ts`** is a stub. No card details are collected and nothing is
   charged. In production this becomes a Stripe Checkout Session created on the
   server.
+- **Student accounts are real but not persistent.** Passwords are hashed with
+  PBKDF2-HMAC-SHA512 at 210,000 iterations and sessions are signed, but the
+  account store is an in-memory Map (`lib/students.ts`): accounts created at
+  runtime vanish on restart and are not shared between instances. Swapping the
+  Map for a database table is the whole migration.
 - **The admin panel is password protected**, with a signed HTTP-only session
   cookie, a constant-time password comparison, and basic attempt throttling.
   It is genuine, but it is single-user and deliberately simple: one shared

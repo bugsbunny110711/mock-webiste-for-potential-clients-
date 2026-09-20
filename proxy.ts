@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { SESSION_COOKIE } from '@/lib/session';
+import { STUDENT_COOKIE } from '@/lib/student-session';
 
 /**
  * An optimistic gate, not the authorisation layer.
@@ -15,23 +16,47 @@ import { SESSION_COOKIE } from '@/lib/session';
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const hasCookie = Boolean(request.cookies.get(SESSION_COOKIE)?.value);
-  const isLoginPage = pathname === '/admin/login';
+  if (pathname.startsWith('/admin')) {
+    return gate(request, {
+      cookie: SESSION_COOKIE,
+      loginPath: '/admin/login',
+      home: '/admin',
+    });
+  }
+
+  if (pathname.startsWith('/account')) {
+    return gate(request, {
+      cookie: STUDENT_COOKIE,
+      loginPath: '/account/login',
+      home: '/account',
+    });
+  }
+
+  return NextResponse.next();
+}
+
+function gate(
+  request: NextRequest,
+  { cookie, loginPath, home }: { cookie: string; loginPath: string; home: string },
+) {
+  const { pathname } = request.nextUrl;
+  const hasCookie = Boolean(request.cookies.get(cookie)?.value);
+  const isLoginPage = pathname === loginPath;
 
   if (!hasCookie && !isLoginPage) {
-    const url = new URL('/admin/login', request.url);
-    // So the coach lands where they were heading after signing in.
-    if (pathname !== '/admin') url.searchParams.set('next', pathname);
+    const url = new URL(loginPath, request.url);
+    // So the visitor lands where they were heading after signing in.
+    if (pathname !== home) url.searchParams.set('next', pathname);
     return NextResponse.redirect(url);
   }
 
   if (hasCookie && isLoginPage) {
-    return NextResponse.redirect(new URL('/admin', request.url));
+    return NextResponse.redirect(new URL(home, request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: '/admin/:path*',
+  matcher: ['/admin/:path*', '/account/:path*'],
 };

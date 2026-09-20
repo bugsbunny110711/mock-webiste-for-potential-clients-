@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { submitEnquiry, type EnquiryState } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
 import { Input, Label } from '@/components/ui/field';
@@ -21,6 +21,11 @@ export function ContactForm() {
     submitEnquiry,
     initialState,
   );
+  // Controlled, because React 19 resets uncontrolled fields once the action
+  // settles — losing a long message to one validation error is unforgivable.
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
 
   if (state.status === 'sent') {
     return (
@@ -38,7 +43,14 @@ export function ContactForm() {
     <form action={formAction} className='space-y-6'>
       <div className='space-y-2'>
         <Label htmlFor='name'>Your name</Label>
-        <Input id='name' name='name' required placeholder='Jane Fielding' />
+        <Input
+          id='name'
+          name='name'
+          required
+          placeholder='Jane Fielding'
+          value={name}
+          onChange={(event) => setName(event.target.value)}
+        />
         {state.fieldErrors?.name && (
           <p className='text-sm text-danger' aria-live='polite'>
             {state.fieldErrors.name}
@@ -54,6 +66,8 @@ export function ContactForm() {
           type='email'
           required
           placeholder='you@example.com'
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
         />
         {state.fieldErrors?.email && (
           <p className='text-sm text-danger' aria-live='polite'>
@@ -84,6 +98,8 @@ export function ContactForm() {
           rows={6}
           required
           placeholder='Tell me what you are looking for, and anything I should know.'
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
           className='w-full rounded-xl border border-ink/20 bg-canvas p-4 text-sm leading-relaxed text-ink placeholder:text-ink/45 focus:border-ink focus:outline-none'
         />
         {state.fieldErrors?.message && (
