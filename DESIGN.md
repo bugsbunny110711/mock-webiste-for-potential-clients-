@@ -13,71 +13,78 @@ This file is the single source of truth. When code and this file disagree, this 
 
 ## 2. Colour
 
-Five client-supplied tones. Unlike the previous palette, this one has two
-text-safe pairings and a genuine dark surface.
+Five client-supplied tones. This palette is the most flexible of those tried: it
+gives **two** body-safe text colours and **three** usable surfaces.
 
 | Token | Hex | Name | Role | Contrast on canvas |
 |---|---|---|---|---|
-| `canvas` | `#E5E1DD` | SAND | Page background | — |
-| `surface` | `#C0D5D6` | AQUA | Raised: cards, dialogs, panels | — |
-| `band` | `#D3DBDA` | — | Section bands (sand/aqua midpoint) | — |
-| `muted` | `#A58D66` | GOLD | Dividers, decoration | 2.4:1 ❌ never text |
-| `accent` | `#407E8C` | TEAL | UI accents, large text only | 3.5:1 ⚠ |
-| `ink` | `#083A4F` | NAVY | All body text, primary buttons | **9.3:1** (AAA) |
-| `ink-hover` | `#062C3B` | — | Button hover / pressed | — |
+| `canvas` | `#F1E4DB` | White Rock | Page background | — |
+| `surface` | `#D2CADF` | Grey Goose | Raised: cards, dialogs, panels | 1.3:1 ❌ never text |
+| `band` | `#E2D7DD` | — | Section bands (rock/goose midpoint) | — |
+| `muted` | `#E1A49A` | Pink Daisy | Decorative fills, secondary surfaces | 1.7:1 ❌ never text |
+| `accent` | `#92333C` | Lotus | Every primary action, and a second text colour | **6.1:1** |
+| `accent-hover` | `#782A31` | — | Primary button hover | — |
+| `ink` | `#372937` | Thunder | Body text, selected states | **11.0:1** (AAA) |
+| `ink-hover` | `#291F29` | — | Pressed states | — |
 
 Measured pairings:
 
-- Navy on sand — **9.3:1**, clears AAA
-- Navy on aqua — **7.9:1**, clears AAA
-- Navy on band — **8.6:1**
-- Sand on navy — **9.3:1**, so inverted panels and dark buttons are safe
-- Teal on sand — **3.5:1**, large text (24px+) or UI only, never body copy
-- Gold on sand — **2.4:1**, decorative only
+- Thunder on White Rock — **11.0:1**, AAA
+- Thunder on Grey Goose — **8.6:1**, AAA
+- Thunder on Pink Daisy — **6.5:1**, so even the pink carries body text
+- Thunder on band — **9.8:1**
+- Lotus on White Rock — **6.1:1**, a genuine second text colour
+- Lotus on Grey Goose — **4.8:1**, still passes body
+- White Rock on Lotus — **6.1:1**, so Lotus works as a button fill
+- White Rock on Thunder — **11.0:1**, for inverted panels
 
-**Navy is the only body-text colour.** Teal is legal for headings and UI borders
-but never for paragraphs; gold is never text at all. De-emphasis is done with
-size, weight and opacity — navy at 70% still clears 4.5:1 on sand, which the
-previous palette's ink could not manage.
+**Lotus carries every primary action** — buttons, submits, the sidebar's active
+nub. Thunder carries text and selected states (filter pills, today's date, the
+active nav row), which are not calls to action and should not compete with them.
+Grey Goose and Pink Daisy are surfaces, never text.
 
 **No gradients anywhere.** No linear, radial or conic gradients, and no colour
-fades. Every surface is a flat fill. Depth comes from the difference between
-sand, band, aqua and navy, not from a blend. This removed the hero's ambient
-light entirely, flattened the dialog scrim to one wash, turned the photo
-placeholders into solid blocks, and replaced the loading shimmer — which was a
-moving gradient — with an opacity pulse.
+fades. Every surface is a flat fill; depth comes from the steps between rock,
+band, goose, daisy and thunder. This is why the hero has no ambient light, the
+dialog scrim is a single wash, the photo placeholders are solid blocks, and the
+loading indicator pulses opacity rather than sweeping a gradient across text.
 
 ### Semantic — admin panel only
 | Token | Hex | Meaning | Contrast on admin canvas |
 |---|---|---|---|
-| `success` | `#1F6B4A` | Paid, confirmed, completed | 5.8:1 |
-| `danger` | `#A33529` | Failed payment, cancellation, refund | 6.1:1 |
-| `warning` | `#8A6417` | Pending, awaiting, expiring hold | 4.8:1 |
+| `success` | `#35634A` | Paid, confirmed, completed | 6.2:1 |
+| `danger` | `#92333C` | Failed payment, cancellation, refund | 6.9:1 |
+| `warning` | `#7E5516` | Pending, awaiting, expiring hold | 5.9:1 |
 
-Never on the public site. Always paired with an icon or text label.
+Danger is Lotus itself — the palette already contains the right red, so
+introducing a second one would only muddy it. Never on the public site, and
+always paired with an icon or a text label.
 
 ### Admin surfaces
-`admin-canvas #F1F3F3` · `admin-surface #FFFFFF` · `admin-border #E3ECED`
+`admin-canvas #F7F2EF` · `admin-surface #FFFFFF` · `admin-border #E9E5EF`
 
-Cool near-white, so the data is the loudest thing on the page. Navy on it is
-10.9:1.
+Thunder on the admin canvas is 12.3:1.
 
 ## 3. Charts
 
-Revalidated with the dataviz palette validator against surface `#F1F3F3` after
-the palette change — the previous pair was checked against a warm surface and
-does not carry over.
+Revalidated against surface `#F7F2EF` after the palette change. A pair checked
+against a different surface says nothing about this one.
 
 | Series | Colours | Status |
 |---|---|---|
-| 1 series | `#0087A3` | — |
-| 2 series | `#0087A3` + `#A8781E` | all checks PASS, all-pairs (ΔE 17.3 protan, 22.6 tritan, 21.0 normal) |
+| 1 series | `#B04552` | — |
+| 2 series | `#B04552` + `#5B4FA8` | all checks PASS, all-pairs (ΔE 15.2 protan, 22.4 tritan, 20.2 normal) |
 | 3+ series | **not allowed** | 3-colour sets in this family fail deutan separation |
+
+Both chart colours are drawn from the palette — rose from Lotus, violet from
+Grey Goose — rather than imported from outside it. The obvious pairing of a red
+with a green was tested first and **failed**: red and green is precisely the pair
+deuteranopes confuse, and the validator put it at ΔE 3.3.
 
 **A chart never carries more than two colours.** Anything with more categories
 becomes a sorted horizontal bar chart in a single hue, where position and a
-direct label carry identity and colour carries nothing. This is why there is no
-pie or donut in the admin panel.
+direct label carry identity and colour carries nothing. Hence no pie or donut
+anywhere in the admin panel.
 
 Marks: 2px lines, 4px rounded bar ends, 2px surface gap between bars, recessive
 `band`-coloured gridlines, tooltips on every plotted chart, and a table view

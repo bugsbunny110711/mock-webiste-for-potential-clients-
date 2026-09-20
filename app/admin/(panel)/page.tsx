@@ -34,7 +34,7 @@ export default function AdminOverview() {
         action={
           <Link
             href='/admin/calendar'
-            className='rounded-full bg-ink px-5 py-2.5 text-sm font-medium text-canvas hover:bg-ink-hover'
+            className='rounded-full bg-accent px-5 py-2.5 text-sm font-medium text-canvas hover:bg-accent-hover'
           >
             Open master calendar
           </Link>

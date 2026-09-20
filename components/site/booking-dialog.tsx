@@ -77,7 +77,7 @@ export function BookingDialog({
     <MorphingDialog>
       <MorphingDialogTrigger
         className={cn(
-          'inline-flex h-11 items-center justify-center gap-2 rounded-full bg-ink px-6 text-sm font-medium text-canvas transition-colors hover:bg-ink-hover',
+          'inline-flex h-11 items-center justify-center gap-2 rounded-full bg-accent px-6 text-sm font-medium text-canvas transition-colors hover:bg-accent-hover',
           className,
         )}
       >

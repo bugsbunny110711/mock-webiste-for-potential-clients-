@@ -2,28 +2,30 @@
 
 @theme {
   /* Public palette — client supplied.
-     NAVY #083A4F · GOLD #A58D66 · AQUA #C0D5D6 · TEAL #407E8C · SAND #E5E1DD */
-  --color-canvas: #e5e1dd;
-  --color-surface: #c0d5d6;
-  --color-band: #d3dbda;
-  --color-muted: #a58d66;
-  --color-accent: #407e8c;
-  --color-ink: #083a4f;
-  --color-ink-hover: #062c3b;
+     White Rock #F1E4DB · Grey Goose #D2CADF · Pink Daisy #E1A49A
+     Lotus #92333C · Thunder #372937 */
+  --color-canvas: #f1e4db;
+  --color-surface: #d2cadf;
+  --color-band: #e2d7dd;
+  --color-muted: #e1a49a;
+  --color-accent: #92333c;
+  --color-accent-hover: #782a31;
+  --color-ink: #372937;
+  --color-ink-hover: #291f29;
 
-  /* Admin surfaces — cool near-white so the data stays the loudest thing */
-  --color-admin-canvas: #f1f3f3;
+  /* Admin surfaces — a near-white drawn from the canvas, so the data leads */
+  --color-admin-canvas: #f7f2ef;
   --color-admin-surface: #ffffff;
-  --color-admin-border: #e3eced;
+  --color-admin-border: #e9e5ef;
 
-  /* Semantic — admin only */
-  --color-success: #1f6b4a;
-  --color-danger: #a33529;
-  --color-warning: #8a6417;
+  /* Semantic — admin only. Danger is Lotus itself. */
+  --color-success: #35634a;
+  --color-danger: #92333c;
+  --color-warning: #7e5516;
 
   /* Charts — revalidated against the new admin surface, max two per chart */
-  --color-chart-1: #0087a3;
-  --color-chart-2: #a8781e;
+  --color-chart-1: #b04552;
+  --color-chart-2: #5b4fa8;
 
   --font-display: var(--font-newsreader), Georgia, serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;

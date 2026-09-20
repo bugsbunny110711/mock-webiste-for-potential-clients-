@@ -6,10 +6,10 @@ import { cn } from '@/lib/utils';
  * Flat brand tints, one per slot, so a placeholder looks deliberate rather than
  * broken. Solid fills only — no gradients anywhere in this design system.
  */
-const TINTS = ['#c0d5d6', '#d3dbda', '#a58d66', '#407e8c', '#083a4f'];
+const TINTS = ['#d2cadf', '#e1a49a', '#e2d7dd', '#92333c', '#372937'];
 
 /** Tints dark enough that the brief needs light text over them. */
-const DARK_TINTS = new Set(['#407e8c', '#083a4f']);
+const DARK_TINTS = new Set(['#92333c', '#372937']);
 
 function seedOf(id: string): number {
   let hash = 0;

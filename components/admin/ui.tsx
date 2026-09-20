@@ -11,7 +11,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-2xl bg-admin-surface p-5 shadow-[0_0_0_1px_rgba(8,58,79,0.07),0_1px_2px_rgba(8,58,79,0.05)]',
+        'rounded-2xl bg-admin-surface p-5 shadow-[0_0_0_1px_rgba(55,41,55,0.08),0_1px_2px_rgba(55,41,55,0.05)]',
         className,
       )}
     >

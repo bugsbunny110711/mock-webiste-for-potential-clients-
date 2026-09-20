@@ -54,7 +54,7 @@ export function SubscribeForm({
         <button
           type='submit'
           disabled={isPending}
-          className='inline-flex h-11 shrink-0 items-center justify-center rounded-full bg-ink px-6 text-sm font-medium text-canvas transition-colors hover:bg-ink-hover disabled:opacity-50'
+          className='inline-flex h-11 shrink-0 items-center justify-center rounded-full bg-accent px-6 text-sm font-medium text-canvas transition-colors hover:bg-accent-hover disabled:opacity-50'
         >
           {isPending ? <TextShimmer>Adding…</TextShimmer> : 'Keep me posted'}
         </button>
