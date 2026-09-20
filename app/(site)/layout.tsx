@@ -1,4 +1,4 @@
-import { Nav } from '@/components/site/nav';
+import { SiteDock } from '@/components/site/site-dock';
 import { Footer } from '@/components/site/footer';
 
 export default function SiteLayout({
@@ -8,8 +8,9 @@ export default function SiteLayout({
 }) {
   return (
     <div className='flex min-h-screen flex-col'>
-      <Nav />
-      <main className='flex-1'>{children}</main>
+      <SiteDock />
+      {/* Clears the bar, which is fixed and so outside the flow. */}
+      <main className='flex-1 pt-24 sm:pt-28'>{children}</main>
       <Footer />
     </div>
   );

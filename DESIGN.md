@@ -105,6 +105,16 @@ One library (Motion Primitives), one component per job, no overlaps.
 | `TextShimmer` | Loading states only | Decoration |
 | Sliding auth card | The coach's sign-in card only | Anywhere else |
 | Sidebar indicator | The admin rail's active row | The public site |
+| Dock magnification | The public site's floating dock | The admin panel |
+
+The public site has no header. Navigation is a frosted dock fixed to the bottom
+of the viewport, whose icons magnify as the pointer passes — each item measures
+its distance from the pointer and maps it to a width, so the row rests flat when
+the pointer is away. Booking keeps the accent fill rather than becoming another
+equal icon, because selling sessions is what the site is for. Since the dock has
+no visible text, every item carries an `aria-label`, the current page carries
+`aria-current`, and a skip link jumps keyboard users to it — it sits last in the
+DOM, matching where it appears on screen.
 
 The admin sidebar's active indicator is a single element moved by a CSS custom
 property, following the same idea as its reference implementation. The reference
