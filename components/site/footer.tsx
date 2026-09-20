@@ -9,6 +9,7 @@ const columns = [
       { href: '/courses', label: 'Courses' },
       { href: '/book', label: 'One-to-one sessions' },
       { href: '/retreats', label: 'Retreats' },
+      { href: '/workshops', label: 'Workshops for teams' },
       { href: '/courses/breathwork-for-teachers', label: 'Teacher training' },
     ],
   },

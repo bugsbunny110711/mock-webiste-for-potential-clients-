@@ -56,6 +56,7 @@ export default async function CheckoutPage({
             }
             date={date}
             time={time}
+            isCourse={Boolean(course)}
           />
         </div>
 

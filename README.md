@@ -41,6 +41,7 @@ npm run lint
 | `/courses/[slug]` | Course detail with syllabus and a sticky enrolment panel |
 | `/about` | Long-form about page, training history, gallery |
 | `/retreats`, `/retreats/[slug]` | Two retreats, with itinerary and what is included |
+| `/workshops` | Workshops for teams — three formats and indicative pricing |
 | `/journal`, `/journal/[slug]` | Three long-form articles |
 | `/book` | Three session types, each opening a booking dialog |
 | `/checkout` | Order summary and payment form (stubbed) |

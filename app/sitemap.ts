@@ -8,6 +8,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/courses`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE_URL}/book`, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE_URL}/retreats`, changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/workshops`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/about`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${SITE_URL}/journal`, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${SITE_URL}/contact`, changeFrequency: 'yearly', priority: 0.6 },

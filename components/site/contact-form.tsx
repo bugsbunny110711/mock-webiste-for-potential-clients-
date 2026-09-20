@@ -12,6 +12,7 @@ const SUBJECTS = [
   'A course',
   'One-to-one sessions',
   'A retreat',
+  'A workshop for my team',
   'Teacher training',
   'Something else',
 ];

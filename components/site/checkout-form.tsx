@@ -32,12 +32,15 @@ export function CheckoutForm({
   detail,
   date,
   time,
+  isCourse = false,
 }: {
   itemName: string;
   amountGBP: number;
   detail: string;
   date?: string;
   time?: string;
+  /** Courses come with recordings, so they send people to set up an account. */
+  isCourse?: boolean;
 }) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -85,11 +88,29 @@ export function CheckoutForm({
             {longDate(date)} at {time}
           </p>
         )}
+
+        {isCourse && (
+          <div className='mt-6 rounded-xl bg-canvas p-5'>
+            <p className='font-medium'>Set up your account</p>
+            <p className='mt-2 text-sm leading-relaxed opacity-85'>
+              Your recordings live in your account. Create one with{' '}
+              <strong>{email}</strong> — the same address you just used — and
+              this course will be waiting inside it.
+            </p>
+            <Link
+              href='/account/login'
+              className='mt-4 inline-flex h-10 items-center rounded-full bg-ink px-5 text-sm font-medium text-canvas transition-colors hover:bg-ink-hover'
+            >
+              Create your account
+            </Link>
+          </div>
+        )}
+
         <Link
-          href='/'
+          href={isCourse ? '/account/login' : '/'}
           className='mt-8 inline-block text-sm underline underline-offset-4'
         >
-          Back to the site →
+          {isCourse ? 'Do it later →' : 'Back to the site →'}
         </Link>
       </div>
     );

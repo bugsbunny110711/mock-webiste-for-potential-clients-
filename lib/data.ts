@@ -400,3 +400,58 @@ export const journal: JournalPost[] = [
     ],
   },
 ];
+
+export type WorkshopFormat = {
+  id: string;
+  name: string;
+  minutes: number;
+  fromGBP: number;
+  capacity: string;
+  summary: string;
+  includes: string[];
+};
+
+export const workshops: WorkshopFormat[] = [
+  {
+    id: 'w-taster',
+    name: 'The lunchtime one',
+    minutes: 45,
+    fromGBP: 350,
+    capacity: 'Up to 30 people',
+    summary:
+      'A single session that fits in a lunch break. Enough physiology to make it stick, and one practice short enough to use at a desk.',
+    includes: [
+      'One 45-minute session, in person or online',
+      'A one-page practice card for everyone afterwards',
+      'No mats, no changing, no floor work',
+    ],
+  },
+  {
+    id: 'w-series',
+    name: 'A short series',
+    minutes: 45,
+    fromGBP: 1200,
+    capacity: 'Up to 20 people',
+    summary:
+      'Four weekly sessions. Long enough for a practice to survive contact with a real working week, which one session rarely is.',
+    includes: [
+      'Four 45-minute sessions, weekly',
+      'Recordings for anyone who misses one',
+      'A short anonymous check-in at the start and the end',
+    ],
+  },
+  {
+    id: 'w-away-day',
+    name: 'Part of an away day',
+    minutes: 90,
+    fromGBP: 900,
+    capacity: 'Up to 40 people',
+    summary:
+      'A longer slot built into a day you are already running. Usually placed after lunch, when a room full of people has stopped listening.',
+    includes: [
+      'One 90-minute session',
+      'Shaped around whatever else is on the agenda',
+      'Travel within two hours of Bristol included',
+    ],
+  },
+];
