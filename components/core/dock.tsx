@@ -11,13 +11,13 @@ import {
   AnimatePresence,
   motion,
   useMotionValue,
-  useMotionValueEvent,
   useSpring,
   useTransform,
   useReducedMotion,
   type MotionValue,
   type SpringOptions,
 } from 'motion/react';
+import { TextRoll } from '@/components/core/text-roll';
 import { cn } from '@/lib/utils';
 
 /**
@@ -35,8 +35,6 @@ type DockContextValue = {
   magnification: number;
   distance: number;
   isStatic: boolean;
-  /** Within this many pixels of the pointer, an item swaps its word for its icon. */
-  labelHideDistance: number;
 };
 
 const DockContext = createContext<DockContextValue | null>(null);
@@ -60,7 +58,6 @@ export function Dock({
   magnification = 62,
   distance = 130,
   panelSize = 64,
-  labelHideDistance = 80,
 }: {
   children: ReactNode;
   className?: string;
@@ -69,7 +66,6 @@ export function Dock({
   distance?: number;
   /** Row height. Reserve room for a magnified item so the bar never jumps. */
   panelSize?: number;
-  labelHideDistance?: number;
 }) {
   const mouseX = useMotionValue(Infinity);
   const shouldReduceMotion = useReducedMotion();
@@ -81,7 +77,6 @@ export function Dock({
         spring,
         magnification,
         distance,
-        labelHideDistance,
         // Magnification is pointer-driven and decorative; with reduced motion
         // the dock stays a plain row of fixed-size items that keep their words.
         isStatic: Boolean(shouldReduceMotion),
@@ -115,22 +110,18 @@ export function DockItem({
   className?: string;
   baseSize?: number;
   /**
-   * When the item carries a visible word it sizes itself to its contents and
-   * only the icon magnifies — driving the pill's width from the spring as well
-   * would fight the word collapsing out of it.
+   * Whether this item magnifies with the pointer's distance.
+   *
+   * Only the symbols-only dock does. A labelled item holds a fixed box: its
+   * width is set by its word, and letting the pointer drive that width is what
+   * shoves every other option along the bar as the pointer travels.
    */
   sizeContainer?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const {
-    mouseX,
-    spring,
-    magnification,
-    distance,
-    isStatic,
-    labelHideDistance,
-  } = useDock();
+  const [isFocused, setIsFocused] = useState(false);
+  const [isPointerOver, setIsPointerOver] = useState(false);
+  const { mouseX, spring, magnification, distance, isStatic } = useDock();
 
   const distanceFromPointer = useTransform(mouseX, (value) => {
     const bounds = ref.current?.getBoundingClientRect() ?? {
@@ -147,22 +138,22 @@ export function DockItem({
   );
   const size = useSpring(targetSize, spring);
 
-  // At rest every item is a word. Only the items the pointer comes close to
-  // trade their word for the symbol and swell; the rest stay as they were, so
-  // the bar never collapses all at once.
-  const [isNear, setIsNear] = useState(false);
-  useMotionValueEvent(distanceFromPointer, 'change', (value) => {
-    const near = Math.abs(value) < labelHideDistance;
-    // Only a crossing re-renders — the value itself changes on every pointer
-    // move and must not.
-    setIsNear((previous) => (previous === near ? previous : near));
-  });
-
-  const showLabel = isStatic || !isNear;
+  // The word rolls away for the pointer only. Focus deliberately does not do
+  // it: a keyboard user arriving on an item needs to read its name, not watch
+  // it leave.
+  const magnifies = sizeContainer && !isStatic;
+  const isRolled = isPointerOver && !isStatic;
 
   return (
     <DockItemContext.Provider
-      value={{ size, isHovered, baseSize, showLabel, isStatic }}
+      value={{
+        size,
+        isHovered: isPointerOver || isFocused,
+        isRolled,
+        baseSize,
+        isStatic,
+        magnifies,
+      }}
     >
       <motion.div
         ref={ref}
@@ -177,10 +168,10 @@ export function DockItem({
               ? { width: baseSize, height: baseSize }
               : { width: size, height: size }
         }
-        onHoverStart={() => setIsHovered(true)}
-        onHoverEnd={() => setIsHovered(false)}
-        onFocus={() => setIsHovered(true)}
-        onBlur={() => setIsHovered(false)}
+        onHoverStart={() => setIsPointerOver(true)}
+        onHoverEnd={() => setIsPointerOver(false)}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         className={cn(
           'relative flex shrink-0 items-center justify-center',
           className,
@@ -195,9 +186,10 @@ export function DockItem({
 const DockItemContext = createContext<{
   size: MotionValue<number>;
   isHovered: boolean;
+  isRolled: boolean;
   baseSize: number;
-  showLabel: boolean;
   isStatic: boolean;
+  magnifies: boolean;
 } | null>(null);
 
 function useDockItem() {
@@ -214,14 +206,31 @@ export function DockIcon({
   children: ReactNode;
   className?: string;
 }) {
-  const { size, baseSize, isStatic } = useDockItem();
+  const { size, baseSize, isStatic, magnifies, isRolled } = useDockItem();
   const iconSize = useTransform(size, (value) => value * 0.42);
+  const restSize = baseSize * 0.42;
+
+  // Where the item does not magnify, the symbol holds a fixed box and grows by
+  // transform instead. A transform costs no layout, so the hovered symbol can
+  // swell without nudging the word beside it or the options either side.
+  if (!magnifies) {
+    return (
+      <motion.div
+        style={{ width: restSize, height: restSize }}
+        animate={{ scale: isRolled ? 1.3 : 1 }}
+        transition={{ type: 'spring', stiffness: 420, damping: 26 }}
+        className={cn('flex shrink-0 items-center justify-center', className)}
+      >
+        {children}
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
       style={
         isStatic
-          ? { width: baseSize * 0.42, height: baseSize * 0.42 }
+          ? { width: restSize, height: restSize }
           : { width: iconSize, height: iconSize }
       }
       className={cn('flex shrink-0 items-center justify-center', className)}
@@ -262,44 +271,37 @@ export function DockLabel({
 }
 
 /**
- * A word that lives inline beside the symbol rather than as a tooltip above it.
+ * The word beside the symbol, which rolls away while the pointer is on this
+ * item and rolls back when it leaves.
  *
- * Present at rest, and given up only by the items the pointer comes close to.
- * The word's width animates to nothing behind a clip, so it reads as folding
- * into the symbol beside it — and because the width drives the pill's own
- * width, its neighbours slide over continuously instead of snapping when the
- * word is finally removed.
+ * It rolls in place. A rotated character still occupies its layout width, so
+ * the item keeps exactly the width it had and nothing else on the bar moves —
+ * the symbol simply becomes the only thing left showing.
  *
- * It is hidden from assistive tech: the link already carries an aria-label, so
- * leaving the word in the tree would have it announced twice.
+ * The stagger is much tighter than TextRoll's default: at a tenth of a second
+ * per character 'Retreats' would take four fifths of a second to leave, which
+ * is far too slow to sit under a moving pointer.
  */
 export function DockText({
   children,
   className,
 }: {
-  children: ReactNode;
+  children: string;
   className?: string;
 }) {
-  const { showLabel } = useDockItem();
+  const { isRolled } = useDockItem();
 
   return (
-    <motion.span
-      aria-hidden
-      initial={false}
-      animate={
-        showLabel
-          ? { opacity: 1, width: 'auto', marginLeft: 8 }
-          : { opacity: 0, width: 0, marginLeft: 0 }
-      }
-      transition={{ duration: 0.24, ease: [0.22, 0.61, 0.36, 1] }}
-      className={cn(
-        // shrink-0 so the word keeps its full width: it is a flex child, and
-        // letting it compress is what crushes the row into itself.
-        'block shrink-0 overflow-hidden whitespace-nowrap',
-        className,
-      )}
+    <TextRoll
+      rolled={isRolled}
+      srOnlyHidden
+      duration={0.28}
+      getEnterDelay={(index) => index * 0.022}
+      getExitDelay={(index) => index * 0.022}
+      transition={{ ease: [0.22, 0.61, 0.36, 1] }}
+      className={cn('ml-2 whitespace-nowrap', className)}
     >
       {children}
-    </motion.span>
+    </TextRoll>
   );
 }

@@ -105,16 +105,42 @@ One library (Motion Primitives), one component per job, no overlaps.
 | `TextShimmer` | Loading states only | Decoration |
 | Sliding auth card | The coach's sign-in card only | Anywhere else |
 | Sidebar indicator | The admin rail's active row | The public site |
-| Dock magnification | The public site's floating dock | The admin panel |
+| Dock magnification | The public site's dock, symbols-only widths | The labelled bar |
+| `TextRoll` | The dock's words leaving and returning on hover | Body copy, headings |
 
-The public site has no header. Navigation is a frosted dock fixed to the bottom
-of the viewport, whose icons magnify as the pointer passes — each item measures
-its distance from the pointer and maps it to a width, so the row rests flat when
-the pointer is away. Booking keeps the accent fill rather than becoming another
-equal icon, because selling sessions is what the site is for. Since the dock has
-no visible text, every item carries an `aria-label`, the current page carries
-`aria-current`, and a skip link jumps keyboard users to it — it sits last in the
-DOM, matching where it appears on screen.
+Navigation is a frosted bar fixed to the top of the viewport, with the dock's
+behaviour inside it. It has two modes, and they animate differently on purpose.
+
+**Labelled** (1120px and up) the bar reads as words. Pointing at an option rolls
+that option's word away character by character with `TextRoll`, leaving its
+symbol, and moving off rolls the word back. Nothing else reacts:
+
+- **Only the option under the pointer.** Hover on that item drives it, not
+  distance from the pointer. An earlier proximity model dimmed a whole
+  neighbourhood of options at once, which made the bar feel like it was
+  rippling.
+- **Nothing moves, anywhere.** A rotated character keeps its layout width, so a
+  word rolling away does not resize its own pill, let alone shift its
+  neighbours. Distance magnification is off in this mode for the same reason —
+  driving a labelled item's width from the pointer shoves every option along
+  the bar as the pointer travels. The hovered symbol still swells, by
+  `transform: scale`, which costs no layout.
+- The stagger is 22ms per character against TextRoll's default 100ms. At the
+  default, `Retreats` would take four fifths of a second to leave, which is far
+  too slow to sit under a moving pointer.
+
+**Symbols-only** (below 1120px, where eight words will not fit) the dock keeps
+the original magnification: each item measures its distance from the pointer and
+maps it to a width, so the row rests flat when the pointer is away, and the
+tooltip names each item.
+
+Booking keeps the accent fill rather than becoming another equal option, because
+selling sessions is what the site is for. Every item carries an `aria-label` and
+the current page carries `aria-current`, since in symbols-only mode there is no
+visible text to name them — and the rolled word is hidden from assistive tech
+for the same reason, so it is not announced twice. Focus deliberately does not
+roll the word away: a keyboard user arriving on an option needs to read its
+name, not watch it leave.
 
 The admin sidebar's active indicator is a single element moved by a CSS custom
 property, following the same idea as its reference implementation. The reference
