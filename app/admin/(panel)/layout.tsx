@@ -6,7 +6,7 @@ import { Sidebar } from '@/components/admin/sidebar';
 import { verifySession } from '@/lib/session';
 
 export const metadata: Metadata = {
-  title: 'Admin — Still Point',
+  title: 'Admin — Maya Ellison',
   robots: { index: false, follow: false },
 };
 

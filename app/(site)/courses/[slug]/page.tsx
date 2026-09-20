@@ -18,9 +18,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const course = courses.find((c) => c.slug === slug);
-  if (!course) return { title: 'Course not found — Still Point' };
+  if (!course) return { title: 'Course not found — Maya Ellison' };
   return {
-    title: `${course.title} — Still Point`,
+    title: `${course.title} — Maya Ellison`,
     description: course.tagline,
   };
 }

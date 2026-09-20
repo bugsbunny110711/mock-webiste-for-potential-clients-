@@ -5,7 +5,7 @@ import { Photo } from '@/components/site/photo';
 import { coach } from '@/lib/data';
 
 export const metadata: Metadata = {
-  title: 'Get in touch — Still Point',
+  title: 'Get in touch — Maya Ellison',
   description:
     'Ask about a course, a one-to-one session, a retreat, or teacher training. Maya reads every message herself.',
 };

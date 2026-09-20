@@ -13,7 +13,7 @@ import { longDate } from '@/lib/format';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Your account — Still Point',
+  title: 'Your account — Maya Ellison',
   robots: { index: false, follow: false },
 };
 

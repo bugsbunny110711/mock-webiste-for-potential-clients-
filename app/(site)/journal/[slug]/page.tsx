@@ -18,9 +18,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = journal.find((p) => p.slug === slug);
-  if (!post) return { title: 'Not found — Still Point' };
+  if (!post) return { title: 'Not found — Maya Ellison' };
   return {
-    title: `${post.title} — Still Point`,
+    title: `${post.title} — Maya Ellison`,
     description: post.standfirst,
   };
 }

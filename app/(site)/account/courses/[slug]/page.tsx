@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Your course — Still Point',
+  title: 'Your course — Maya Ellison',
   robots: { index: false, follow: false },
 };
 

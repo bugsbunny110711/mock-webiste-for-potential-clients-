@@ -6,7 +6,7 @@ import { ButtonLink } from '@/components/ui/button';
 import { coach } from '@/lib/data';
 
 export const metadata: Metadata = {
-  title: 'About Maya Ellison — Still Point',
+  title: 'About Maya — Maya Ellison',
   description:
     'Eleven years teaching breathwork and yoga in Bristol and online. How I work, who I work with, and who I turn away.',
 };

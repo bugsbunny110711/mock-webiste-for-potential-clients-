@@ -5,7 +5,7 @@ import { sessionTypes } from '@/lib/data';
 import { gbp } from '@/lib/format';
 
 export const metadata: Metadata = {
-  title: 'Book a session — Still Point',
+  title: 'Book a session — Maya Ellison',
   description:
     'Book a one-to-one breathwork or yoga session with Maya Ellison. No course required.',
 };

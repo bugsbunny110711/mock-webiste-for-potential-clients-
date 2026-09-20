@@ -4,7 +4,7 @@ import { CourseCard } from '@/components/site/course-card';
 import { courses } from '@/lib/data';
 
 export const metadata: Metadata = {
-  title: 'Courses — Still Point',
+  title: 'Courses — Maya Ellison',
   description:
     'Breathwork and yoga courses, live online and always recorded. Foundation through to professional training for teachers.',
 };
