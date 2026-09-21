@@ -5,6 +5,7 @@ import { ScrollPathBackdrop } from '@/components/core/scroll-path';
 import { ButtonLink } from '@/components/ui/button';
 import { CourseCard } from '@/components/site/course-card';
 import { TestimonialCard } from '@/components/site/testimonial-card';
+import { TestimonialRail } from '@/components/site/testimonial-rail';
 import { Gallery } from '@/components/site/gallery';
 import { Faq } from '@/components/site/faq';
 import { Photo } from '@/components/site/photo';
@@ -174,11 +175,17 @@ export default function HomePage() {
                 What people say afterwards.
               </h2>
             </InView>
-            <div className='mt-12 columns-1 gap-4 md:columns-2 lg:columns-3'>
+            {/* Masonry from md up, a swipeable row below it — five cards in
+                one column is a very long scroll past the same kind of thing. */}
+            <div className='mt-12 hidden gap-4 md:block md:columns-2 lg:columns-3'>
               {testimonials.map((testimonial) => (
                 <TestimonialCard key={testimonial.id} testimonial={testimonial} />
               ))}
             </div>
+            <TestimonialRail
+              testimonials={testimonials}
+              className='mt-12 md:hidden'
+            />
           </div>
         </section>
       </ScrollPathBackdrop>
