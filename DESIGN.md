@@ -125,14 +125,20 @@ symbol, and moving off rolls the word back. Nothing else reacts:
   driving a labelled item's width from the pointer shoves every option along
   the bar as the pointer travels. The hovered symbol swells and crosses to the
   middle of its pill by `transform`, which costs no layout.
-- **The symbol centres only once the word has gone**, and on the way out it
-  returns to its slot *before* the word rolls back — a word rolling in
-  underneath a symbol still sitting in the centre would land on top of it. The
-  two are one sequence, so their timings live together at the top of
-  `dock.tsx`. How far the symbol travels, and how long this particular word
-  takes to roll, are measured when the pointer arrives: by then the display
-  face has certainly loaded, and an event handler is the one place a layout
-  read needs no effect.
+- **The symbol crosses to the middle of its pill as the word leaves**, both
+  starting the moment the pointer arrives. Holding the glide until the word had
+  finished rolling read as lag: the glide is the part the eye follows, and it
+  did not begin until a third of a second in. They overlap cleanly going in,
+  because the word rolls away from its first character — the end the symbol
+  crosses first — so the characters clear ahead of it.
+- **Coming back is the awkward direction**, since the symbol travels towards
+  where the word is reappearing. The word pauses 120ms, enough for the symbol
+  to clear the space it returns into, rather than the whole length of the
+  glide. Timings live together at the top of `dock.tsx`, as one sequence.
+- How far the symbol travels is measured when the pointer arrives, not on
+  mount: by then the display face has certainly loaded, so the width is the one
+  actually on screen, and an event handler is the one place a layout read needs
+  no effect.
 - The stagger is 22ms per character against TextRoll's default 100ms. At the
   default, `Retreats` would take four fifths of a second to leave, which is far
   too slow to sit under a moving pointer.
