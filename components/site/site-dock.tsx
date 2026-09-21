@@ -2,58 +2,33 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import {
-  BookOpen,
-  CalendarHeart,
-  GraduationCap,
-  HomeIcon,
-  Mail,
-  Mountain,
-  UserRound,
-  UserCircle2,
-} from 'lucide-react';
+import { CalendarHeart } from 'lucide-react';
 import { Dock, DockIcon, DockItem, DockText } from '@/components/core/dock';
 import { BrandMark } from '@/components/site/logo';
-import { useMediaQuery } from '@/lib/hooks';
+import { MobileNav } from '@/components/site/mobile-nav';
+import { isActiveHref, siteNavItems } from '@/components/site/nav-items';
 import { coach } from '@/lib/data';
 import { cn } from '@/lib/utils';
 
-const items = [
-  { title: 'Home', href: '/', icon: HomeIcon },
-  { title: 'Courses', href: '/courses', icon: GraduationCap },
-  { title: 'Retreats', href: '/retreats', icon: Mountain },
-  { title: 'Journal', href: '/journal', icon: BookOpen },
-  { title: 'About', href: '/about', icon: UserRound },
-  { title: 'Contact', href: '/contact', icon: Mail },
-  { title: 'Account', href: '/account', icon: UserCircle2 },
-];
-
 /**
- * The site's navigation: a frosted bar pinned to the top, with the dock's
- * magnification inside it.
+ * The site's navigation, pinned to the top of the viewport in two shapes.
  *
- * Brand and dock share one panel rather than floating as separate pills —
- * separate pills either side of a centred dock collide on a phone, where the
- * three together are wider than the viewport.
+ * At 1120px and up it is the horizontal bar: the mark, then every destination
+ * as a word, each trading its word for its symbol as the pointer reaches it.
+ * Measured, that bar is 1030px wide, so it needs a 1070px viewport — this is
+ * the width at which it stops being cramped.
+ *
+ * Below that it is three lines and a panel (see MobileNav), because the same
+ * eight destinations in one row on a phone means eight 34px targets four
+ * pixels apart with no words on them.
+ *
+ * Which one shows is decided in CSS rather than by a media query hook. A hook
+ * reports false until it has run, so the first paint would be the phone bar on
+ * every machine, and a desktop would visibly swap after hydration.
  */
 export function SiteDock() {
   const pathname = usePathname();
-  // The words are the resting state wherever the eight of them fit. Measured,
-  // the labelled bar is 1030px wide now the brand is the mark alone, so it
-  // needs a 1070px viewport and this threshold leaves 90px of slack — room for
-  // a font that renders wider elsewhere, rather than clearing it by a hair.
-  // Under it the dock falls back to symbols with the tooltip, and the footer
-  // carries the full text nav.
-  const showLabels = useMediaQuery('(min-width: 1120px)');
-  const isWide = useMediaQuery('(min-width: 640px)');
-
-  // baseSize drives the symbol too (DockIcon takes 42% of it), so it sets the
-  // whole bar's weight, not just the tap target.
-  const base = showLabels ? 44 : isWide ? 40 : 34;
-  const magnification = showLabels ? 66 : isWide ? 54 : 46;
-
-  const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+  const isActive = (href: string) => isActiveHref(pathname, href);
 
   return (
     <header
@@ -62,15 +37,15 @@ export function SiteDock() {
     >
       <div
         className={cn(
-          'pointer-events-auto mx-auto flex w-fit max-w-full items-center justify-between gap-2 rounded-[30px] border border-ink/10 px-2 sm:gap-4 sm:px-4',
+          'pointer-events-auto mx-auto hidden w-fit max-w-full items-center justify-between gap-4 rounded-[30px] border border-ink/10 px-4 min-[1120px]:flex',
           // The frosted panel: translucent fill plus a heavy blur, so whatever
           // scrolls beneath shows through as colour rather than detail.
           'bg-canvas/65 shadow-[0_8px_36px_rgb(55_41_55/14%)] backdrop-blur-xl backdrop-saturate-150',
         )}
       >
-        {/* The mark alone, at every width. The wordmark repeated the brand the
-            page already states, and next to eight nav words it read as a ninth;
-            the monogram reads as the identity instead. The link keeps its
+        {/* The mark alone. The wordmark repeated the brand the page already
+            states, and next to eight nav words it read as a ninth; the
+            monogram reads as the identity instead. The link keeps its
             aria-label, which is now the only place the name is given here. */}
         <Link
           href='/'
@@ -80,23 +55,17 @@ export function SiteDock() {
           <BrandMark size={30} />
         </Link>
 
-        <Dock
-          className={cn('mx-auto', showLabels ? 'gap-2' : 'gap-1 sm:gap-2')}
-          magnification={magnification}
-          distance={showLabels ? 150 : 110}
-          panelSize={showLabels ? 58 : magnification + 6}
-        >
-          {items.map((item) => {
+        <Dock className='mx-auto gap-2' magnification={66} distance={150} panelSize={58}>
+          {siteNavItems.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
             return (
               <DockItem
                 key={item.href}
-                baseSize={base}
-                sizeContainer={!showLabels}
+                baseSize={44}
+                sizeContainer={false}
                 className={cn(
-                  'rounded-full transition-colors',
-                  showLabels && 'px-4 py-2.5',
+                  'rounded-full px-4 py-2.5 transition-colors',
                   active ? 'bg-ink/12' : 'hover:bg-ink/8',
                 )}
               >
@@ -109,11 +78,9 @@ export function SiteDock() {
                   <DockIcon>
                     <Icon className='h-full w-full text-ink' strokeWidth={1.6} />
                   </DockIcon>
-                  {showLabels && (
-                    <DockText className='text-[15px] text-ink'>
-                      {item.title}
-                    </DockText>
-                  )}
+                  <DockText className='text-[15px] text-ink'>
+                    {item.title}
+                  </DockText>
                 </Link>
               </DockItem>
             );
@@ -122,12 +89,9 @@ export function SiteDock() {
           {/* Kept visually distinct: in a row of equal items the one thing the
               site exists to sell would read as just another page. */}
           <DockItem
-            baseSize={base}
-            sizeContainer={!showLabels}
-            className={cn(
-              'rounded-full bg-accent text-canvas',
-              showLabels && 'px-5 py-2.5',
-            )}
+            baseSize={44}
+            sizeContainer={false}
+            className='rounded-full bg-accent px-5 py-2.5 text-canvas'
           >
             <Link
               href='/book'
@@ -141,12 +105,14 @@ export function SiteDock() {
                   strokeWidth={1.6}
                 />
               </DockIcon>
-              {showLabels && (
-                <DockText className='text-[15px] font-medium'>Book</DockText>
-              )}
+              <DockText className='text-[15px] font-medium'>Book</DockText>
             </Link>
           </DockItem>
         </Dock>
+      </div>
+
+      <div className='mx-auto w-full max-w-2xl min-[1120px]:hidden'>
+        <MobileNav />
       </div>
     </header>
   );
