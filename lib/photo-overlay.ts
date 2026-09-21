@@ -6,4 +6,7 @@
  * lib/photos.ts merges this over the static slot definitions, so an uploaded
  * photograph wins over the placeholder without the source file changing.
  */
-export const uploadedPhotos: Record<string, string> = {};
+export const uploadedPhotos: Record<string, string> = {
+  'coach-portrait': '/photos/coach-portrait.jpg',
+  'coach-portrait-seated': '/photos/coach-portrait-seated.jpg',
+};
