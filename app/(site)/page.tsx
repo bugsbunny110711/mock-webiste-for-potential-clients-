@@ -5,6 +5,7 @@ import { ScrollPathBackdrop } from '@/components/core/scroll-path';
 import { ButtonLink } from '@/components/ui/button';
 import { CourseCard } from '@/components/site/course-card';
 import { TestimonialCard } from '@/components/site/testimonial-card';
+import { HeroPortrait } from '@/components/site/hero-portrait';
 import { TestimonialRail } from '@/components/site/testimonial-rail';
 import { Gallery } from '@/components/site/gallery';
 import { Faq } from '@/components/site/faq';
@@ -21,29 +22,43 @@ export default function HomePage() {
           (DESIGN.md §4). The canvas is flat: this system has no gradients. */}
       <section className='relative overflow-hidden'>
         <div className='relative mx-auto max-w-6xl px-6 pt-20 pb-24 sm:pt-28 sm:pb-32'>
-          <p className='mb-6 text-xs tracking-[0.2em] uppercase opacity-70'>
-            {coach.role} · {coach.location}
-          </p>
-          <TextEffect
-            as='h1'
-            per='word'
-            preset='blur'
-            className='max-w-4xl text-5xl leading-[1.05] sm:text-6xl md:text-7xl'
-          >
-            Put your nervous system back in your own hands.
-          </TextEffect>
-          <p className='mt-8 max-w-xl text-lg leading-relaxed opacity-85'>
-            Breathwork and yoga courses for people who are tired of being told to
-            relax. Practical, unhurried, and short enough that you will actually
-            do them.
-          </p>
-          <div className='mt-10 flex flex-wrap gap-3'>
-            <ButtonLink href='/courses' size='lg'>
-              See the courses
-            </ButtonLink>
-            <ButtonLink href='/book' size='lg' variant='secondary'>
-              Book a one-to-one
-            </ButtonLink>
+          {/* Two columns from lg up: the words carry the weight, the portrait
+              gives the page a face above the fold. Below lg the portrait sits
+              under the copy rather than beside it, where it would be too small
+              to be worth the height. */}
+          <div className='grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16'>
+            {/* The heading stays first in the DOM, for reading order and for
+                what lands at the top of the document; only the visual order
+                swaps, so a phone leads with her face rather than a screen of
+                text before it. */}
+            <div className='order-2 lg:order-1'>
+              <p className='mb-6 text-xs tracking-[0.2em] uppercase opacity-70'>
+                {coach.role} · {coach.location}
+              </p>
+              <TextEffect
+                as='h1'
+                per='word'
+                preset='blur'
+                className='text-5xl leading-[1.05] sm:text-6xl lg:text-[3.9rem] xl:text-7xl'
+              >
+                Put your nervous system back in your own hands.
+              </TextEffect>
+              <p className='mt-8 max-w-xl text-lg leading-relaxed opacity-85'>
+                Breathwork and yoga courses for people who are tired of being
+                told to relax. Practical, unhurried, and short enough that you
+                will actually do them.
+              </p>
+              <div className='mt-10 flex flex-wrap gap-3'>
+                <ButtonLink href='/courses' size='lg'>
+                  See the courses
+                </ButtonLink>
+                <ButtonLink href='/book' size='lg' variant='secondary'>
+                  Book a one-to-one
+                </ButtonLink>
+              </div>
+            </div>
+
+            <HeroPortrait className='order-1 lg:order-2' />
           </div>
 
           <dl className='mt-20 grid max-w-2xl grid-cols-3 gap-8 border-t border-ink/15 pt-8'>
@@ -98,8 +113,10 @@ export default function HomePage() {
         <section className='py-24'>
           <div className='mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-2 md:items-center'>
             <InView>
+              {/* The tighter crop, not the hero's frame: the same picture
+                  twice within two screens reads as a mistake. */}
               <Photo
-                id='coach-portrait'
+                id='coach-portrait-seated'
                 ratio='aspect-[4/5]'
                 className='rounded-card'
                 sizes='(max-width: 768px) 100vw, 50vw'

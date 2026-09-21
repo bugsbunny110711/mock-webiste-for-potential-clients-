@@ -100,6 +100,7 @@ One library (Motion Primitives), one component per job, no overlaps.
 | `InView` reveal-text | Section headings + intro copy below the fold | Pricing, FAQ, checkout, admin |
 | `InView` reveal-grid | Gallery masonry, course grid | Testimonials |
 | `Tilt` | Testimonial cards only | Course cards |
+| Hero parallax | The portrait inside its arch, homepage only | Any other image |
 | Scroll-snap rail | The testimonials below `md`, on touch | Anything above `md` |
 | `Spotlight` | Hero ambient light, once | Everywhere else |
 | `MorphingDialog` | 1-1 booking step 1 | Payment (own route) |
@@ -240,6 +241,24 @@ is used.
 The dots are the scroll position — the scrollbar is hidden, since two
 indicators for one thing is noise. The rail is a focusable `region` so a
 keyboard can scroll it, and each dot names the card it goes to.
+
+The hero carries the coach's portrait in an arch. It had no picture at all
+before, and a plain rectangle would have read as a stock block dropped beside
+the text; the arch also echoes the rounded vocabulary the dock and cards use.
+
+- **The picture moves inside a fixed frame, not the frame itself.** It is 112%
+  of the frame's height and travels within the 12% of slack, so the arch is
+  always full. Translating the frame would drag a gap in behind it at one end
+  of the travel.
+- **The heading stays first in the DOM and only the visual order swaps**, so a
+  phone leads with her face — the strongest thing a coaching site has — while
+  the `h1` is still the first thing in the document.
+- **Two crops of the one photograph**, not one used twice: the hero takes the
+  full frame, the homepage's about strip a tighter head and shoulders. The same
+  picture twice within two screens reads as a mistake.
+- The source is 735px wide, so it is served at native size. Upscaling adds no
+  detail, only softness and filesize; a larger original would sharpen it on
+  wide screens.
 
 **Global rules**
 - Every component checks `prefers-reduced-motion` and falls back to a static state.
