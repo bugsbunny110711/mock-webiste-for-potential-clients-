@@ -143,10 +143,28 @@ symbol, and moving off rolls the word back. Nothing else reacts:
   default, `Retreats` would take four fifths of a second to leave, which is far
   too slow to sit under a moving pointer.
 
-**Symbols-only** (below 1120px, where eight words will not fit) the dock keeps
-the original magnification: each item measures its distance from the pointer and
-maps it to a width, so the row rests flat when the pointer is away, and the
-tooltip names each item.
+**Below 1120px** the bar is three lines, the mark and Book; tapping the lines
+drops a panel over the page with every destination as a 54px row with its name
+written out. The row of symbols it replaces put eight 34px targets four pixels
+apart on a phone, none of them labelled — the people with the least room were
+the only ones navigating by guesswork.
+
+- **The bar stays pinned.** What the row of options cost was the width, not the
+  strip of screen, so the three lines remain at every scroll position and
+  navigation is one tap from anywhere on a very long page.
+- **Booking stays out of the panel**, in the bar, because two taps behind a
+  closed menu is where a booking goes to die. It also gets the full-width row at
+  the foot of the open panel.
+- The mark is centred by giving the bar equal outer grid columns. Sizing them to
+  their contents puts it wherever the wider of the two pushes it — 20px off,
+  Book being the wider.
+- Opening holds the page still underneath, Escape closes, and following a link
+  closes it by itself: the panel is open only for the route it was opened on,
+  which needs no effect watching the pathname.
+
+**Which one shows is decided in CSS**, not by a media query hook. A hook reports
+false until it has run, so the first paint would be the phone bar on every
+machine and a desktop would visibly swap after hydration.
 
 Booking keeps the accent fill rather than becoming another equal option, because
 selling sessions is what the site is for. Every item carries an `aria-label` and
