@@ -197,6 +197,15 @@ serpentine that descends without crossing itself.
   single 800px section would squash it into zigzags. The homepage backdrop is
   2292px and `/about` 1835px — 1.15x and 0.92x, near enough to the proportions
   it was drawn at.
+- **Both scroll offsets anchor to the same point in the viewport**
+  (`['start 80%', 'end 80%']`), which is what holds the drawing tip still on
+  screen. The obvious range — top enters the bottom, bottom leaves the top —
+  is the section's height *plus a viewport*, while the line is only as tall as
+  the section; the tip then advances the line's height while the line scrolls
+  a viewport further, losing exactly one viewport over the pass. It drew at
+  about three quarters of scroll speed, crept up the screen and left out of the
+  top. Anchored, the tip holds within 56px of its mark instead of drifting
+  849px.
 - **It sits at `-z-10` inside an `isolate` wrapper**, which puts it above the
   tinted section backgrounds but below their text. The band is wider than the
   page gutter, so it runs behind about 300px of body copy — hence 0.28 opacity,

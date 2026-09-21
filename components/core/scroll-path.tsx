@@ -31,7 +31,7 @@ export function ScrollPath({
   // runs behind roughly 300px of body copy; at any real strength that is
   // something to read through rather than past.
   opacity = 0.28,
-  offset = ['start end', 'end start'],
+  offset = ['start 80%', 'end 80%'],
 }: {
   d: string;
   viewBox: string;
@@ -54,15 +54,27 @@ export function ScrollPath({
 
   const { scrollYProgress } = useScroll({
     target,
-    // Starts drawing as the section's top reaches the bottom of the viewport
-    // and finishes as its bottom leaves the top, so the whole pass is used
-    // rather than only the part where the section is already centred.
+    // Both edges anchor to the same point in the viewport, which is what
+    // keeps the drawing tip still on screen.
+    //
+    // The obvious range — top enters the bottom, bottom leaves the top — is
+    // the section's height PLUS a viewport, while the line is only as tall as
+    // the section. Over one pass the tip then advances the line's height while
+    // the line itself scrolls a viewport further, so the tip loses exactly one
+    // viewport: it creeps up the screen and leaves out of the top, drawing at
+    // around three quarters of scroll speed. Anchoring both edges makes the
+    // range the section's height, so the tip advances a pixel per pixel
+    // scrolled and stays put at 80% down the screen.
     offset: offset as never,
   });
 
+  // Tight enough to stay under the pointer's thumb. The softer spring this
+  // started with lagged visibly on a fast flick, which reads as the same
+  // 'line and scroll move at different speeds' fault even once the range is
+  // right.
   const pathLength: MotionValue<number> | number = useSpring(scrollYProgress, {
-    stiffness: 90,
-    damping: 24,
+    stiffness: 300,
+    damping: 44,
     restDelta: 0.0005,
   });
 
