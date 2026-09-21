@@ -100,6 +100,7 @@ One library (Motion Primitives), one component per job, no overlaps.
 | `InView` reveal-text | Section headings + intro copy below the fold | Pricing, FAQ, checkout, admin |
 | `InView` reveal-grid | Gallery masonry, course grid | Testimonials |
 | `Tilt` | Testimonial cards only | Course cards |
+| Scroll-snap rail | The testimonials below `md`, on touch | Anything above `md` |
 | `Spotlight` | Hero ambient light, once | Everywhere else |
 | `MorphingDialog` | 1-1 booking step 1 | Payment (own route) |
 | `TextShimmer` | Loading states only | Decoration |
@@ -221,6 +222,24 @@ serpentine that descends without crossing itself.
   Motion's `useReducedMotion`** — the latter returns `null` here rather than a
   boolean, so a falsy check silently takes the animated branch, and Motion then
   suppresses the spring, leaving the line at 0% and invisible.
+
+The testimonials are a masonry grid from `md` up and a swipeable row below it.
+Five cards in one column is a very long scroll past the same kind of thing;
+side by side they are one card's height with the next peeking, which says there
+are more without costing five screens.
+
+It is CSS scroll-snap, not a carousel library. The browser already does
+momentum, rubber-banding and snapping on a touch screen, natively and better,
+and a library for one section of one page is a dependency to carry forever. The
+Swiper coverflow this was suggested from was turned down on three counts: its
+`slideShadows` are linear-gradients, which the rule below forbids; it rotates
+the side slides 40 degrees, which is fine for illustrations and unreadable for a
+163-character quote; and it would have displaced `Tilt` from the only place it
+is used.
+
+The dots are the scroll position — the scrollbar is hidden, since two
+indicators for one thing is noise. The rail is a focusable `region` so a
+keyboard can scroll it, and each dot names the card it goes to.
 
 **Global rules**
 - Every component checks `prefers-reduced-motion` and falls back to a static state.

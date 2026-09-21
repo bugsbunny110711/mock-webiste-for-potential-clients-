@@ -2,16 +2,23 @@
 
 import { Tilt } from '@/components/core/tilt';
 
-type Testimonial = {
+export type Testimonial = {
   id: string;
   quote: string;
   name: string;
   context: string;
 };
 
-export function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+export function TestimonialCard({
+  testimonial,
+  className = 'mb-4 break-inside-avoid',
+}: {
+  testimonial: Testimonial;
+  /** Defaults to the masonry column's spacing; the phone rail passes its own. */
+  className?: string;
+}) {
   return (
-    <Tilt rotationFactor={6} isRevese className='mb-4 break-inside-avoid'>
+    <Tilt rotationFactor={6} isRevese className={className}>
       <figure className='rounded-card border border-ink/10 bg-surface p-6'>
         <blockquote className='font-display text-lg leading-relaxed font-light'>
           “{testimonial.quote}”
