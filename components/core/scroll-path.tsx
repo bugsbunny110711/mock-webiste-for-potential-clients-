@@ -1,13 +1,8 @@
 'use client';
 
-import { useRef, type RefObject } from 'react';
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useReducedMotion,
-  type MotionValue,
-} from 'motion/react';
+import { useRef, type ReactNode, type RefObject } from 'react';
+import { motion, useScroll, useSpring, type MotionValue } from 'motion/react';
+import { useMediaQuery } from '@/lib/hooks';
 import { cn } from '@/lib/utils';
 
 /**
@@ -32,23 +27,33 @@ export function ScrollPath({
   target,
   className,
   strokeWidth = 2,
-  opacity = 0.5,
+  // Faint on purpose. The band is wider than the page gutter, so the line
+  // runs behind roughly 300px of body copy; at any real strength that is
+  // something to read through rather than past.
+  opacity = 0.28,
   offset = ['start end', 'end start'],
 }: {
   d: string;
   viewBox: string;
-  /** The section whose scroll drives the drawing. */
-  target?: RefObject<HTMLElement | null>;
+  /**
+   * The section whose scroll drives the drawing. Required: a ref that is never
+   * attached reports no progress at all and fails silently, so there is no
+   * useful default to fall back to.
+   */
+  target: RefObject<HTMLElement | null>;
   className?: string;
   strokeWidth?: number;
   opacity?: number;
   offset?: [string, string];
 }) {
-  const fallback = useRef<HTMLDivElement>(null);
-  const shouldReduceMotion = useReducedMotion();
+  // Motion's own useReducedMotion returns null here rather than a boolean, so
+  // a falsy check silently takes the animated branch — and Motion then
+  // suppresses the spring under reduced motion, leaving the line drawn at 0%
+  // and invisible. Reading the media query directly gives a real boolean.
+  const shouldReduceMotion = useMediaQuery('(prefers-reduced-motion: reduce)');
 
   const { scrollYProgress } = useScroll({
-    target: target ?? fallback,
+    target,
     // Starts drawing as the section's top reaches the bottom of the viewport
     // and finishes as its bottom leaves the top, so the whole pass is used
     // rather than only the part where the section is already centred.
@@ -61,6 +66,14 @@ export function ScrollPath({
     restDelta: 0.0005,
   });
 
+  const stroke = {
+    d,
+    stroke: 'currentColor',
+    strokeWidth,
+    strokeLinecap: 'round' as const,
+    strokeOpacity: opacity,
+  };
+
   return (
     <svg
       viewBox={viewBox}
@@ -69,15 +82,64 @@ export function ScrollPath({
       aria-hidden
       className={cn('pointer-events-none', className)}
     >
-      <motion.path
-        d={d}
-        stroke='currentColor'
-        strokeWidth={strokeWidth}
-        strokeLinecap='round'
-        strokeOpacity={opacity}
-        style={shouldReduceMotion ? { pathLength: 1 } : { pathLength }}
-      />
+      {shouldReduceMotion ? (
+        // A plain path, drawn whole. Handing Motion a static pathLength of 1
+        // does not do this — it still initialises the value at 0, so the line
+        // never appears at all. Leaving Motion out of it entirely is what
+        // actually draws the full stroke.
+        <path {...stroke} />
+      ) : (
+        <motion.path {...stroke} style={{ pathLength }} />
+      )}
     </svg>
+  );
+}
+
+/**
+ * The stretch of page a line is drawn behind.
+ *
+ * The pages are server components and the scroll target has to be a ref, so
+ * the ref lives here rather than in the page. It also answers the question of
+ * how tall the line is: spanning several sections keeps the path close to its
+ * drawn proportions, where one 800px section would squash a 2000-unit viewBox
+ * into tight zigzags.
+ *
+ * `isolate` puts the line above the tinted section backgrounds inside it but
+ * below their text, which is the layer a background decoration belongs on.
+ */
+export function ScrollPathBackdrop({
+  children,
+  className,
+  pathClassName,
+  strokeWidth,
+  opacity,
+}: {
+  children: ReactNode;
+  className?: string;
+  pathClassName?: string;
+  strokeWidth?: number;
+  opacity?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  return (
+    <div ref={ref} className={cn('relative isolate', className)}>
+      <ScrollPath
+        d={BREATH_PATH}
+        viewBox={BREATH_VIEWBOX}
+        target={ref}
+        strokeWidth={strokeWidth}
+        opacity={opacity}
+        className={cn(
+          // Hidden on a narrow screen: a third of a phone's width stretched
+          // over two thousand pixels of height is not a calm line, it is a
+          // zigzag down the side of the text.
+          'absolute inset-y-0 right-0 -z-10 hidden h-full w-[34%] text-accent lg:block',
+          pathClassName,
+        )}
+      />
+      {children}
+    </div>
   );
 }
 

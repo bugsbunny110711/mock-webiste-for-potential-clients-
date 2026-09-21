@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { InView } from '@/components/core/in-view';
+import { ScrollPathBackdrop } from '@/components/core/scroll-path';
 import { Gallery } from '@/components/site/gallery';
 import { Photo } from '@/components/site/photo';
 import { ButtonLink } from '@/components/ui/button';
@@ -57,51 +58,55 @@ export default function AboutPage() {
         />
       </section>
 
-      <section className='border-y border-ink/10 bg-surface/50 py-20'>
-        <div className='mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-2'>
-          <InView>
-            <h2 className='text-4xl'>How I work</h2>
-            <div className='mt-6 space-y-4 leading-relaxed opacity-85'>
-              <p>
-                Plainly. I will explain the physiology, because knowing why
-                something works makes you far more likely to keep doing it.
-              </p>
-              <p>
-                Slowly. Nothing I teach requires you to be flexible, fit, or
-                spiritually inclined.
-              </p>
-              <p>
-                Carefully. There is a health form before every course, and there
-                are people I turn away — if you are in acute crisis, breathwork is
-                not the first thing you need and I will say so.
-              </p>
-            </div>
-          </InView>
+      {/* The line runs behind both middle sections, which together are
+          tall enough to keep it close to the proportions it was drawn at. */}
+      <ScrollPathBackdrop>
+        <section className='border-y border-ink/10 bg-surface/50 py-20'>
+          <div className='mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-2'>
+            <InView>
+              <h2 className='text-4xl'>How I work</h2>
+              <div className='mt-6 space-y-4 leading-relaxed opacity-85'>
+                <p>
+                  Plainly. I will explain the physiology, because knowing why
+                  something works makes you far more likely to keep doing it.
+                </p>
+                <p>
+                  Slowly. Nothing I teach requires you to be flexible, fit, or
+                  spiritually inclined.
+                </p>
+                <p>
+                  Carefully. There is a health form before every course, and there
+                  are people I turn away — if you are in acute crisis, breathwork is
+                  not the first thing you need and I will say so.
+                </p>
+              </div>
+            </InView>
 
-          <InView>
-            <h2 className='text-4xl'>Training</h2>
-            <ol className='mt-6 divide-y divide-ink/10 border-y border-ink/10'>
-              {training.map((item) => (
-                <li key={item.year} className='flex gap-6 py-3.5 text-sm'>
-                  <span className='w-12 shrink-0 opacity-70'>{item.year}</span>
-                  <span>{item.detail}</span>
-                </li>
-              ))}
-            </ol>
-          </InView>
-        </div>
-      </section>
-
-      <section className='py-20'>
-        <div className='mx-auto max-w-6xl px-6'>
-          <InView>
-            <h2 className='text-4xl'>The practice, in practice.</h2>
-          </InView>
-          <div className='mt-10'>
-            <Gallery />
+            <InView>
+              <h2 className='text-4xl'>Training</h2>
+              <ol className='mt-6 divide-y divide-ink/10 border-y border-ink/10'>
+                {training.map((item) => (
+                  <li key={item.year} className='flex gap-6 py-3.5 text-sm'>
+                    <span className='w-12 shrink-0 opacity-70'>{item.year}</span>
+                    <span>{item.detail}</span>
+                  </li>
+                ))}
+              </ol>
+            </InView>
           </div>
-        </div>
-      </section>
+        </section>
+
+        <section className='py-20'>
+          <div className='mx-auto max-w-6xl px-6'>
+            <InView>
+              <h2 className='text-4xl'>The practice, in practice.</h2>
+            </InView>
+            <div className='mt-10'>
+              <Gallery />
+            </div>
+          </div>
+        </section>
+      </ScrollPathBackdrop>
 
       <section className='border-t border-ink/10 bg-band/25 py-20'>
         <div className='mx-auto max-w-3xl px-6 text-center'>
