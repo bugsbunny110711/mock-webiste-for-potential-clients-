@@ -107,6 +107,7 @@ One library (Motion Primitives), one component per job, no overlaps.
 | Sidebar indicator | The admin rail's active row | The public site |
 | Dock magnification | The public site's dock, symbols-only widths | The labelled bar |
 | `TextRoll` | The dock's words leaving and returning on hover | Body copy, headings |
+| `ScrollPathBackdrop` | A drawn line behind one stretch of `/` and `/about` | Every other page, the admin panel |
 
 Navigation is a frosted bar fixed to the top of the viewport, with the dock's
 behaviour inside it. It has two modes, and they animate differently on purpose.
@@ -186,6 +187,40 @@ Its four panels slide past a fixed photograph using compound state selectors
 (`.flipped .form.signIn`), which CSS expresses directly and a JS animation
 library does not. It lives in `components/admin/auth-card.module.css`, and the
 global reduced-motion rule below flattens it to an instant swap for free.
+
+The scroll-drawn line is adapted from Skiper 19, with the reference's own path
+discarded: it draws a tangle of loops, which reads as energy and is the wrong
+thing on a site whose subject is settling a nervous system down. Ours is a
+serpentine that descends without crossing itself.
+
+- **It spans several sections, not one.** The viewBox is 2000 units tall, so a
+  single 800px section would squash it into zigzags. The homepage backdrop is
+  2292px and `/about` 1835px — 1.15x and 0.92x, near enough to the proportions
+  it was drawn at.
+- **Both scroll offsets anchor to the same point in the viewport**
+  (`['start 80%', 'end 80%']`), which is what holds the drawing tip still on
+  screen. The obvious range — top enters the bottom, bottom leaves the top —
+  is the section's height *plus a viewport*, while the line is only as tall as
+  the section; the tip then advances the line's height while the line scrolls
+  a viewport further, losing exactly one viewport over the pass. It drew at
+  about three quarters of scroll speed, crept up the screen and left out of the
+  top. Anchored, the tip holds within 56px of its mark instead of drifting
+  849px.
+- **It sits at `-z-10` inside an `isolate` wrapper**, which puts it above the
+  tinted section backgrounds but below their text. The band is wider than the
+  page gutter, so it runs behind about 300px of body copy — hence 0.28 opacity,
+  faint enough to read past rather than through.
+- **Hidden below `lg`.** A third of a phone's width stretched over two thousand
+  pixels of height is not a calm line, it is a zigzag beside the text.
+- It has no height of its own. The reference wraps itself in 350vh, which would
+  add three and a half screens to a homepage already nine screens tall.
+- Two things the reference gets wrong and this does not: it sets
+  `strokeDashoffset` alongside `pathLength`, applying the same dash maths twice,
+  and it imports from `framer-motion`, this library's previous name.
+- **Reduced motion draws it whole and static, via `useMediaQuery` rather than
+  Motion's `useReducedMotion`** — the latter returns `null` here rather than a
+  boolean, so a falsy check silently takes the animated branch, and Motion then
+  suppresses the spring, leaving the line at 0% and invisible.
 
 **Global rules**
 - Every component checks `prefers-reduced-motion` and falls back to a static state.

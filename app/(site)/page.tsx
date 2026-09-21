@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { TextEffect } from '@/components/core/text-effect';
 import { InView } from '@/components/core/in-view';
+import { ScrollPathBackdrop } from '@/components/core/scroll-path';
 import { ButtonLink } from '@/components/ui/button';
 import { CourseCard } from '@/components/site/course-card';
 import { TestimonialCard } from '@/components/site/testimonial-card';
@@ -88,94 +89,99 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* About strip */}
-      <section className='py-24'>
-        <div className='mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-2 md:items-center'>
-          <InView>
-            <Photo
-              id='coach-portrait'
-              ratio='aspect-[4/5]'
-              className='rounded-card'
-              sizes='(max-width: 768px) 100vw, 50vw'
-            />
-          </InView>
-          <InView>
-            <h2 className='text-4xl sm:text-5xl'>I came to this the long way round.</h2>
-            <div className='mt-6 space-y-4 leading-relaxed opacity-85'>
-              <p>
-                I spent nine years in hospital project management, and the last two
-                of them with a heart rate that never really came down. Breathwork
-                was the thing that finally moved the needle, after a lot of things
-                that did not.
+      {/* The scroll-drawn line runs behind this stretch rather than behind a
+          single section: three sections give it roughly the height it was
+          drawn at, where one would squash it into zigzags. */}
+      <ScrollPathBackdrop>
+        {/* About strip */}
+        <section className='py-24'>
+          <div className='mx-auto grid max-w-6xl gap-12 px-6 md:grid-cols-2 md:items-center'>
+            <InView>
+              <Photo
+                id='coach-portrait'
+                ratio='aspect-[4/5]'
+                className='rounded-card'
+                sizes='(max-width: 768px) 100vw, 50vw'
+              />
+            </InView>
+            <InView>
+              <h2 className='text-4xl sm:text-5xl'>I came to this the long way round.</h2>
+              <div className='mt-6 space-y-4 leading-relaxed opacity-85'>
+                <p>
+                  I spent nine years in hospital project management, and the last two
+                  of them with a heart rate that never really came down. Breathwork
+                  was the thing that finally moved the needle, after a lot of things
+                  that did not.
+                </p>
+                <p>
+                  I teach the way I wish someone had taught me — plainly, without
+                  mysticism, and with real attention to who should not be doing what.
+                </p>
+              </div>
+              <Link
+                href='/about'
+                className='mt-8 inline-block text-sm underline underline-offset-4'
+              >
+                More about how I work →
+              </Link>
+            </InView>
+          </div>
+        </section>
+
+        {/* One-to-one */}
+        <section className='border-y border-ink/10 bg-surface/50 py-24'>
+          <div className='mx-auto max-w-6xl px-6'>
+            <InView>
+              <h2 className='max-w-2xl text-4xl sm:text-5xl'>
+                Or work with me directly.
+              </h2>
+              <p className='mt-4 max-w-xl opacity-85'>
+                No course required. Book a single session and we will start with
+                whatever you actually came with.
               </p>
-              <p>
-                I teach the way I wish someone had taught me — plainly, without
-                mysticism, and with real attention to who should not be doing what.
-              </p>
+            </InView>
+
+            <div className='mt-12 grid gap-4 sm:grid-cols-3'>
+              {sessionTypes.map((session) => (
+                <InView key={session.id} className='rounded-card border border-ink/10 p-6'>
+                  <div className='flex items-baseline justify-between'>
+                    <h3 className='font-display text-xl font-light'>{session.name}</h3>
+                    <span className='text-sm opacity-75'>{session.minutes} min</span>
+                  </div>
+                  <p className='mt-3 min-h-16 text-sm leading-relaxed opacity-85'>
+                    {session.description}
+                  </p>
+                  <p className='mt-4 text-lg'>
+                    {session.priceGBP === 0 ? 'Free' : gbp(session.priceGBP)}
+                  </p>
+                </InView>
+              ))}
             </div>
-            <Link
-              href='/about'
-              className='mt-8 inline-block text-sm underline underline-offset-4'
-            >
-              More about how I work →
-            </Link>
-          </InView>
-        </div>
-      </section>
 
-      {/* One-to-one */}
-      <section className='border-y border-ink/10 bg-surface/50 py-24'>
-        <div className='mx-auto max-w-6xl px-6'>
-          <InView>
-            <h2 className='max-w-2xl text-4xl sm:text-5xl'>
-              Or work with me directly.
-            </h2>
-            <p className='mt-4 max-w-xl opacity-85'>
-              No course required. Book a single session and we will start with
-              whatever you actually came with.
-            </p>
-          </InView>
-
-          <div className='mt-12 grid gap-4 sm:grid-cols-3'>
-            {sessionTypes.map((session) => (
-              <InView key={session.id} className='rounded-card border border-ink/10 p-6'>
-                <div className='flex items-baseline justify-between'>
-                  <h3 className='font-display text-xl font-light'>{session.name}</h3>
-                  <span className='text-sm opacity-75'>{session.minutes} min</span>
-                </div>
-                <p className='mt-3 min-h-16 text-sm leading-relaxed opacity-85'>
-                  {session.description}
-                </p>
-                <p className='mt-4 text-lg'>
-                  {session.priceGBP === 0 ? 'Free' : gbp(session.priceGBP)}
-                </p>
-              </InView>
-            ))}
+            <InView className='mt-10'>
+              <ButtonLink href='/book' size='lg'>
+                Check availability
+              </ButtonLink>
+            </InView>
           </div>
+        </section>
 
-          <InView className='mt-10'>
-            <ButtonLink href='/book' size='lg'>
-              Check availability
-            </ButtonLink>
-          </InView>
-        </div>
-      </section>
-
-      {/* Testimonials — the only place Tilt is used */}
-      <section className='py-24' id='testimonials'>
-        <div className='mx-auto max-w-6xl px-6'>
-          <InView>
-            <h2 className='max-w-2xl text-4xl sm:text-5xl'>
-              What people say afterwards.
-            </h2>
-          </InView>
-          <div className='mt-12 columns-1 gap-4 md:columns-2 lg:columns-3'>
-            {testimonials.map((testimonial) => (
-              <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-            ))}
+        {/* Testimonials — the only place Tilt is used */}
+        <section className='py-24' id='testimonials'>
+          <div className='mx-auto max-w-6xl px-6'>
+            <InView>
+              <h2 className='max-w-2xl text-4xl sm:text-5xl'>
+                What people say afterwards.
+              </h2>
+            </InView>
+            <div className='mt-12 columns-1 gap-4 md:columns-2 lg:columns-3'>
+              {testimonials.map((testimonial) => (
+                <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </ScrollPathBackdrop>
 
       {/* Retreats */}
       <section className='border-t border-ink/10 bg-surface/50 py-24'>
