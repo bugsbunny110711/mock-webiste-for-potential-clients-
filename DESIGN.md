@@ -123,8 +123,16 @@ symbol, and moving off rolls the word back. Nothing else reacts:
   word rolling away does not resize its own pill, let alone shift its
   neighbours. Distance magnification is off in this mode for the same reason —
   driving a labelled item's width from the pointer shoves every option along
-  the bar as the pointer travels. The hovered symbol still swells, by
-  `transform: scale`, which costs no layout.
+  the bar as the pointer travels. The hovered symbol swells and crosses to the
+  middle of its pill by `transform`, which costs no layout.
+- **The symbol centres only once the word has gone**, and on the way out it
+  returns to its slot *before* the word rolls back — a word rolling in
+  underneath a symbol still sitting in the centre would land on top of it. The
+  two are one sequence, so their timings live together at the top of
+  `dock.tsx`. How far the symbol travels, and how long this particular word
+  takes to roll, are measured when the pointer arrives: by then the display
+  face has certainly loaded, and an event handler is the one place a layout
+  read needs no effect.
 - The stagger is 22ms per character against TextRoll's default 100ms. At the
   default, `Retreats` would take four fifths of a second to leave, which is far
   too slow to sit under a moving pointer.

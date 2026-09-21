@@ -45,6 +45,21 @@ function useDock() {
   return context;
 }
 
+/**
+ * The word's roll and the symbol's glide are one sequence, so their timings are
+ * shared rather than tuned in two places.
+ *
+ * Pointing at an option: the word rolls away, and only once it has gone does
+ * the symbol glide to the middle of the pill. Leaving reverses it — the symbol
+ * returns to its slot first, because a word rolling back underneath a symbol
+ * still sitting in the centre would land on top of it.
+ */
+const ROLL_DURATION = 0.28;
+const ROLL_STAGGER = 0.022;
+const ICON_TRAVEL = 0.26;
+/** Matches the `ml-2` DockText sets between the symbol and the word. */
+const LABEL_GAP = 8;
+
 const DEFAULT_SPRING: SpringOptions = {
   mass: 0.1,
   stiffness: 150,
@@ -123,6 +138,32 @@ export function DockItem({
   const [isPointerOver, setIsPointerOver] = useState(false);
   const { mouseX, spring, magnification, distance, isStatic } = useDock();
 
+  // How far the symbol must travel to reach the middle of the pill, and how
+  // long this particular word takes to roll away.
+  //
+  // Measured when the pointer arrives rather than on mount: by then the display
+  // face has certainly loaded, so the width is the one actually on screen. An
+  // event handler is also the one place this can be read without an effect.
+  const [lockup, setLockup] = useState({
+    shift: 0,
+    rollOut: ROLL_DURATION,
+  });
+
+  const measureLockup = () => {
+    const label = ref.current?.querySelector<HTMLElement>('[data-dock-label]');
+    if (!label) return;
+    const characters = label.textContent?.length ?? 0;
+    // The symbol sits left of the word in a group centred in the pill, so
+    // centring it means moving it half the space the word and its gap take up.
+    const shift = (label.offsetWidth + LABEL_GAP) / 2;
+    const rollOut = ROLL_DURATION + ROLL_STAGGER * Math.max(0, characters - 1);
+    setLockup((previous) =>
+      previous.shift === shift && previous.rollOut === rollOut
+        ? previous
+        : { shift, rollOut },
+    );
+  };
+
   const distanceFromPointer = useTransform(mouseX, (value) => {
     const bounds = ref.current?.getBoundingClientRect() ?? {
       x: 0,
@@ -153,6 +194,8 @@ export function DockItem({
         baseSize,
         isStatic,
         magnifies,
+        labelShift: lockup.shift,
+        rollOut: lockup.rollOut,
       }}
     >
       <motion.div
@@ -168,7 +211,10 @@ export function DockItem({
               ? { width: baseSize, height: baseSize }
               : { width: size, height: size }
         }
-        onHoverStart={() => setIsPointerOver(true)}
+        onHoverStart={() => {
+          measureLockup();
+          setIsPointerOver(true);
+        }}
         onHoverEnd={() => setIsPointerOver(false)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
@@ -190,6 +236,10 @@ const DockItemContext = createContext<{
   baseSize: number;
   isStatic: boolean;
   magnifies: boolean;
+  /** Pixels right the symbol travels to reach the middle once the word is gone. */
+  labelShift: number;
+  /** How long this item's word takes to roll away, start to last character. */
+  rollOut: number;
 } | null>(null);
 
 function useDockItem() {
@@ -206,19 +256,27 @@ export function DockIcon({
   children: ReactNode;
   className?: string;
 }) {
-  const { size, baseSize, isStatic, magnifies, isRolled } = useDockItem();
+  const { size, baseSize, isStatic, magnifies, isRolled, labelShift, rollOut } =
+    useDockItem();
   const iconSize = useTransform(size, (value) => value * 0.42);
   const restSize = baseSize * 0.42;
 
-  // Where the item does not magnify, the symbol holds a fixed box and grows by
-  // transform instead. A transform costs no layout, so the hovered symbol can
-  // swell without nudging the word beside it or the options either side.
+  // Where the item does not magnify, the symbol holds a fixed box and both
+  // grows and travels by transform. Transforms cost no layout, so the symbol
+  // can swell and cross to the middle of its pill without changing that pill's
+  // width or nudging the options either side.
   if (!magnifies) {
+    // Going: wait for the word to finish rolling away. Returning: leave at
+    // once, so the slot is clear before the word rolls back into it.
+    const delay = isRolled ? rollOut : 0;
     return (
       <motion.div
         style={{ width: restSize, height: restSize }}
-        animate={{ scale: isRolled ? 1.3 : 1 }}
-        transition={{ type: 'spring', stiffness: 420, damping: 26 }}
+        animate={{ scale: isRolled ? 1.3 : 1, x: isRolled ? labelShift : 0 }}
+        transition={{
+          scale: { type: 'spring', stiffness: 420, damping: 26, delay },
+          x: { duration: ICON_TRAVEL, ease: [0.22, 0.61, 0.36, 1], delay },
+        }}
         className={cn('flex shrink-0 items-center justify-center', className)}
       >
         {children}
@@ -292,16 +350,21 @@ export function DockText({
   const { isRolled } = useDockItem();
 
   return (
-    <TextRoll
-      rolled={isRolled}
-      srOnlyHidden
-      duration={0.28}
-      getEnterDelay={(index) => index * 0.022}
-      getExitDelay={(index) => index * 0.022}
-      transition={{ ease: [0.22, 0.61, 0.36, 1] }}
-      className={cn('ml-2 whitespace-nowrap', className)}
+    <span
+      data-dock-label
+      className={cn('ml-2 inline-flex whitespace-nowrap', className)}
     >
-      {children}
-    </TextRoll>
+      <TextRoll
+        rolled={isRolled}
+        srOnlyHidden
+        duration={ROLL_DURATION}
+        // Away immediately; back only once the symbol has returned to its slot.
+        getExitDelay={(index) => index * ROLL_STAGGER}
+        getEnterDelay={(index) => ICON_TRAVEL + index * ROLL_STAGGER}
+        transition={{ ease: [0.22, 0.61, 0.36, 1] }}
+      >
+        {children}
+      </TextRoll>
+    </span>
   );
 }
