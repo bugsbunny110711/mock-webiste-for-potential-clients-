@@ -21,7 +21,7 @@ export default function HomePage() {
       {/* Hero — the only text that animates on mount rather than on scroll
           (DESIGN.md §4). The canvas is flat: this system has no gradients. */}
       <section className='relative overflow-hidden'>
-        <div className='relative mx-auto max-w-6xl px-6 pt-20 pb-24 sm:pt-28 sm:pb-32'>
+        <div className='relative mx-auto max-w-6xl px-6 pt-20 pb-20 sm:pt-28 sm:pb-24'>
           {/* Two columns from lg up: the words carry the weight, the portrait
               gives the page a face above the fold. Below lg the portrait sits
               under the copy rather than beside it, where it would be too small
@@ -61,21 +61,32 @@ export default function HomePage() {
             <HeroPortrait className='order-1 lg:order-2' />
           </div>
 
-          <dl className='mt-20 grid max-w-2xl grid-cols-3 gap-8 border-t border-ink/15 pt-8'>
-            {[
-              { label: 'Years teaching', value: coach.yearsTeaching },
-              { label: 'Training hours', value: `${coach.trainedHours}+` },
-              { label: 'People taught', value: `${coach.studentsTaught.toLocaleString('en-GB')}+` },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <dt className='text-xs tracking-widest uppercase opacity-70'>
-                  {stat.label}
-                </dt>
-                <dd className='mt-1 font-display text-3xl font-light'>{stat.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
+      </section>
+
+      {/* The numbers get their own band rather than sitting inside the hero.
+          Three claims in a row read as a credential strip; buried under the
+          buttons they read as an afterthought. */}
+      <section className='border-y border-ink/10 bg-band/30'>
+        <dl className='mx-auto grid max-w-4xl grid-cols-3 gap-6 px-6 py-10 text-center sm:py-12'>
+          {[
+            { label: 'Years teaching', value: coach.yearsTeaching },
+            { label: 'Training hours', value: `${coach.trainedHours}+` },
+            {
+              label: 'People taught',
+              value: `${coach.studentsTaught.toLocaleString('en-GB')}+`,
+            },
+          ].map((stat) => (
+            <div key={stat.label}>
+              <dt className='text-[10px] tracking-[0.18em] uppercase opacity-65 sm:text-xs'>
+                {stat.label}
+              </dt>
+              <dd className='mt-1.5 font-display text-3xl font-light sm:text-4xl'>
+                {stat.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* Courses */}

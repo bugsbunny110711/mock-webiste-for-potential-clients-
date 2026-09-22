@@ -35,6 +35,19 @@ export type Course = {
   modules: { title: string; detail: string }[];
   enrolled: number;
   featured?: boolean;
+  /**
+   * The next run of this course. Drives the card on the hero.
+   *
+   * `taken` against `capacity` is what produces 'N spots left', so the claim
+   * is read from data rather than typed into the page — the number on a live
+   * site has to be true, and a hardcoded one quietly stops being true.
+   */
+  nextCohort?: {
+    /** ISO date. Never parsed with new Date() at module scope — see the note above. */
+    startsOn: string;
+    capacity: number;
+    taken: number;
+  };
 };
 
 export const courses: Course[] = [
@@ -68,6 +81,7 @@ export const courses: Course[] = [
     ],
     enrolled: 312,
     featured: true,
+    nextCohort: { startsOn: '2026-10-18', capacity: 14, taken: 10 },
   },
   {
     id: 'c-yoga-slow',
@@ -457,3 +471,27 @@ export const workshops: WorkshopFormat[] = [
     ],
   },
 ];
+
+/**
+ * The course whose next run the hero advertises: the featured one, and only
+ * while it actually has a cohort with places on it.
+ */
+export function heroCohort() {
+  const course = courses.find((c) => c.featured && c.nextCohort);
+  if (!course?.nextCohort) return null;
+  const { startsOn, capacity, taken } = course.nextCohort;
+  const left = capacity - taken;
+  if (left <= 0) return null;
+
+  // Formatted from the parts rather than with toLocaleDateString, which can
+  // disagree between the server's locale and the browser's and blow up
+  // hydration over a month name.
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const [, month, day] = startsOn.split('-');
+  return {
+    course,
+    capacity,
+    left,
+    starts: `${MONTHS[Number(month) - 1]} ${Number(day)}`,
+  };
+}
