@@ -27,7 +27,7 @@ export default function HomePage() {
           range too, or narrowing a laptop window would jump the gap from 76px
           back to 154px at a single pixel. */}
       <section className='relative overflow-hidden'>
-        <div className='relative mx-auto max-w-6xl px-6 pt-20 pb-20 sm:pt-16 sm:pb-24 lg:pt-8 lg:pb-20'>
+        <div className='relative mx-auto max-w-6xl px-6 pt-8 pb-16 sm:pt-12 sm:pb-20 lg:pt-8 lg:pb-20'>
           {/* Two columns from lg up: the words carry the weight, the portrait
               gives the page a face above the fold. Below lg the portrait sits
               under the copy rather than beside it, where it would be too small
@@ -37,7 +37,7 @@ export default function HomePage() {
               one wrapper vanish on a phone so its two halves become grid items
               that can be ordered around the portrait, and become a single
               column again from lg. */}
-          <div className='grid gap-9 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16'>
+          <div className='grid gap-9 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-16'>
             <div className='contents lg:block'>
               <div className='order-1 text-center lg:order-none lg:text-left'>
                 {/* A pill on a phone and plain small caps on a laptop, which is how the
