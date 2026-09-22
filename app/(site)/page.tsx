@@ -20,62 +20,92 @@ export default function HomePage() {
     <>
       {/* Hero — the only text that animates on mount rather than on scroll
           (DESIGN.md §4). The canvas is flat: this system has no gradients. */}
+      {/* The hero's own top padding tapers as the screen widens. The main
+          element already pads to clear the fixed bar, so the section's own
+          padding is all gap: at its old value that was 156px of nothing under
+          the navigation on a laptop. Trimmed at lg, and eased in the middle
+          range too, or narrowing a laptop window would jump the gap from 76px
+          back to 154px at a single pixel. */}
       <section className='relative overflow-hidden'>
-        <div className='relative mx-auto max-w-6xl px-6 pt-20 pb-24 sm:pt-28 sm:pb-32'>
+        <div className='relative mx-auto max-w-6xl px-6 pt-2 pb-16 sm:pt-12 sm:pb-20 lg:pt-8 lg:pb-20'>
           {/* Two columns from lg up: the words carry the weight, the portrait
               gives the page a face above the fold. Below lg the portrait sits
               under the copy rather than beside it, where it would be too small
               to be worth the height. */}
-          <div className='grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16'>
-            {/* The heading stays first in the DOM, for reading order and for
-                what lands at the top of the document; only the visual order
-                swaps, so a phone leads with her face rather than a screen of
-                text before it. */}
-            <div className='order-2 lg:order-1'>
-              <p className='mb-6 text-xs tracking-[0.2em] uppercase opacity-70'>
-                {coach.role} · {coach.location}
-              </p>
-              <TextEffect
-                as='h1'
-                per='word'
-                preset='blur'
-                className='text-5xl leading-[1.05] sm:text-6xl lg:text-[3.9rem] xl:text-7xl'
-              >
-                Put your nervous system back in your own hands.
-              </TextEffect>
-              <p className='mt-8 max-w-xl text-lg leading-relaxed opacity-85'>
-                Breathwork and yoga courses for people who are tired of being
-                told to relax. Practical, unhurried, and short enough that you
-                will actually do them.
-              </p>
-              <div className='mt-10 flex flex-wrap gap-3'>
-                <ButtonLink href='/courses' size='lg'>
-                  See the courses
-                </ButtonLink>
-                <ButtonLink href='/book' size='lg' variant='secondary'>
-                  Book a one-to-one
-                </ButtonLink>
+          {/* On a phone the reference interleaves: eyebrow and heading, then
+              her picture, then the copy and the buttons. `contents` lets that
+              one wrapper vanish on a phone so its two halves become grid items
+              that can be ordered around the portrait, and become a single
+              column again from lg. */}
+          <div className='grid gap-9 lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-16'>
+            <div className='contents lg:block'>
+              <div className='order-1 text-center lg:order-none lg:text-left'>
+                {/* A pill on a phone and plain small caps on a laptop, which is how the
+                    two references each draw it. */}
+                <p className='inline-flex items-center rounded-full border border-ink/12 bg-canvas/70 px-3.5 py-1.5 text-[10px] font-medium tracking-[0.18em] uppercase opacity-75 lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:text-[11px]'>
+                  {coach.role}
+                </p>
+                <TextEffect
+                  as='h1'
+                  per='word'
+                  preset='blur'
+                  className='mt-5 text-[2.15rem] leading-[1.1] sm:text-[2.7rem] lg:mt-6 lg:text-[3.6rem] lg:leading-[1.08] xl:text-[4.2rem]'
+                >
+                  Put your nervous system back in your own hands.
+                </TextEffect>
+              </div>
+
+              <div className='order-3 text-center lg:order-none lg:mt-8 lg:text-left'>
+                <p className='mx-auto max-w-xl text-[17px] leading-relaxed opacity-85 lg:mx-0 lg:text-lg'>
+                  Breathwork and yoga courses for people who are tired of being
+                  told to relax. Practical, unhurried, and short enough that you
+                  will actually do them.
+                </p>
+                <div className='mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start'>
+                  <ButtonLink href='/courses' size='lg' className='w-full sm:w-auto'>
+                    See the courses
+                  </ButtonLink>
+                  <ButtonLink
+                    href='/book'
+                    size='lg'
+                    variant='secondary'
+                    className='w-full sm:w-auto'
+                  >
+                    Book a one-to-one
+                  </ButtonLink>
+                </div>
               </div>
             </div>
 
-            <HeroPortrait className='order-1 lg:order-2' />
+            <HeroPortrait className='order-2 lg:order-none' />
           </div>
 
-          <dl className='mt-20 grid max-w-2xl grid-cols-3 gap-8 border-t border-ink/15 pt-8'>
-            {[
-              { label: 'Years teaching', value: coach.yearsTeaching },
-              { label: 'Training hours', value: `${coach.trainedHours}+` },
-              { label: 'People taught', value: `${coach.studentsTaught.toLocaleString('en-GB')}+` },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <dt className='text-xs tracking-widest uppercase opacity-70'>
-                  {stat.label}
-                </dt>
-                <dd className='mt-1 font-display text-3xl font-light'>{stat.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
+      </section>
+
+      {/* The numbers get their own band rather than sitting inside the hero.
+          Three claims in a row read as a credential strip; buried under the
+          buttons they read as an afterthought. */}
+      <section className='border-y border-ink/10 bg-band/30'>
+        <dl className='mx-auto grid max-w-4xl grid-cols-3 gap-6 px-6 py-10 text-center sm:py-12'>
+          {[
+            { label: 'Years teaching', value: coach.yearsTeaching },
+            { label: 'Training hours', value: `${coach.trainedHours}+` },
+            {
+              label: 'People taught',
+              value: `${coach.studentsTaught.toLocaleString('en-GB')}+`,
+            },
+          ].map((stat) => (
+            <div key={stat.label}>
+              <dt className='text-[10px] tracking-[0.18em] uppercase opacity-65 sm:text-xs'>
+                {stat.label}
+              </dt>
+              <dd className='mt-1.5 font-display text-3xl font-light sm:text-4xl'>
+                {stat.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       {/* Courses */}
