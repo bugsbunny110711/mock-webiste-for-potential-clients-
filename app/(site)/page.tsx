@@ -26,39 +26,52 @@ export default function HomePage() {
               gives the page a face above the fold. Below lg the portrait sits
               under the copy rather than beside it, where it would be too small
               to be worth the height. */}
-          <div className='grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16'>
-            {/* The heading stays first in the DOM, for reading order and for
-                what lands at the top of the document; only the visual order
-                swaps, so a phone leads with her face rather than a screen of
-                text before it. */}
-            <div className='order-2 lg:order-1'>
-              <p className='mb-6 text-xs tracking-[0.2em] uppercase opacity-70'>
-                {coach.role} · {coach.location}
-              </p>
-              <TextEffect
-                as='h1'
-                per='word'
-                preset='blur'
-                className='text-5xl leading-[1.05] sm:text-6xl lg:text-[3.9rem] xl:text-7xl'
-              >
-                Put your nervous system back in your own hands.
-              </TextEffect>
-              <p className='mt-8 max-w-xl text-lg leading-relaxed opacity-85'>
-                Breathwork and yoga courses for people who are tired of being
-                told to relax. Practical, unhurried, and short enough that you
-                will actually do them.
-              </p>
-              <div className='mt-10 flex flex-wrap gap-3'>
-                <ButtonLink href='/courses' size='lg'>
-                  See the courses
-                </ButtonLink>
-                <ButtonLink href='/book' size='lg' variant='secondary'>
-                  Book a one-to-one
-                </ButtonLink>
+          {/* On a phone the reference interleaves: eyebrow and heading, then
+              her picture, then the copy and the buttons. `contents` lets that
+              one wrapper vanish on a phone so its two halves become grid items
+              that can be ordered around the portrait, and become a single
+              column again from lg. */}
+          <div className='grid gap-9 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16'>
+            <div className='contents lg:block'>
+              <div className='order-1 text-center lg:order-none lg:text-left'>
+                {/* A pill on a phone and plain small caps on a laptop, which is how the
+                    two references each draw it. */}
+                <p className='inline-flex items-center rounded-full border border-ink/12 bg-canvas/70 px-3.5 py-1.5 text-[10px] font-medium tracking-[0.18em] uppercase opacity-75 lg:border-0 lg:bg-transparent lg:px-0 lg:py-0 lg:text-[11px]'>
+                  {coach.role}
+                </p>
+                <TextEffect
+                  as='h1'
+                  per='word'
+                  preset='blur'
+                  className='mt-5 text-[2.15rem] leading-[1.1] sm:text-[2.7rem] lg:mt-6 lg:text-[3.6rem] lg:leading-[1.08] xl:text-[4.2rem]'
+                >
+                  Put your nervous system back in your own hands.
+                </TextEffect>
+              </div>
+
+              <div className='order-3 text-center lg:order-none lg:mt-8 lg:text-left'>
+                <p className='mx-auto max-w-xl text-[17px] leading-relaxed opacity-85 lg:mx-0 lg:text-lg'>
+                  Breathwork and yoga courses for people who are tired of being
+                  told to relax. Practical, unhurried, and short enough that you
+                  will actually do them.
+                </p>
+                <div className='mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start'>
+                  <ButtonLink href='/courses' size='lg' className='w-full sm:w-auto'>
+                    See the courses
+                  </ButtonLink>
+                  <ButtonLink
+                    href='/book'
+                    size='lg'
+                    variant='secondary'
+                    className='w-full sm:w-auto'
+                  >
+                    Book a one-to-one
+                  </ButtonLink>
+                </div>
               </div>
             </div>
 
-            <HeroPortrait className='order-1 lg:order-2' />
+            <HeroPortrait className='order-2 lg:order-none' />
           </div>
 
         </div>

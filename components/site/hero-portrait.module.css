@@ -1,0 +1,23 @@
+/*
+ * The portrait's frame takes a different shape at each size, because the two
+ * references do.
+ *
+ * On a phone it is an organic dome: a wide, shallow arc across the top easing
+ * to gently rounded corners at the foot, slightly off-symmetry so it reads as
+ * drawn rather than as a rectangle with its corners filed off. On a laptop it
+ * is a plain rounded rectangle — at that width the dome reads as decorative,
+ * and the straight top edge sits better against a column of text.
+ *
+ * It lives here rather than in an inline style because a style attribute has
+ * no media queries, and the project already uses CSS modules where a rule
+ * needs to change on something Tailwind cannot express in one class.
+ */
+.frame {
+  border-radius: 52% 48% 36% 32% / 32% 30% 22% 20%;
+}
+
+@media (min-width: 1024px) {
+  .frame {
+    border-radius: 2.5rem;
+  }
+}
