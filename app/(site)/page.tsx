@@ -20,8 +20,14 @@ export default function HomePage() {
     <>
       {/* Hero — the only text that animates on mount rather than on scroll
           (DESIGN.md §4). The canvas is flat: this system has no gradients. */}
+      {/* The hero's own top padding tapers as the screen widens. The main
+          element already pads to clear the fixed bar, so the section's own
+          padding is all gap: at its old value that was 156px of nothing under
+          the navigation on a laptop. Trimmed at lg, and eased in the middle
+          range too, or narrowing a laptop window would jump the gap from 76px
+          back to 154px at a single pixel. */}
       <section className='relative overflow-hidden'>
-        <div className='relative mx-auto max-w-6xl px-6 pt-20 pb-20 sm:pt-28 sm:pb-24'>
+        <div className='relative mx-auto max-w-6xl px-6 pt-20 pb-20 sm:pt-16 sm:pb-24 lg:pt-8 lg:pb-20'>
           {/* Two columns from lg up: the words carry the weight, the portrait
               gives the page a face above the fold. Below lg the portrait sits
               under the copy rather than beside it, where it would be too small
