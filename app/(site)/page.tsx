@@ -6,6 +6,7 @@ import { ButtonLink } from '@/components/ui/button';
 import { CourseCard } from '@/components/site/course-card';
 import { TestimonialCard } from '@/components/site/testimonial-card';
 import { HeroPortrait } from '@/components/site/hero-portrait';
+import { HeroStats } from '@/components/site/hero-stats';
 import { TestimonialRail } from '@/components/site/testimonial-rail';
 import { Gallery } from '@/components/site/gallery';
 import { Faq } from '@/components/site/faq';
@@ -87,25 +88,13 @@ export default function HomePage() {
           Three claims in a row read as a credential strip; buried under the
           buttons they read as an afterthought. */}
       <section className='border-y border-ink/10 bg-band/30'>
-        <dl className='mx-auto grid max-w-4xl grid-cols-3 gap-6 px-6 py-10 text-center sm:py-12'>
-          {[
+        <HeroStats
+          stats={[
             { label: 'Years teaching', value: coach.yearsTeaching },
-            { label: 'Training hours', value: `${coach.trainedHours}+` },
-            {
-              label: 'People taught',
-              value: `${coach.studentsTaught.toLocaleString('en-GB')}+`,
-            },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <dt className='text-[10px] tracking-[0.18em] uppercase opacity-65 sm:text-xs'>
-                {stat.label}
-              </dt>
-              <dd className='mt-1.5 font-display text-3xl font-light sm:text-4xl'>
-                {stat.value}
-              </dd>
-            </div>
-          ))}
-        </dl>
+            { label: 'Training hours', value: coach.trainedHours, suffix: '+' },
+            { label: 'People taught', value: coach.studentsTaught, suffix: '+' },
+          ]}
+        />
       </section>
 
       {/* Courses */}
