@@ -109,6 +109,7 @@ One library (Motion Primitives), one component per job, no overlaps.
 | Sidebar indicator | The admin rail's active row | The public site |
 | Dock magnification | The public site's dock, symbols-only widths | The labelled bar |
 | `TextRoll` | The dock's words leaving and returning on hover | Body copy, headings |
+| `AnimatedNumber` | The hero's three figures, once, on arrival | Prices, counts that change |
 | `ScrollPathBackdrop` | A drawn line behind one stretch of `/` and `/about` | Every other page, the admin panel |
 
 Navigation is a frosted bar fixed to the top of the viewport, with the dock's
